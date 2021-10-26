@@ -1,0 +1,60 @@
+const menuList = [
+  {
+    id: 1,
+    icon: "bx-pie-chart-alt-2",
+    name: "Home",
+    group: "Home",
+    link: "/",
+    isActive: false,
+  },
+  {
+    id: 2,
+    icon: "bxl-bootstrap",
+    name: "Aankopen",
+    group: "Aankopen",
+    link: "/aankopen",
+    isActive: false,
+  },
+  {
+    id: 3,
+    icon: "bx-dollar-circle",
+    name: "Verkopen",
+    group: "Verkopen",
+    link: "/verkopen",
+    isActive: false,
+  },
+  {
+    id: 4,
+    icon: "bx-receipt",
+    name: "Creditnotas",
+    group: "Creditnotas",
+    link: "/creditnotas",
+    isActive: false,
+  },
+  {
+    id: 5,
+    icon: "bxs-package",
+    name: "Artikels",
+    group: "Artikels",
+    link: "/artikels",
+    isActive: false,
+  },
+  {
+    id: 6,
+    icon: "bxs-store",
+    name: "Klanten",
+    group: "Klanten",
+    link: "/klanten",
+    isActive: false,
+  },
+  {
+    id: 7,
+    icon: "bxs-truck",
+    name: "Leveranciers",
+    group: "Leveranciers",
+    link: "/leveranciers",
+    isActive: false,
+  },
+];
+
+export default menuList;
