@@ -69,7 +69,7 @@ body {
   /* background-image: linear-gradient(-180deg, #6a11cb 0%, #2575fc 100%); */
   /* background-image: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%); */
   padding: 6px 14px;
-  /* z-index: 99; */
+  z-index: 99;
   transition: all 0.5s ease;
 }
 .sidebar.active {
@@ -289,9 +289,9 @@ body {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
   transition: all 0.5s ease;
 }
-.sidebar.active ~ .home_content {
-  /* z-index: 100; */
-}
+/* .sidebar.active ~ .home_content {
+  z-index: 100;
+} */
 .home_content .text {
   font-size: 25px;
   font-weight: 500;

@@ -13,7 +13,7 @@
               <TextInput v-model="leverancier.btw_nr" name="Btw nummer" />
               <SelectInput v-model="leverancier.btw_cat" name="Btw categorie">
                 <option v-for="option in btws" :value="option.id" :key="option.id">
-                  {{ option.name }}
+                  {{ option.naam }}
                 </option>
               </SelectInput>
             </div>
@@ -25,7 +25,7 @@
               <TextInput v-model="leverancier.taal" name="Taal" />
               <SelectInput v-model="leverancier.betalingstermijn" name="Betalingstermijn">
                 <option v-for="option in betalingstermijnen" :value="option.id" :key="option.id">
-                  {{ option.name }}
+                  {{ option.naam }}
                 </option>
               </SelectInput>
             </div>
@@ -54,10 +54,11 @@ import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue";
 import AddressBox from "../../components/common/AddressBox.vue";
 import NoAddress from "../../components/common/NoAddress.vue";
 import AddressModal from "../../modals/AddressModal.vue";
-import { showModal, showModalWithParamas } from "../../logic/factories/modalFactory";
-import utils from "../../logic/utils/utilsFactory.js";
+import ModalFactory from "../../logic/factories/modalFactory";
+import UtilsFactory from "../../logic/utils/utilsFactory";
 import AddresUpdateModal from "../../modals/AddresUpdateModal.vue";
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
+import LeveranciersController from "../../api/calls/leveranciers"
 
 export default {
   name: "LeveranciersCreateview",
@@ -73,93 +74,45 @@ export default {
   },
   data: () => ({
     leverancier: {
-      lev_nr: "",
-      naam: "",
-      extra_naam: "",
-      type: "",
-      btw_nr: "",
-      btw_cat: "",
-      handels_nr: "",
-      ondernemings_nr: "",
-      telefoon: "",
-      email: "",
-      taal: "",
-      betalingstermijn: "",
+      lev_nr: null,
+      naam: null,
+      extra_naam: null,
+      type: null,
+      btw_nr: null,
+      btw_cat: null,
+      handels_nr: null,
+      ondernemings_nr: null,
+      telefoon: null,
+      email: null,
+      taal: null,
+      betalingstermijn: null,
       adressen: [],
-      counter: 1,
     },
     errorMessageAddress: false,
-    btws: [
-      {
-        id: 1,
-        name: "9%",
-      },
-      {
-        id: 2,
-        name: "12%",
-      },
-      {
-        id: 3,
-        name: "21%",
-      },
-    ],
-    betalingstermijnen: [
-      {
-        id: 1,
-        name: "30 dagen",
-      },
-      {
-        id: 2,
-        name: "60 dagen",
-      },
-      {
-        id: 3,
-        name: "90 dagen",
-      },
-      {
-        id: 4,
-        name: "120 dagen",
-      },
-    ],
-    counter: 1,
+    btws: [],
+    betalingstermijnen: [],
+    isLoaded: false
   }),
+  mounted(){
+    LeveranciersController.getPreData(this, (res) => { this.btws = res[0].data; this.betalingstermijnen = res[1].data, this.isLoaded = true; })
+  },
   methods: {
     onSubmit() {
-      // TODO: add check for address not empty
       if (this.leverancier.adressen.length !== 0) {
         console.log(this.leverancier);
         this.errorMessageAddress = false;
       } else {
-        this.errorMessageAddress = true;
         console.log("Address is empty");
+        this.errorMessageAddress = true;
       }
     },
     addAddress() {
       this.errorMessageAddress = false;
-      // TODO: test code
-      let temp = true;
-      if (temp) {
-        this.leverancier.adressen.push({
-          id: this.counter,
-          straat: "Brusselsesteenweg",
-          huisnummer: "45",
-          bus: "",
-          postcode: "1860",
-          gemeente: "Brussel",
-          land: "Belgie",
-        });
-        this.counter++;
-        console.log(this.leverancier.adressen);
-      }
-      // End of test code
-      else {
-        showModal(this, AddressModal, (adres) => this.leverancier.adressen.push(adres));
-      }
+      ModalFactory.showModal(this, AddressModal, (adres) => this.leverancier.adressen.push(adres));
+    
     },
     editItem(adres) {
-      console.log("Edit");
-      console.log(adres);
-      showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
+      ModalFactory.showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
         adres.id = newAdres.id;
         adres.straat = newAdres.straat;
         adres.huisnummer = newAdres.huisnummer;
@@ -170,9 +123,9 @@ export default {
       });
     },
     deleteItem(adres) {
-      showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
+      ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
         if (isConfirmed) {
-          utils.deleteItemFromList(this.leverancier.adressen, adres.id);
+          UtilsFactory.deleteItemFromList(this.leverancier.adressen, adres.id);
         }
       });
     },
