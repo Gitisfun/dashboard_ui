@@ -1,10 +1,10 @@
 <template>
   <div class="level" style="background: white; padding: 15px">
     <div class="level-left">
-      <div class="level-item" style="color: darkblue"><i :class="`bx ${currentMenuItem.icon} bx-md`"></i>
+      <div class="level-item" style="color: #48dbfb"><i :class="`bx ${currentMenuItem.icon} bx-md`"></i>
       <!-- <b-icon :icon="currentMenuItem.icon" size="is-medium" type="is-dark"> </b-icon> -->
       </div>
-      <div id="titlebar-title" style="color: darkblue; font-weight: 700" class="level-item">{{ currentMenuItem.name }}</div>
+      <div id="titlebar-title" style="color: #48dbfb; font-weight: 700" class="level-item">{{ currentMenuItem.name }}</div>
     </div>
     <div class="level-right">
       <div class="level-item">
