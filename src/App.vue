@@ -277,18 +277,7 @@ body {
 .sidebar.active .profile #log_out {
   background: none;
 }
-.home_content {
-  position: absolute;
-  /* height: 100%; */
-  height: 100vh;
-  width: calc(100% - 78px);
-  left: 78px;
-  /* background: #e4e9f7; */
-  background: #A7BFE8;
 
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
-  transition: all 0.5s ease;
-}
 /* .sidebar.active ~ .home_content {
   z-index: 100;
 } */
@@ -304,10 +293,34 @@ body {
   left: 240px;
 }
 
+.home_content {
+  position: absolute;
+  /* height: 100%; */
+  height: 100vh;
+  width: calc(100% - 78px);
+  left: 78px;
+  /* background: #e4e9f7; */
+  /* background: #A7BFE8; */
+  /* background: #0fb9b1; */
+  
+  /* background: #f78fb3; */
+  /* background: #e66767; */
+  background: #3dc1d3;
+
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
+  transition: all 0.5s ease;
+}
+
 .content-body {
   min-height: 100%;
   /* background: #e4e9f7; */
-  background: #A7BFE8;
+  /* background: #A7BFE8; */
+  /* background: linear-gradient(#0fb9b1, #2bcbba); */
+  
+  /* background: linear-gradient(#f78fb3, #f78fb3); */
+  /* background: linear-gradient(#e66767, #ea8685); */
+  background: linear-gradient(#3dc1d3, #63cdda);
+
   padding-left: 25px;
   padding-right: 25px;
   padding-bottom: 25px;

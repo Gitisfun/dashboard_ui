@@ -1,16 +1,16 @@
 <template>
   <div class="level" style="background: white; padding: 15px">
     <div class="level-left">
-      <div class="level-item" style="color: #48dbfb"><i :class="`bx ${currentMenuItem.icon} bx-md`"></i>
+      <div class="level-item" style="color: #000000"><i :class="`bx ${currentMenuItem.icon} bx-md`"></i>
       <!-- <b-icon :icon="currentMenuItem.icon" size="is-medium" type="is-dark"> </b-icon> -->
       </div>
-      <div id="titlebar-title" style="color: #48dbfb; font-weight: 700" class="level-item">{{ currentMenuItem.name }}</div>
+      <div id="titlebar-title" style="color: #000000; font-weight: 700" class="level-item">{{ currentMenuItem.name }}</div>
     </div>
     <div class="level-right">
       <div class="level-item">
         <b-dropdown :triggers="['hover']" aria-role="list">
           <template #trigger>
-            <b-button label="Account" type="is-info" icon-right="menu-down" />
+            <b-button label="Account" type="is-warning" icon-right="menu-down" />
           </template>
           <b-dropdown-item aria-role="listitem">Uitloggen</b-dropdown-item>
         </b-dropdown>

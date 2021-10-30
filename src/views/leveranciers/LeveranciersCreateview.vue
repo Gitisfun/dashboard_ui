@@ -6,24 +6,24 @@
           <CreateHeader title="Nieuwe leverancier" @save="handleSubmit(onSubmit)" />
           <div class="columns">
             <div class="column">
-              <ValidatedTextInput v-model="leverancier.lev_nr" name="Leveranciersnummer" rules="required" />
+              <ValidatedTextInput v-model="leverancier.leveranciers_nr" name="Leveranciersnummer" rules="required" />
               <ValidatedTextInput v-model="leverancier.naam" name="Naam" rules="required" />
               <TextInput v-model="leverancier.extra_naam" name="Extra naam" />
               <TextInput v-model="leverancier.type" name="Type" />
               <TextInput v-model="leverancier.btw_nr" name="Btw nummer" />
-              <SelectInput v-model="leverancier.btw_cat" name="Btw categorie">
+              <SelectInput v-model="leverancier.btw_id" name="Btw categorie">
                 <option v-for="option in btws" :value="option.id" :key="option.id">
                   {{ option.naam }}
                 </option>
               </SelectInput>
             </div>
             <div class="column">
-              <TextInput v-model="leverancier.handels_nr" name="Handelsregisternummer" />
-              <TextInput v-model="leverancier.ondernemings_nr" name="Ondernemingstype" />
+              <TextInput v-model="leverancier.handelregister_nr" name="Handelsregisternummer" />
+              <TextInput v-model="leverancier.onderneming_type" name="Ondernemingstype" />
               <TextInput v-model="leverancier.telefoon" name="Telefoon" />
               <TextInput v-model="leverancier.email" name="Email" />
               <TextInput v-model="leverancier.taal" name="Taal" />
-              <SelectInput v-model="leverancier.betalingstermijn" name="Betalingstermijn">
+              <SelectInput v-model="leverancier.betalingstermijn_id" name="Betalingstermijn">
                 <option v-for="option in betalingstermijnen" :value="option.id" :key="option.id">
                   {{ option.naam }}
                 </option>
@@ -74,23 +74,24 @@ export default {
   },
   data: () => ({
     leverancier: {
-      lev_nr: null,
+      leveranciers_nr: null,
       naam: null,
       extra_naam: null,
       type: null,
       btw_nr: null,
-      btw_cat: null,
-      handels_nr: null,
-      ondernemings_nr: null,
+      btw_id: null,
+      handelregister_nr: null,
+      onderneming_type: null,
       telefoon: null,
       email: null,
       taal: null,
-      betalingstermijn: null,
+      betalingstermijn_id: null,
       adressen: [],
     },
     errorMessageAddress: false,
     btws: [],
     betalingstermijnen: [],
+    counter: 0,
     isLoaded: false
   }),
   mounted(){
@@ -99,8 +100,9 @@ export default {
   methods: {
     onSubmit() {
       if (this.leverancier.adressen.length !== 0) {
-        console.log(this.leverancier);
         this.errorMessageAddress = false;
+        console.log(this.leverancier);
+        LeveranciersController.create(this, this.leverancier)
       } else {
         console.log("Address is empty");
         this.errorMessageAddress = true;
@@ -108,8 +110,12 @@ export default {
     },
     addAddress() {
       this.errorMessageAddress = false;
-      ModalFactory.showModal(this, AddressModal, (adres) => this.leverancier.adressen.push(adres));
-    
+      ModalFactory.showModal(this, AddressModal, (adres) => { 
+        adres.id = this.counter; 
+        this.counter++; 
+        this.leverancier.adressen.push(adres)
+        });
+      
     },
     editItem(adres) {
       ModalFactory.showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
@@ -123,6 +129,7 @@ export default {
       });
     },
     deleteItem(adres) {
+      console.log(adres.id);
       ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
         if (isConfirmed) {
           UtilsFactory.deleteItemFromList(this.leverancier.adressen, adres.id);
