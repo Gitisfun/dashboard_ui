@@ -22,7 +22,7 @@ import { ValidationObserver } from "vee-validate";
 import ValidatedTextInput from "../components/inputfields/ValidatedTextInput.vue";
 import TextInput from "../components/inputfields/TextInput.vue";
 import SaveBottomBar from "../components/general/SaveBottomBar.vue";
-import utils from "../logic/utils/utilsFactory.js";
+import UtilsFactory from "../logic/utils/utilsFactory";
 
 export default {
   name: "AddressModal",
@@ -46,7 +46,7 @@ export default {
   }),
   created() {
     this.title = this.$attrs.title;
-    this.adres = utils.copyObject(this.$attrs.obj);
+    this.adres = UtilsFactory.copyObject(this.$attrs.obj);
   },
   methods: {
     onSubmit() {
