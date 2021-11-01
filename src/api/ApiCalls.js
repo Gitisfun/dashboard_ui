@@ -2,9 +2,14 @@ import Notifications from "../logic/factories/notifications.js";
 
 class ApiCalls{
 
-    static getAll(context){
-        console.log('API Call : GET_ALL');
-        Notifications.infoMessage("This is an info message", context)
+    static getAll(requestHandler, params, responseHandler, context){
+        requestHandler(params)
+        .then((res) => responseHandler(res))
+        .catch((err) => {
+          if (err) {
+            Notifications.errorMessage("Er ging iets fout met het ophalen van de gegevens", context);
+          }
+        });
     }
 
     static getById(){

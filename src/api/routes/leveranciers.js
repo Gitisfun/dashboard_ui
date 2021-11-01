@@ -1,9 +1,10 @@
 import httpClient from '../httpClient';
+import RouteStrings from '../routeString';
 
 const END_POINT = '/leveranciers';
 
 
-const getAllLeveranciers = (search) => httpClient.get(`${END_POINT}?search=${search}`);
+const getAllLeveranciers = (params) => { console.log(`${END_POINT}${RouteStrings.pagination(params)}`); return httpClient.get(`${END_POINT}${RouteStrings.pagination(params)}` )};
 
 const getLeverancier = (id) => httpClient.get(`${END_POINT}/${id}`);
 
