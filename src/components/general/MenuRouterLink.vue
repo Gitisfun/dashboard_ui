@@ -1,6 +1,6 @@
 <template>
   <li @click="itemClicked">
-    <router-link :to="link">
+    <router-link active-class="testactive" :to="link">
       <i :class="`bx ${icon}`"></i> <span class="links_name">{{ title }}</span>
     </router-link>
     <span class="tooltip">{{ title }}</span>
@@ -22,3 +22,13 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+.testactive {
+   background: linear-gradient(#f7d794, #f5cd79);
+   cursor: pointer;
+   color: black;
+ }
+
+</style>

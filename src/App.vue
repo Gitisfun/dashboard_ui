@@ -63,6 +63,7 @@ body {
   height: 100%;
   width: 78px;
   background: #11101d;
+  /* background: linear-gradient(#f3a683, #f5cd79); */
   /* background-image: linear-gradient(-225deg, #2c2c54 0%, #30336b 48%, #40407a 100%); */
   /* background-image: linear-gradient(-225deg, #5758BB 0%, #9980FA 50%, #D980FA 100%);   */
 
@@ -132,9 +133,17 @@ body {
   border-radius: 6px;
   height: 35px;
   width: 120px;
-  /* background: #fff; */
   color: white;
-  background: black;
+  color: black;
+
+  /* background: #fff; */
+  /* color: black; */
+  /* font-weight: 900; */
+  /* background: linear-gradient(#f7d794,#f5cd79); */
+  /* background: linear-gradient(#f8a5c2,#f78fb3); */
+  background: #fff;
+    /* background: linear-gradient(#e15f41, #e77f67); */
+
   /* background-image: linear-gradient(-225deg, #A445B2 0%, #D41872 52%, #FF0066 100%); */
   /* color: #30336b; */
   /* color: black; */
@@ -320,7 +329,6 @@ body {
   /* background: linear-gradient(#f78fb3, #f78fb3); */
   /* background: linear-gradient(#e66767, #ea8685); */
   background: linear-gradient(#3dc1d3, #63cdda);
-
   padding-left: 25px;
   padding-right: 25px;
   padding-bottom: 25px;

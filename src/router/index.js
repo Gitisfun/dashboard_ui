@@ -74,7 +74,7 @@ const routes = [
     },
   },
   {
-    path: "/Leveranciers",
+    path: "/leveranciers",
     name: "Leveranciers",
     component: Leveranciers,
     meta: {
@@ -83,7 +83,7 @@ const routes = [
     },
   },
   {
-    path: "/Leveranciers/create",
+    path: "/leveranciers/create",
     name: "LeveranciersCreateview",
     component: LeveranciersCreateview,
     meta: {
