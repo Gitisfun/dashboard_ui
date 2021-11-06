@@ -1,20 +1,11 @@
 <template>
   <div class="content-body">
-    <div class="columns">
-      <div class="column is-10">
-        <b-input @input.native="loadTable" expanded placeholder="Zoeken..." v-model="params.search" size="is-normal"></b-input>
-      </div>
-      <div class="column">
-        <b-select expanded @change.native="loadTable" v-model="params.limit" size="is-normal">
-          <option v-for="option in perPageList" :value="option.value" :key="option.id">
-            {{ option.text }}
-          </option>
-        </b-select>
-      </div>
-    </div>
+    <SearchBar :search.sync="params.search" :limit.sync="params.limit" @searchTable="searchTable" navigateRouteName="LeveranciersCreateview" />
     <div class="box">
       <b-table
+        @dblclick="rowClicked"
         narrowed
+        hoverable
         striped
         :data="data"
         :loading="loading"
@@ -32,27 +23,29 @@
         :default-sort="[params.sort_by, params.sort_order]"
         @sort="onSort"
       >
-        <b-table-column field="leveranciers_nr" label="Lev. nr" v-slot="props" sortable>
+        <b-table-column width="20%" field="leveranciers_nr" label="Lev. nr" v-slot="props" sortable>
           {{ props.row.leveranciers_nr }}
         </b-table-column>
 
-        <b-table-column field="naam" label="Naam" v-slot="props" sortable>
+        <b-table-column width="25%" field="naam" label="Naam" v-slot="props" sortable>
           {{ props.row.naam }}
         </b-table-column>
 
-        <b-table-column field="isBlacklisted" label="Blacklist" v-slot="props">
-          {{ props.row.isBlacklisted }}
+        <b-table-column width="10%" field="isBlacklisted" centered label="Blacklist" v-slot="props">
+          <div style="text-align:center; width: 100%;">
+            <b-checkbox @input="blacklist($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBlacklisted " type="is-danger" />
+          </div>
         </b-table-column>
 
-        <b-table-column field="updated_time" centered label="Tijdstip" v-slot="props">
+        <b-table-column width="10%" field="updated_time" centered label="Tijdstip" v-slot="props">
           {{ props.row.updated_time | timeFormatter }}
         </b-table-column>
 
-        <b-table-column field="updated_time" centered label="Datum" v-slot="props">
+        <b-table-column widh="15%" field="updated_time" centered label="Datum" v-slot="props">
           {{ props.row.updated_time | dateFormatter }}
         </b-table-column>
 
-        <b-table-column field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
+        <b-table-column width="20%" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
       </b-table>
     </div>
   </div>
@@ -60,10 +53,14 @@
 
 <script>
 import LeveranciersController from "../../api/calls/leveranciers";
+import SearchBar from "../../components/common/SearchBar";
 import moment from "moment";
 
 export default {
   name: "LeveranciersOverview",
+  components: {
+    SearchBar
+  },
   data() {
     return {
       data: [],
@@ -76,46 +73,9 @@ export default {
         search: "",
         sort_by: "leveranciers_nr",
         sort_order: "asc",
-        limit: 2,
+        limit: 10,
         page: "",
       },
-      perPageList: [
-        {
-          id: 11,
-          text: "2 per pagina",
-          value: 2,
-        },
-        {
-          id: 12,
-          text: "3 per pagina",
-          value: 3,
-        },
-        {
-          id: 13,
-          text: "4 per pagina",
-          value: 4,
-        },
-        {
-          id: 1,
-          text: "10 per pagina",
-          value: 10,
-        },
-        {
-          id: 2,
-          text: "15 per pagina",
-          value: 10,
-        },
-        {
-          id: 3,
-          text: "25 per pagina",
-          value: 10,
-        },
-        {
-          id: 4,
-          text: "50 per pagina",
-          value: 10,
-        },
-      ],
     };
   },
   mounted() {
@@ -123,17 +83,16 @@ export default {
   },
   methods: {
     loadTable() {
-      console.log("hier");
-      console.log(this.params.limit);
+      console.log(this.params);
+      //this.loading = true;
       LeveranciersController.all(this, this.params, (res) => {
-        console.log(res.data);
+        //this.loading = false;
         this.perPage = this.params.limit;
         this.total = res.data.total;
         this.data = res.data.list;
-      });
+        });
     },
     onPageChange(page) {
-      console.log(page);
       this.params.page = page;
       this.loadTable();
     },
@@ -142,11 +101,28 @@ export default {
       this.params.sort_order = order;
       this.loadTable();
     },
-    navToLeveranciersCreateview() {
+    blacklist(value, id){
+      LeveranciersController.esp(this, { id: id, isBlacklisted: value })
+    },
+    rowClicked(row){
+      console.log(row);
+      this.$router.push({
+        name: "LeveranciersUpdateview",
+        params: {
+          id: row.id
+        }
+      });
+    },
+    navCreate(){
       this.$router.push({
         name: "LeveranciersCreateview",
       });
     },
+    searchTable(obj){
+      this.params.search = obj.search
+      this.params.limit = obj.limit
+      this.loadTable()
+    }
   },
   filters: {
     timeFormatter(value) {

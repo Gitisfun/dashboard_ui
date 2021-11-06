@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // import store from "../store";
 import Login from "../views/general/Login";
 import Home from "../views/Home";
+import Statistieken from "../views/Statistieken";
 import Aankopen from "../views/aankopen/AankopenOverview";
 import Verkopen from "../views/verkopen/VerkopenOverview";
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
@@ -10,6 +11,7 @@ import Artikels from "../views/artikels/ArtikelsOverview";
 import Klanten from "../views/klanten/KlantenOverview";
 import Leveranciers from "../views/leveranciers/LeveranciersOverview";
 import LeveranciersCreateview from "../views/leveranciers/LeveranciersCreateview"
+import LeveranciersUpdateview from "../views/leveranciers/LeveranciersUpdateview"
 
 Vue.use(VueRouter);
 
@@ -25,6 +27,15 @@ const routes = [
     component: Home,
     meta: {
       group: "Home",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/statistieken",
+    name: "Statistieken",
+    component: Statistieken,
+    meta: {
+      group: "Statistieken",
       requiresAuth: true,
     },
   },
@@ -83,14 +94,24 @@ const routes = [
     },
   },
   {
-    path: "/leveranciers/create",
+    path: "/leveranciers/make",
     name: "LeveranciersCreateview",
     component: LeveranciersCreateview,
     meta: {
       group: "Leveranciers",
       requiresAuth: true,
-    },
+    }
   },
+  {
+    path: "/leveranciers/update",
+    name: "LeveranciersUpdateview",
+    component: LeveranciersUpdateview,
+    meta: {
+      group: "Leveranciers",
+      requiresAuth: true,
+    }
+  }
+
 ];
 
 const router = new VueRouter({

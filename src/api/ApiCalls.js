@@ -43,8 +43,21 @@ class ApiCalls{
         });
     }
 
-    static update(){
-        console.log('API Call : UPDATE');
+    static update(requestHandler, body, context, back){
+        requestHandler(body.id, body)
+        .then(res => {
+          if (res) {
+            Notifications.successMessage("Succesvol gewijzigd", context);
+            if (back) {
+              context.$router.go(-1);
+            }
+          }
+        })
+        .catch((err) => {
+          if (err) {
+            Notifications.errorMessage("Kon niet worden toegevoegd, er ging iets fout op de server", context);
+          }
+        });
     }
 
     static deleteById(){

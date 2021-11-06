@@ -30,14 +30,7 @@
               </SelectInput>
             </div>
           </div>
-          <div style="margin-top: 35px;">
-            <SmallHeaderAdder title="Adressen" @add="addAddress" />
-            <div v-if="leverancier.adressen.length !== 0">
-              <AddressBox :address="adres" v-for="adres in leverancier.adressen" :key="adres.id" @editItem="editItem" @deleteItem="deleteItem" />
-            </div>
-            <NoAddress v-else />
-            <span v-show="errorMessageAddress" style="color: red; font-size: 12px">Het toevoegen van een adres is verplicht!</span>
-          </div>
+          <AddressSection title="Addressen" :adressen="leverancier.adressen" ref="levaddressbox" style="margin-top: 35px" />
         </ValidationObserver>
       </div>
     </div>
@@ -50,15 +43,8 @@ import { ValidationObserver } from "vee-validate";
 import ValidatedTextInput from "../../components/inputfields/ValidatedTextInput.vue";
 import TextInput from "../../components/inputfields/TextInput.vue";
 import SelectInput from "../../components/inputfields/SelectInput.vue";
-import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue";
-import AddressBox from "../../components/common/AddressBox.vue";
-import NoAddress from "../../components/common/NoAddress.vue";
-import AddressModal from "../../modals/AddressModal.vue";
-import ModalFactory from "../../logic/factories/modalFactory";
-import UtilsFactory from "../../logic/utils/utilsFactory";
-import AddresUpdateModal from "../../modals/AddresUpdateModal.vue";
-import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import LeveranciersController from "../../api/calls/leveranciers"
+import AddressSection from "../../components/common/AddressSection.vue"
 
 export default {
   name: "LeveranciersCreateview",
@@ -68,9 +54,7 @@ export default {
     ValidatedTextInput,
     TextInput,
     SelectInput,
-    SmallHeaderAdder,
-    AddressBox,
-    NoAddress,
+    AddressSection,
   },
   data: () => ({
     leverancier: {
@@ -88,10 +72,8 @@ export default {
       betalingstermijn_id: null,
       adressen: [],
     },
-    errorMessageAddress: false,
     btws: [],
     betalingstermijnen: [],
-    counter: 0,
     isLoaded: false
   }),
   mounted(){
@@ -99,42 +81,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.leverancier.adressen.length !== 0) {
-        this.errorMessageAddress = false;
-        console.log(this.leverancier);
+      if (this.$refs.levaddressbox.getAddressenList() != null) {
+        this.leverancier.adressen = this.$refs.levaddressbox.getAddressenList()
         LeveranciersController.create(this, this.leverancier)
-      } else {
-        console.log("Address is empty");
-        this.errorMessageAddress = true;
       }
-    },
-    addAddress() {
-      this.errorMessageAddress = false;
-      ModalFactory.showModal(this, AddressModal, (adres) => { 
-        adres.id = this.counter; 
-        this.counter++; 
-        this.leverancier.adressen.push(adres)
-        });
-      
-    },
-    editItem(adres) {
-      ModalFactory.showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
-        adres.id = newAdres.id;
-        adres.straat = newAdres.straat;
-        adres.huisnummer = newAdres.huisnummer;
-        adres.bus = newAdres.bus;
-        adres.postcode = newAdres.postcode;
-        adres.gemeente = newAdres.gemeente;
-        adres.land = newAdres.land;
-      });
-    },
-    deleteItem(adres) {
-      console.log(adres.id);
-      ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
-        if (isConfirmed) {
-          UtilsFactory.deleteItemFromList(this.leverancier.adressen, adres.id);
-        }
-      });
     },
   },
 };

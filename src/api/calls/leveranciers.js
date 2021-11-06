@@ -1,12 +1,16 @@
 import ApiCalls from "../ApiCalls";
 import { getAllBtws } from "../routes/btw";
 import { getAllBetalingstermijnen } from "../routes/betalingstermijnen";
-import { getAllLeveranciers, createLeverancier } from "../routes/leveranciers"
+import { getAllLeveranciers, createLeverancier, espLeverancier } from "../routes/leveranciers"
 
 class LeveranciersController{
 
+    // Overview
     static all(context, params, callback){
         ApiCalls.getAll(getAllLeveranciers, params, callback, context)
+    }
+    static esp(context, body){
+        ApiCalls.update(espLeverancier, body, context, false)
     }
 
     // Create View
@@ -18,6 +22,7 @@ class LeveranciersController{
         ApiCalls.create(createLeverancier, body, context, true)
     }
 
+    // Update
 
 }
 

@@ -2,9 +2,9 @@ const menuList = [
   {
     id: 1,
     icon: "bx-pie-chart-alt-2",
-    name: "Home",
-    group: "Home",
-    link: "/",
+    name: "Statistieken",
+    group: "Statistieken",
+    link: "/statistieken",
     isActive: false,
   },
   {
