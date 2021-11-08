@@ -54,7 +54,6 @@
 <script>
 import LeveranciersController from "../../api/calls/leveranciers";
 import SearchBar from "../../components/common/SearchBar";
-import moment from "moment";
 
 export default {
   name: "LeveranciersOverview",
@@ -122,14 +121,14 @@ export default {
       this.loadTable()
     }
   },
-  filters: {
-    timeFormatter(value) {
-      return moment(value).format("HH:mm");
-    },
-    dateFormatter(value) {
-      return moment(value).format("DD-MM-YYYY");
-    },
-  },
+  // filters: {
+  //   timeFormatter(value) {
+  //     return moment(value).format("HH:mm");
+  //   },
+  //   dateFormatter(value) {
+  //     return moment(value).format("DD-MM-YYYY");
+  //   },
+  // },
 };
 </script>
 
