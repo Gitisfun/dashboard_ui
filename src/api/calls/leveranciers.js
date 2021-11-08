@@ -1,9 +1,9 @@
 import ApiCalls from "../ApiCalls";
 import { getAllBtws } from "../routes/btw";
 import { getAllBetalingstermijnen } from "../routes/betalingstermijnen";
-import { getAllLeveranciers, createLeverancier, espLeverancier } from "../routes/leveranciers"
+import { getAllLeveranciers, getLeverancier, createLeverancier, updateLeverancier, deleteLeverancier, espLeverancier } from "../routes/leveranciers"
 
-class LeveranciersController{
+class LeveranciersController {
 
     // Overview
     static all(context, params, callback){
@@ -23,6 +23,17 @@ class LeveranciersController{
     }
 
     // Update
+    static getPreDataAndLeverancier(context, id, callback){
+        ApiCalls.getMultiple([getAllBtws(), getAllBetalingstermijnen(), getLeverancier(id)], callback, context)
+    }
+
+    static update(context, body){
+        ApiCalls.update(updateLeverancier, body, context, true)
+    }
+
+    static deleteById(context, body){
+        ApiCalls.deleteById(deleteLeverancier, body.id, context, true)
+    }
 
 }
 

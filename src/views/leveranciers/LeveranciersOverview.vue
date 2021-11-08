@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     loadTable() {
-      console.log(this.params);
       //this.loading = true;
       LeveranciersController.all(this, this.params, (res) => {
         //this.loading = false;
@@ -105,7 +104,6 @@ export default {
       LeveranciersController.esp(this, { id: id, isBlacklisted: value })
     },
     rowClicked(row){
-      console.log(row);
       this.$router.push({
         name: "LeveranciersUpdateview",
         params: {
@@ -126,7 +124,7 @@ export default {
   },
   filters: {
     timeFormatter(value) {
-      return moment(value).format("hh:mm");
+      return moment(value).format("HH:mm");
     },
     dateFormatter(value) {
       return moment(value).format("DD-MM-YYYY");

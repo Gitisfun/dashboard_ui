@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <SmallHeaderAdder :title="title" @add="addItem" />
-        <div v-if="list.length !== 0">
-          <AddressBox :address="adres" v-for="adres in list" :key="adres.id" @editItem="editItem" @deleteItem="deleteItem" />
-        </div>
-        <NoAddress v-else />
-        <span v-show="errorMessageAddress" class="error-message-address">Het toevoegen van een adres is verplicht!</span>
+  <div>
+    <SmallHeaderAdder :title="title" @add="addItem" />
+    <div v-if="list.length !== 0">
+      <AddressBox :address="adres" v-for="adres in list" :key="adres.id" @editItem="editItem" @deleteItem="deleteItem" />
     </div>
+    <NoAddress v-else />
+    <span v-show="errorMessageAddress" class="error-message-address">Het toevoegen van een adres is verplicht!</span>
+  </div>
 </template>
 
 <script>
@@ -20,71 +20,69 @@ import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import UtilsFactory from "../../logic/utils/utilsFactory";
 
 export default {
-    name: "AddressSection",
-    components: {
-        SmallHeaderAdder,
-        AddressBox,
-        NoAddress
+  name: "AddressSection",
+  components: {
+    SmallHeaderAdder,
+    AddressBox,
+    NoAddress,
+  },
+  props: {
+    title: {
+      type: String,
     },
-    props: {
-        adressen: {
-            type: Array
-        },
-        title: {
-            type: String,
-        },
+  },
+  data() {
+    return {
+      errorMessageAddress: false,
+      counter: 0,
+      list: [],
+    };
+  },
+  methods: {
+    addItem() {
+      this.errorMessageAddress = false;
+      ModalFactory.showModal(this, AddressModal, (adres) => {
+        adres.id = this.counter;
+        this.counter++;
+        this.list.push(adres);
+      });
     },
-    data(){
-        return {
-            errorMessageAddress: false,
-            counter: 0,
-            list:[]
+    editItem(adres) {
+      ModalFactory.showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
+        adres.id = newAdres.id;
+        adres.straat = newAdres.straat;
+        adres.huisnummer = newAdres.huisnummer;
+        adres.bus = newAdres.bus;
+        adres.postcode = newAdres.postcode;
+        adres.gemeente = newAdres.gemeente;
+        adres.land = newAdres.land;
+      });
+    },
+    deleteItem(adres) {
+      ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
+        if (isConfirmed) {
+          UtilsFactory.deleteItemFromList(this.list, adres.id);
         }
+      });
     },
-    mounted(){
-        this.list = this.adressen
+    getAdressenList() {
+      if (this.list.length === 0) {
+        this.errorMessageAddress = true;
+        return null;
+      }
+      return this.list;
     },
-    methods: {
-        addItem(){
-            this.errorMessageAddress = false;
-            ModalFactory.showModal(this, AddressModal, (adres) => { 
-                adres.id = this.counter; 
-                this.counter++; 
-                this.list.push(adres)
-            });
-        },
-        editItem(adres){
-            ModalFactory.showModalWithParamas(this, AddresUpdateModal, "Adres aanpassen", adres, (newAdres) => {
-                adres.id = newAdres.id;
-                adres.straat = newAdres.straat;
-                adres.huisnummer = newAdres.huisnummer;
-                adres.bus = newAdres.bus;
-                adres.postcode = newAdres.postcode;
-                adres.gemeente = newAdres.gemeente;
-                adres.land = newAdres.land;
-            });
-        },
-        deleteItem(adres){
-            ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
-                if (isConfirmed) {
-                UtilsFactory.deleteItemFromList(this.list, adres.id);
-                }
-            });
-        },
-        getAddressenList(){
-            if(this.list.length === 0){
-                this.errorMessageAddress = true;
-                return null
-            }
-            return this.list
-        }
-    }
-}
+    setAdressenList(list) {
+      this.counter = UtilsFactory.max(list) + 1;
+      this.list = list;
+    },
+  },
+};
 </script>
 
 <style scoped>
 .error-message-address {
-    color: red; 
-    font-size: 12px
+  color: red;
+  font-size: 12px;
 }
 </style>

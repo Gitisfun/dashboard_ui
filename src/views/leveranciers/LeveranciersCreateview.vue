@@ -30,7 +30,7 @@
               </SelectInput>
             </div>
           </div>
-          <AddressSection title="Addressen" :adressen="leverancier.adressen" ref="levaddressbox" style="margin-top: 35px" />
+          <AddressSection title="Adressen" ref="levaddressbox" style="margin-top: 35px" />
         </ValidationObserver>
       </div>
     </div>
@@ -81,8 +81,8 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.$refs.levaddressbox.getAddressenList() != null) {
-        this.leverancier.adressen = this.$refs.levaddressbox.getAddressenList()
+      if (this.$refs.levaddressbox.getAdressenList() != null) {
+        this.leverancier.adressen = this.$refs.levaddressbox.getAdressenList()
         LeveranciersController.create(this, this.leverancier)
       }
     },

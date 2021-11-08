@@ -103,7 +103,7 @@ const routes = [
     }
   },
   {
-    path: "/leveranciers/update",
+    path: "/leveranciers/update/:id",
     name: "LeveranciersUpdateview",
     component: LeveranciersUpdateview,
     meta: {

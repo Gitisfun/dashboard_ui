@@ -11,7 +11,7 @@
         </b-select>
       </div>
       <div class="column is-2">
-          <b-button icon-left="plus" style="float: right" type="is-success" @click="navigate">Nieuwe leverancier</b-button>
+          <b-button icon-left="plus" style="float: right" type="is-success" @click="navigate">Nieuwe</b-button>
       </div>
     </div>
 </template>
@@ -64,8 +64,6 @@ export default {
     },
     methods: {
         loadTable(){
-            console.log(this.searchField);
-            console.log(this.limitRate);
             this.$emit("searchTable", { search: this.searchField, limit: this.limitRate })
         },
         navigate(){
