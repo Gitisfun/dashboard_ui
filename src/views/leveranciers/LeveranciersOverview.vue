@@ -121,14 +121,6 @@ export default {
       this.loadTable()
     }
   },
-  // filters: {
-  //   timeFormatter(value) {
-  //     return moment(value).format("HH:mm");
-  //   },
-  //   dateFormatter(value) {
-  //     return moment(value).format("DD-MM-YYYY");
-  //   },
-  // },
 };
 </script>
 
