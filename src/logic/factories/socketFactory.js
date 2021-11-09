@@ -7,6 +7,7 @@ class Socket {
   }
 
   static CLICKED = "clicked"
+  static LEVERANCIERS = "leveranciers"
 
   static listen(socket, from, refresh) {
     socket.on(from, (data) => {

@@ -1,3 +1,4 @@
+import Socket from "../logic/factories/socketFactory";
 import Notifications from "../logic/factories/notifications.js";
 
 class ApiCalls {
@@ -31,11 +32,14 @@ class ApiCalls {
       });
   }
 
-  static create(requestHandler, body, context, back) {
+  static create(requestHandler, body, context, back, socket, to) {
     requestHandler(body)
       .then((res) => {
         if (res) {
           Notifications.successMessage("Succesvol toegevoegd", context);
+          if (socket) {
+            Socket.notify(socket, to);
+          }
           if (back) {
             context.$router.go(-1);
           }
@@ -48,11 +52,14 @@ class ApiCalls {
       });
   }
 
-  static update(requestHandler, body, context, back) {
+  static update(requestHandler, body, context, back, socket, to) {
     requestHandler(body.id, body)
       .then((res) => {
         if (res) {
           Notifications.successMessage("Succesvol gewijzigd", context);
+          if (socket) {
+            Socket.notify(socket, to);
+          }
           if (back) {
             context.$router.go(-1);
           }
@@ -65,11 +72,14 @@ class ApiCalls {
       });
   }
 
-  static deleteById(requestHandler, id, context, back) {
+  static deleteById(requestHandler, id, context, back, socket, to) {
     requestHandler(id)
       .then((res) => {
         if (res) {
           Notifications.successMessage("Succesvol verwijderd", context);
+          if (socket) {
+            Socket.notify(socket, to);
+          }
           if (back) {
             context.$router.go(-1);
           }

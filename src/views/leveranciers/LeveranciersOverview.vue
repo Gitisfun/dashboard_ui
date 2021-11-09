@@ -54,9 +54,12 @@
 <script>
 import LeveranciersController from "../../api/calls/leveranciers";
 import SearchBar from "../../components/common/SearchBar";
+import socketMixin from "../../mixins/socketMixin"
+import Socket from "../../logic/factories/socketFactory"
 
 export default {
   name: "LeveranciersOverview",
+  mixins: [socketMixin],
   components: {
     SearchBar
   },
@@ -78,6 +81,7 @@ export default {
     };
   },
   mounted() {
+    Socket.listen(this.socket, Socket.LEVERANCIERS, () => { this.loadTable() })
     this.loadTable();
   },
   methods: {
@@ -100,7 +104,7 @@ export default {
       this.loadTable();
     },
     blacklist(value, id){
-      LeveranciersController.esp(this, { id: id, isBlacklisted: value })
+      LeveranciersController.esp(this, { id: id, isBlacklisted: value }, this.socket)
     },
     rowClicked(row){
       this.$router.push({

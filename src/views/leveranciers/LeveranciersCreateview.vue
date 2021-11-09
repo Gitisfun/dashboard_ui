@@ -45,9 +45,11 @@ import TextInput from "../../components/inputfields/TextInput.vue";
 import SelectInput from "../../components/inputfields/SelectInput.vue";
 import LeveranciersController from "../../api/calls/leveranciers"
 import AddressSection from "../../components/common/AddressSection.vue"
+import socketMixin from "../../mixins/socketMixin"
 
 export default {
   name: "LeveranciersCreateview",
+  mixins: [socketMixin],
   components: {
     CreateHeader,
     ValidationObserver,
@@ -83,7 +85,7 @@ export default {
     onSubmit() {
       if (this.$refs.levaddressbox.getAdressenList() != null) {
         this.leverancier.adressen = this.$refs.levaddressbox.getAdressenList()
-        LeveranciersController.create(this, this.leverancier)
+        LeveranciersController.create(this, this.leverancier, this.socket)
       }
     },
   },

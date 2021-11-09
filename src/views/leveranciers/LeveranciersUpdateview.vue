@@ -47,9 +47,11 @@ import LeveranciersController from "../../api/calls/leveranciers";
 import AddressSection from "../../components/common/AddressSection.vue";
 import ModalFactory from "../../logic/factories/modalFactory";
 import ConfirmationModal from "../../modals/ConfirmationModal.vue"
+import socketMixin from "../../mixins/socketMixin"
 
 export default {
   name: "LeverancierUpdateview",
+  mixins: [socketMixin],
   components: {
     UpdateHeader,
     ValidationObserver,
@@ -94,13 +96,13 @@ export default {
     onSubmit() {
       if (this.$refs.levupdateaddressbox.getAdressenList() != null && this.$refs.levupdateaddressbox.getAdressenList().length !== 0) {
         this.leverancier.adressen = this.$refs.levupdateaddressbox.getAdressenList();
-        LeveranciersController.update(this, this.leverancier);
+        LeveranciersController.update(this, this.leverancier, this.socket);
       }
     },
     deleteItem() {
       ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {
         if (isConfirmed) {
-          LeveranciersController.deleteById(this, this.leverancier);
+          LeveranciersController.deleteById(this, this.leverancier, this.socket);
         }
       });
     },
