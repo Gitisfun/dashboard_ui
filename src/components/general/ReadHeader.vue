@@ -8,18 +8,13 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <b-button size="is-small" type="is-success" @click="save">
-            Opslaan
+          <b-button size="is-small" type="is-warning" @click="edit">
+            Aanpassen
           </b-button>
         </div>
         <div class="level-item">
           <b-button size="is-small" type="is-dark" @click="back">
-            Annuleren
-          </b-button>
-        </div>
-        <div class="level-item">
-          <b-button size="is-small" type="is-danger" @click="deleteItem">
-            Verwijderen
+            Terug
           </b-button>
         </div>
       </div>
@@ -32,7 +27,7 @@
 import Subtitle from "../textfields/Subtitle.vue";
 
 export default {
-  name: "UpdateHeader",
+  name: "ReadHeader",
   components: {
     Subtitle,
   },
@@ -42,14 +37,11 @@ export default {
     },
   },
   methods: {
-    save() {
-      this.$emit("save");
+    edit() {
+      this.$emit("edit");
     },
     back() {
-      this.$emit("cancel")
-    },
-    deleteItem() {
-      this.$emit("deleteItem");
+      this.$router.go(-1);
     },
   },
 };

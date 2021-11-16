@@ -22,21 +22,6 @@ class UtilsFactory {
       }
     }
   }
-
-  static convertBoolToInt(value){
-    if(value){
-      return 1
-    }
-    return 0
-  }
-
-  static convertIntToBool(value){
-    if(value == 1){
-      return true
-    }
-    return false
-  }
-
 }
 
 export default UtilsFactory

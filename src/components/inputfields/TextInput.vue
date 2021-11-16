@@ -67,7 +67,6 @@ export default {
   /* background: #dff9fb; */
   /* background: #f7f1e3; */
   border: 1.7px solid grey;
-
   border-radius: 6px;
   padding: 0 15px;
   resize: none;
