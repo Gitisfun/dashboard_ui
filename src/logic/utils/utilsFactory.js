@@ -1,5 +1,18 @@
+import moment from "moment";
+import store from "../../store";
+
 class UtilsFactory {
   
+  static isTokenExpired(){
+    const formula = store.getters.getUser.exp * 1000
+    const expireDate = moment(formula)
+
+    if(moment().isBefore(expireDate)){
+      return false
+    }
+    return true
+  }
+
   static copyObject(obj){
     return JSON.parse(JSON.stringify(obj));
   }

@@ -13,6 +13,8 @@ import Leveranciers from "../views/leveranciers/LeveranciersOverview";
 import LeveranciersCreateview from "../views/leveranciers/LeveranciersCreateview"
 import LeveranciersUpdateview from "../views/leveranciers/LeveranciersUpdateview"
 
+import UtilsFactory from "../logic/utils/utilsFactory"
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -121,6 +123,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if(to.name !== "Login"){
+    if(UtilsFactory.isTokenExpired()){
+      store.dispatch("setToken", null);
+      store.dispatch("setUser", null);
+    }
+  }
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (store.getters.getToken == null)
       next({

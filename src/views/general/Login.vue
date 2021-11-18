@@ -46,7 +46,6 @@ export default {
       login(){
         this.isLoading = true;
         AuthController.login(this, this.gebruiker, (res) => {
-          console.log(res.data);
           setTimeout(() => { 
             this.isLoading = false; 
             if(res.data.status){
