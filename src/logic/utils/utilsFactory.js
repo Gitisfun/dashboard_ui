@@ -4,8 +4,19 @@ class UtilsFactory {
     return JSON.parse(JSON.stringify(obj));
   }
 
+  static searchName(list, id){
+    if (list.length == 0) {
+      return "";
+    }
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].id == id) {
+        return list[i].naam;
+      }
+    }
+    return "";
+  }
+
   static max(list){
-    console.log("util factory");
     let highest = 0;
     for(let i = 0; i < list.length; i++){
       if(list[i].id > highest){

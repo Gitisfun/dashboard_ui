@@ -17,12 +17,8 @@ export default {
       default: 'normal'
     }
   },
-  created(){
-    console.log(this.size);
-  },
   computed: {
     getBtnStyle(){
-      console.log(this.btnStyle);
       if(this.btnStyle == "success"){
         return "success-btn"
       }
@@ -35,9 +31,6 @@ export default {
       return "default-btn"
     },
     getSize(){
-      console.log("--- size ---");
-      console.log(this.size);
-      console.log("------------");
       if(this.size == "normal"){
         return "normal"
       }
@@ -76,6 +69,7 @@ export default {
   box-shadow: 0px 0px 25px 3px rgba(0, 174, 255, 0.3);
   -webkit-box-shadow: 0px 0px 25px 3px rgba(0, 174, 255, 0.3);
   -moz-box-shadow: 0px 0px 25px 3px rgba(0, 174, 255, 0.3);
+  animation: glow linear 2s infinite; 
   /*
   background: linear-gradient(-45deg, #81ecec, #7efff5, #32ff7e, #3ae374);
   background: linear-gradient(-45deg, #81ecec, #7efff5, #ff4d4d, red);
@@ -86,8 +80,13 @@ export default {
 	animation: gradient 5s ease infinite;
   */
 }
+@keyframes glow { 
+    0% { background-color:#81ecec; }
+    50% { background-color:#c7ecee; }
+    100% { background-color:#81ecec; } 
+}
 
-
+/*
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
@@ -98,8 +97,8 @@ export default {
 	100% {
 		background-position: 0% 50%;
 	}
-  
 }
+*/
 
 #generic-button:active {
   color: white;

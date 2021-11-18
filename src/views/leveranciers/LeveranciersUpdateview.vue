@@ -93,6 +93,7 @@ import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import socketMixin from "../../mixins/socketMixin";
 import InfoField from "../../components/textfields/InfoField.vue";
 import InfoFieldValue from "../../components/textfields/InfoFieldValue.vue";
+import UtilsFactory from '../../logic/utils/utilsFactory';
 
 export default {
   name: "LeverancierUpdateview",
@@ -110,6 +111,9 @@ export default {
     AddressSectionRead,
   },
   data: () => ({
+    copyLeverancier: null,
+    copyAdressen: [],
+    adressen: [],
     leverancier: {
       leveranciers_nr: null,
       naam: null,
@@ -131,27 +135,11 @@ export default {
     isReadVisible: true,
   }),
   computed: {
-    btw: function() {
-      if (this.btws.length == 0) {
-        return "";
-      }
-      for (let i = 0; i < this.btws.length; i++) {
-        if (this.btws[i].id == this.leverancier.btw_id) {
-          return this.btws[i].naam;
-        }
-      }
-      return "";
+    btw() {
+      return UtilsFactory.searchName(this.btws, this.leverancier.btw_id);
     },
-    betalingstermijn: function() {
-      if (this.betalingstermijnen.length == 0) {
-        return "";
-      }
-      for (let i = 0; i < this.betalingstermijnen.length; i++) {
-        if (this.betalingstermijnen[i].id == this.leverancier.betalingstermijn_id) {
-          return this.betalingstermijnen[i].naam;
-        }
-      }
-      return "";
+    betalingstermijn() {
+      return UtilsFactory.searchName(this.betalingstermijnen, this.leverancier.betalingstermijn_id);
     },
   },
   mounted() {
@@ -160,9 +148,12 @@ export default {
       this.btws = res[0].data;
       this.betalingstermijnen = res[1].data;
       this.leverancier = res[2].data[0];
+      this.copyLeverancier = UtilsFactory.copyObject(this.leverancier)
       if (this.leverancier.adressen != null && JSON.parse(this.leverancier.adressen.length) !== 0) {
-        this.$refs.levreadaddressbox.setAdressenList(JSON.parse(res[2].data[0].adressen));
-        this.$refs.levupdateaddressbox.setAdressenList(JSON.parse(res[2].data[0].adressen));
+        this.adressen = JSON.parse(res[2].data[0].adressen)
+        this.copyAdressen = UtilsFactory.copyObject(this.adressen)
+        this.$refs.levreadaddressbox.setAdressenList(this.adressen);
+        this.$refs.levupdateaddressbox.setAdressenList(this.adressen);
       }
       this.isLoaded = true;
     });
@@ -179,6 +170,10 @@ export default {
     },
     cancelEdit() {
       this.isReadVisible = true;
+      this.leverancier = UtilsFactory.copyObject(this.copyLeverancier)
+      this.adressen = UtilsFactory.copyObject(this.copyAdressen)
+      this.$refs.levreadaddressbox.setAdressenList(this.adressen);  
+      this.$refs.levupdateaddressbox.setAdressenList(this.adressen)
     },
     deleteItem() {
       ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit adres wilt verwijderen?", null, (isConfirmed) => {

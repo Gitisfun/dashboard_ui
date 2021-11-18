@@ -311,8 +311,10 @@ body {
   left: 78px;
   transition: all 0.5s ease;
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
-    background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
-  
+  background: #81ecec; 
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
+
 }
 
 .content-body {
@@ -321,9 +323,11 @@ body {
   padding-left: 35px;
   padding-right: 35px;
   padding-bottom: 35px;
-
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
-    background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
+  background: #81ecec; 
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
+
 }
 
 

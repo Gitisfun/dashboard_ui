@@ -53,7 +53,6 @@ export default {
   methods: {
     ...mapActions(["switchMenuItem"]),
     clicked() {
-      console.log("yes");
       let btn = document.querySelector("#btn");
       let sidebar = document.querySelector(".sidebar");
       if (this.visibility == "true") {
