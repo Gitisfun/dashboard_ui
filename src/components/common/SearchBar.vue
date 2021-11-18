@@ -11,14 +11,19 @@
         </b-select>
       </div>
       <div class="column is-2">
-          <b-button icon-left="plus" style="float: right" type="is-success" @click="navigate">Nieuwe</b-button>
+          <GenericBtn style="float: right;" text="Nieuwe" btnStyle="success" size="large" @clicked="navigate"  />
       </div>
     </div>
 </template>
 
 <script>
+import GenericBtn from "../buttons/GenericBtn.vue"
+
 export default {
     name: "SearchBar",
+    components: {
+        GenericBtn
+    },
     props: {
         search: {
             type: String
@@ -72,10 +77,5 @@ export default {
             });
         }
     }
-
 }
 </script>
-
-<style>
-
-</style>

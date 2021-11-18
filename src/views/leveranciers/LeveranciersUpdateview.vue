@@ -1,9 +1,7 @@
 <template>
   <div class="content-body">
-    <div v-show="isReadVisible" id="myupdatebox">
-      <!-- <div v-show="isReadVisible" class="box" id="myupdatebox"> -->
-      <!-- <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;"> -->
-      <div>
+    <div v-show="isReadVisible" class="box">
+      <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
         <ReadHeader title="Leverancier details" @edit="edit" />
         <br />
         <div class="columns">
@@ -177,7 +175,6 @@ export default {
       }
     },
     edit() {
-      console.log("Clicked the edit button...");
       this.isReadVisible = false;
     },
     cancelEdit() {
@@ -193,18 +190,3 @@ export default {
   },
 };
 </script>
-
-<style>
-#myupdatebox {
-  /* border: 0.5px solid lightgrey; */
-  border: 0.5px solid #f1f2f6;
-  background: #ffffff;
-  border-radius: 15px;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 30px;
-  padding-bottom: 50px;
-  /* box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px; */
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 50px;
-}
-</style>

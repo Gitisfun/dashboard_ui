@@ -37,26 +37,37 @@ export default {
 </script>
 
 <style>
+:root{
+  /*
+  --mytextcolor: white;
+  --mysidebarcolor: black;
+  --mytooltipcolortext: orange;
+  --mytooltipcolor: red;
+  --myhovercolor: white;
+  --myhovercolortext: black;
+  */
+  --mytextcolor: black;
+  --mysidebarcolor: white;
+  --mytooltipcolortext: white;
+  --mytooltipcolor: black;
+  --myhovercolor: black;
+  --myhovercolortext: white;
+}
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-   /* font-family: 'Helvetica', 'Arial', sans-serif; */
 }
 body {
   position: relative;
-  
-  /* min-height: 100vh; */
   width: 100%;
   height: 100vh;
-
-  /* overflow: hidden; */
 }
 ::selection {
-  color: #fff;
-  background: #11101d;
+  color: var(--mytextcolor);
+  background: var(--mysidebarcolor);
 }
 .sidebar {
   position: fixed;
@@ -64,22 +75,17 @@ body {
   left: 0;
   height: 100%;
   width: 78px;
-  background: #11101d;
-  /* background: linear-gradient(#f3a683, #f5cd79); */
-  /* background-image: linear-gradient(-225deg, #2c2c54 0%, #30336b 48%, #40407a 100%); */
-  /* background-image: linear-gradient(-225deg, #5758BB 0%, #9980FA 50%, #D980FA 100%);   */
 
-  /* background-image: linear-gradient(-180deg, #6a11cb 0%, #2575fc 100%); */
-  /* background-image: linear-gradient(to top, #1e3c72 0%, #1e3c72 1%, #2a5298 100%); */
+  background: var(--mysidebarcolor);
   padding: 6px 14px;
-  z-index: 99;
+  /*z-index: 99;*/
   transition: all 0.5s ease;
 }
 .sidebar.active {
   width: 240px;
 }
 .sidebar .logo_content .logo {
-  color: #fff;
+  color: var(--mytextcolor);
   display: flex;
   height: 50px;
   width: 100%;
@@ -102,7 +108,7 @@ body {
 }
 .sidebar #btn {
   position: absolute;
-  color: #fff;
+  color: var(--mytextcolor);
   top: 6px;
   left: 50%;
   font-size: 22px;
@@ -135,20 +141,8 @@ body {
   border-radius: 6px;
   height: 35px;
   width: 120px;
-  color: white;
-  color: black;
-
-  /* background: #fff; */
-  /* color: black; */
-  /* font-weight: 900; */
-  /* background: linear-gradient(#f7d794,#f5cd79); */
-  /* background: linear-gradient(#f8a5c2,#f78fb3); */
-  background: #fff;
-    /* background: linear-gradient(#e15f41, #e77f67); */
-
-  /* background-image: linear-gradient(-225deg, #A445B2 0%, #D41872 52%, #FF0066 100%); */
-  /* color: #30336b; */
-  /* color: black; */
+  color: var(--mytooltipcolortext);
+  background: var(--mytooltipcolor);
   line-height: 35px;
   text-align: center;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -174,24 +168,27 @@ body {
   border-radius: 12px;
   outline: none;
   border: none;
-  background: #1d1b31;
+  background: var(--mysidebarcolor);
   padding-left: 50px;
   font-size: 18px;
-  color: #fff;
+  color: var(--mytextcolor);
 }
 .sidebar ul li .bx-search {
   position: absolute;
   /* z-index: 99; */
-  color: #fff;
+  color: var(--mytextcolor);
   font-size: 22px;
   transition: all 0.5 ease;
 }
 .sidebar ul li .bx-search:hover {
-  background: #fff;
-  color: #1d1b31;
+  /*
+  background: var(--myhovercolor);
+  color: var(--myhovercolortext);
+  */
+  color: black;
 }
 .sidebar ul li a {
-  color: #fff;
+  color: var(--mytextcolor);
   display: flex;
   align-items: center;
   text-decoration: none;
@@ -200,8 +197,11 @@ body {
   transition: all 0.4s ease;
 }
 .sidebar ul li a:hover {
-  color: #11101d;
-  background: #fff;
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #c7ecee);
+  color: black;
+  background-size: 400% 400%;
+	animation: gradient 5s ease infinite;
+  animation-direction: normal;
 }
 .sidebar ul li i {
   font-size: 18px;
@@ -226,7 +226,7 @@ body {
 }
 .sidebar .profile_content {
   position: absolute;
-  color: #fff;
+  color: var(--mytextcolor);
   bottom: 0;
   left: 0;
   width: 100%;
@@ -280,7 +280,7 @@ body {
   border-radius: 12px;
   text-align: center;
   transition: all 0.4s ease;
-  background: #1d1b31;
+  background: var(--mysidebarcolor);
 }
 .sidebar.active .profile #log_out {
   left: 88%;
@@ -295,7 +295,7 @@ body {
 .home_content .text {
   font-size: 25px;
   font-weight: 500;
-  color: #1d1b31;
+  color: var(--mysidebarcolor);
   margin: 12px;
 }
 
@@ -306,33 +306,39 @@ body {
 
 .home_content {
   position: absolute;
-  /* height: 100%; */
   height: 100vh;
   width: calc(100% - 78px);
   left: 78px;
-  /* background: #e4e9f7; */
-  /* background: #A7BFE8; */
-  /* background: #0fb9b1; */
-  
-  /* background: #f78fb3; */
-  /* background: #e66767; */
-  background: #3dc1d3;
-
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
   transition: all 0.5s ease;
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
+    background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
+  
 }
 
 .content-body {
   min-height: 100%;
-  /* background: #e4e9f7; */
-  /* background: #A7BFE8; */
-  /* background: linear-gradient(#0fb9b1, #2bcbba); */
-  
-  /* background: linear-gradient(#f78fb3, #f78fb3); */
-  /* background: linear-gradient(#e66767, #ea8685); */
-  background: linear-gradient(#3dc1d3, #63cdda);
-  padding-left: 25px;
-  padding-right: 25px;
-  padding-bottom: 25px;
+  padding-top: 10px;
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-bottom: 35px;
+
+  background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
+    background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
 }
+
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
 </style>

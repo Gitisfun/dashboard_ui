@@ -51,8 +51,9 @@ export default {
 <style>
 .normalselectinputlabel {
   width: 35%;
-  color: #0c2461;
-  font-size: 14px;
+  color: black;
+  font-weight: 500;
+    font-size: 14px;
   display: inline-block;
 }
 .normalselectinputfieldinput {

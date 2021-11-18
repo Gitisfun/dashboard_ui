@@ -8,12 +8,12 @@
       </div>
       <div class="column">
         <div class="is-vertical-center" style="height: 100%">
-          <b-button icon-left="pencil" @click="editItem" size="is-small" type="is-warning">Aanpassen</b-button>
+          <GenericBtn text="Aanpassen" btnStyle="warning" size="small" @clicked="editItem"  />
         </div>
       </div>
       <div class="column">
-        <div class="is-vertical-center" style="height: 100%">
-          <b-button icon-left="trash-can" @click="deleteItem" size="is-small" type="is-danger">Verwijderen</b-button>
+        <div class="is-vertical-center" style="height: 100%">          
+          <GenericBtn text="Verwijderen" btnStyle="danger" size="small" @clicked="deleteItem"  />
         </div>
       </div>
     </div>
@@ -21,8 +21,13 @@
 </template>
 
 <script>
+import GenericBtn from "../buttons/GenericBtn.vue"
+
 export default {
   name: "AddressBox",
+  components: {
+    GenericBtn
+  },
   props: {
     address: {
       type: Object,

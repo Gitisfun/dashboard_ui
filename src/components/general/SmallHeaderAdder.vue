@@ -7,9 +7,7 @@
     </div>
     <div class="level-right">
       <div class="level-item">
-        <b-button size="is-small" type="is-success" @click="add">
-          Toevoegen
-        </b-button>
+        <GenericBtn text="Toevoegen" btnStyle="success" @clicked="add"  />
       </div>
     </div>
   </div>
@@ -17,11 +15,13 @@
 
 <script>
 import SmallTitle from "../textfields/SmallTitle.vue";
+import GenericBtn from "../buttons/GenericBtn.vue"
 
 export default {
   name: "SmallHeaderAdder",
   components: {
     SmallTitle,
+    GenericBtn
   },
   props: {
     title: {

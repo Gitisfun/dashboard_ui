@@ -8,14 +8,10 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <b-button size="is-small" type="is-success" @click="save">
-            Opslaan
-          </b-button>
+          <GenericBtn text="Opslaan" btnStyle="success" @clicked="save"  />
         </div>
         <div class="level-item">
-          <b-button size="is-small" type="is-dark" @click="back">
-            Annuleren
-          </b-button>
+          <GenericBtn text="Annuleren" @clicked="back"  />
         </div>
       </div>
     </div>
@@ -25,11 +21,13 @@
 
 <script>
 import Subtitle from "../textfields/Subtitle.vue";
+import GenericBtn from "../buttons/GenericBtn.vue"
 
 export default {
   name: "CreateHeader",
   components: {
     Subtitle,
+    GenericBtn
   },
   props: {
     title: {

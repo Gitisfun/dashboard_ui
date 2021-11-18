@@ -1,31 +1,40 @@
 <template>
-  <div style="padding-right: 25px; padding-left: 25px;">
-    <div style="padding-right: 35px; padding-left: 35px; padding-top: 25px" class="box">
-      <p style="font-size: 20px">Aankopen</p>
-      <hr />
-      <div>
+  <div class="content-body">
+    <div class="box">
+      <div class="level">
+        <div class="level-right">
+          <div class="level-item">Test</div>
+        </div>
+        <div class="level-left">
+          <div class="level-item">
+            <CustomButton text="Toevoegen" btnStyle="success" @click="clickMe" />
+          </div>
+          <div class="level-item">
+            <CustomButton text="Bewerken" btnStyle="warning" @click="clickMe" />
+          </div>
+          <div class="level-item">
+            <CustomButton text="Verwijderen" btnStyle="danger" @click="clickMe" />
+          </div>
+          <div class="level-item">
+            <CustomButton text="Terug" @click="clickMe" />
+          </div>
+        </div>
       </div>
     </div>
+    <b-button @click="clickMe">Click me</b-button>
   </div>
 </template>
 
 <script>
+import CustomButton from "../../components/buttons/CustomBtn.vue";
+
 export default {
-  name: "Aankopen",
-  data: () => ({
-    fname: "",
-    lname: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-    country: "",
-  }),
+  name: "AankopenOverview",
+  components: {
+    CustomButton,
+  },
   methods: {
-    onSubmit() {
-      alert("Form submitted!");
-    },
+    clickMe() {},
   },
 };
 </script>
-
-<style></style>

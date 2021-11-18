@@ -56,7 +56,8 @@ export default {
 <style>
 .selectinputlabel {
   width: 35%;
-  color: #0c2461;
+  color: black;
+  font-weight: 500;
   font-size: 14px;
   display: inline-block;
 }
@@ -67,19 +68,11 @@ export default {
   margin-top: 20px;
   margin-bottom: 0px;
   width: 65%;
-  /* border: none; */
-  /* border-color: red; */
   outline: none;
   font-size: 14px;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  /* background: red; */
-  /* background: #FF7F7F; */
-  border: 1.7px solid #ff7f7f;
-  /* background: #9aecdb; */
-  /* background: #dff9fb; */
-  /* background: #f7f1e3; */
-
+  -webkit-transition: 1.5s;
+  transition: 1.5s;
+  border: 1.7px solid red;
   border-radius: 6px;
   padding: 0 15px;
   resize: none;
@@ -94,15 +87,10 @@ export default {
   border: none;
   outline: none;
   font-size: 14px;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  /* background: #f0f1f8; */
+  -webkit-transition: 1.5s;
+  transition: 1.5s;
   background: white;
-  border: 1.7px solid #9aecdb;
-
-  /* background: #dff9fb; */
-  /* background: #f7f1e3; */
-
+  border: 1.7px solid #0be881;
   border-radius: 6px;
   padding: 0 15px;
   resize: none;
@@ -117,13 +105,8 @@ export default {
   border: none;
   outline: none;
   font-size: 14px;
-  /* background: #f0f1f8; */
   background: white;
-  /* background: #9aecdb; */
-  /* background: #dff9fb; */
-  /* background: #f7f1e3; */
   border: 1.7px solid grey;
-
   border-radius: 6px;
   padding: 0 15px;
   resize: none;

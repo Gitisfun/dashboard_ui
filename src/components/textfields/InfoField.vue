@@ -16,8 +16,8 @@ export default {
 <style scoped>
 .infofield {
   margin-bottom: 20px;
-  color: #0c2461;
-
+  color: black;
+  font-weight: 500;
   font-size: 14px;
 }
 </style>

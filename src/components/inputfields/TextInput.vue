@@ -47,7 +47,8 @@ export default {
 <style>
 .normaltextinputfieldinputlabel {
   width: 35%;
-  color: #0c2461;
+  color: black;
+  font-weight: 500;
   font-size: 14px;
   display: inline-block;
 }
