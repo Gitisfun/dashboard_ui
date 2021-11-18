@@ -12,7 +12,7 @@
           <template #trigger>
             <b-button label="Account" type="is-warning" icon-right="menu-down" />
           </template>
-          <b-dropdown-item aria-role="listitem">Uitloggen</b-dropdown-item>
+          <b-dropdown-item @click="logout" aria-role="listitem">Uitloggen</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>

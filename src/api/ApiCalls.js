@@ -2,6 +2,23 @@ import Socket from "../logic/factories/socketFactory";
 import Notifications from "../logic/factories/notifications.js";
 
 class ApiCalls {
+  static login(requestHandler, body, context, callback){
+    requestHandler(body)
+      .then((res) => {
+        if (res) {
+          /*
+          Notifications.successMessage("Succesvol ingelogd", context);
+          */
+         callback(res)
+        }
+      })
+      .catch((err) => {
+        if (err) {
+          Notifications.errorMessage("Er ging iets fout, probeer het nog eens", context);
+        }
+      });
+  }
+
   static getAll(requestHandler, params, responseHandler, context) {
     requestHandler(params)
       .then((res) => responseHandler(res))

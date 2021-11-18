@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import store from "../store";
+import store from "../store";
 import Login from "../views/general/Login";
 import Home from "../views/Home";
 import Statistieken from "../views/Statistieken";
@@ -121,7 +121,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  next()
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.getters.getToken == null)
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
+    else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
