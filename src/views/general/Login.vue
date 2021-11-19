@@ -112,6 +112,7 @@ export default {
 
 #login-load-bar {
   background: linear-gradient(-45deg, #f7d794, #f5cd79,#e77f67, #e15f41, #12CBC4, #1289A7,#f7d794, #f5cd79);
+  background: linear-gradient(90deg, #f7d794, #f5cd79, #FD7272, #f7d794, #f5cd79);
   color: white;
   border-radius: 5px;
   padding: 15px;
@@ -121,7 +122,7 @@ export default {
   position: absolute;
   font-size: 16px;
   font-weight: 700;
-  top: 0;
+  bottom: 0;
   right: 0;
   width: 250px;
   margin: 25px;
