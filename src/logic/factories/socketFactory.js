@@ -8,7 +8,8 @@ class Socket {
 
   static CLICKED = "clicked"
   static LEVERANCIERS = "leveranciers"
-
+  static KLANTEN = "klanten"
+  
   static listen(socket, from, refresh) {
     socket.on(from, (data) => {
       if (data) {

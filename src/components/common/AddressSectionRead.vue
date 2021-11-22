@@ -1,6 +1,19 @@
 <template>
+  <!-- <div class="columns">
+    <div class="column is-3">
+      <SmallTitle :text="title" />
+    </div>
+    <div class="column">
+      <br>
+      <div v-if="list.length !== 0">
+        <AddressBoxRead :address="adres" v-for="adres in list" :key="adres.id" />
+      </div>
+      <NoAddress v-else />
+    </div>
+    <br />
+  </div> -->
   <div>
-    <SmallTitle text="Adressen" />
+    <SmallTitle :text="title" />
     <br>
     <div v-if="list.length !== 0">
       <AddressBoxRead :address="adres" v-for="adres in list" :key="adres.id" />
@@ -20,6 +33,12 @@ export default {
     SmallTitle,
     AddressBoxRead,
     NoAddress,
+  },
+  props: {
+    title: {
+      type: String,
+      default: "Adressen",
+    },
   },
   data() {
     return {

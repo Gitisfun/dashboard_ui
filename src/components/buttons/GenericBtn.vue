@@ -1,5 +1,5 @@
 <template>
-  <div id="generic-button" :class="[getBtnStyle, getSize]" @click="clicked" onselectstart="return false">
+  <div id="generic-button" :class="[getBtnStyle, getBtnSize]" @click="clicked" onselectstart="return false">
     {{ text }}
   </div>
 </template>
@@ -30,18 +30,19 @@ export default {
       }
       return "default-btn"
     },
-    getSize(){
+    getBtnSize(){
+      console.log(this.size);
       if(this.size == "normal"){
-        return "normal"
+        return "normal-btn"
       }
       else if(this.size == "large"){
-        return "large"
+        return "large-btn"
       }
       else if(this.size == "small"){
-        return "small"
+        return "small-btn"
       }
-      return "normal"
-    }
+      return "normal-btn"
+    },
   },
   methods: {
     clicked() {
@@ -125,17 +126,17 @@ export default {
   background: red;
 }
 
-.small {
-  font-size: 9px;
+.small-btn {
+  font-size: 8px;
   font-weight: 700;
 }
 
-.normal {
+.normal-btn {
    font-size: 11px; 
    font-weight: 700
 }
 
-.large{
+.large-btn {
   font-size: 16px; 
   font-weight: 500;
 }
