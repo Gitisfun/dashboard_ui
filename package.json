@@ -13,6 +13,8 @@
     "buefy": "^0.9.8",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10.1.1",
     "socket.io-client": "^4.3.2",
     "vee-validate": "^3.4.13",
     "vue": "^2.6.14",

@@ -7,6 +7,7 @@ class Socket {
   }
 
   static CLICKED = "clicked"
+  static ARTIKELS = "artikels"
   static LEVERANCIERS = "leveranciers"
   static KLANTEN = "klanten"
   

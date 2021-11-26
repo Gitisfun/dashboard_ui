@@ -5,7 +5,7 @@ import store from "./store";
 import filters from "./filters"
 import "../veee-validate.js";
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+//import 'buefy/dist/buefy.css'
 import "@mdi/font/css/materialdesignicons.css";
 
 Vue.use(Buefy)

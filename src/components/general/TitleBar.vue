@@ -10,7 +10,7 @@
       <div class="level-item">
         <b-dropdown :triggers="['hover']" aria-role="list">
           <template #trigger>
-            <b-button label="Account" type="is-warning" icon-right="menu-down" />
+            <b-button label="Account" type="is-primary" icon-right="menu-down" />
           </template>
           <b-dropdown-item @click="logout" aria-role="listitem">Uitloggen</b-dropdown-item>
         </b-dropdown>
