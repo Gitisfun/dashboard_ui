@@ -55,77 +55,25 @@
 import KlantenController from "../../api/calls/klanten";
 import SearchBar from "../../components/common/SearchBar";
 import socketMixin from "../../mixins/socketMixin"
+import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
+import Navigation from '../../logic/factories/navigation';
 
 export default {
   name: "KlantenOverview",
-  mixins: [socketMixin],
+  mixins: [socketMixin, tableMixin],
   components: {
     SearchBar
   },
-  data() {
-    return {
-      data: [],
-      total: 0,
-      loading: false,
-      page: 1,
-      perPage: 10,
-      defaultSortOrder: "asc",
-      params: {
-        search: "",
-        sort_by: "klant_nr",
-        sort_order: "asc",
-        limit: 10,
-        page: "",
-      },
-    };
-  },
-  mounted() {
-    Socket.listen(this.socket, Socket.KLANTEN, () => { this.loadTable() })
-    this.loadTable();
+  created(){
+    this.tableController = KlantenController
+    this.navigateRoute = Navigation.KL_UPDATE
+    this.socketName = Socket.KLANTEN  
   },
   methods: {
-    loadTable() {
-      //this.loading = true;
-      KlantenController.all(this, this.params, (res) => {
-        //this.loading = false;
-        this.perPage = this.params.limit;
-        this.total = res.data.total;
-        this.data = res.data.list;
-        });
-    },
-    onPageChange(page) {
-      this.params.page = page;
-      this.loadTable();
-    },
-    onSort(field, order) {
-      this.params.sort_by = field;
-      this.params.sort_order = order;
-      this.loadTable();
-    },
     blacklist(value, id){
       KlantenController.esp(this, { id: id, isBlacklisted: value }, this.socket)
     },
-    rowClicked(row){
-      this.$router.push({
-        name: "KlantenUpdateview",
-        params: {
-          id: row.id
-        }
-      });
-    },
-    navCreate(){
-      this.$router.push({
-        name: "KlantenCreateview",
-      });
-    },
-    searchTable(obj){
-      this.params.search = obj.search
-      this.params.limit = obj.limit
-      this.loadTable()
-    }
   },
 };
 </script>
-
-<style></style>

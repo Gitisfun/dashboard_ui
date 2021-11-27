@@ -10,7 +10,7 @@ export default {
   name: "InfoField",
   props: {
     text: {
-      type: String,
+      type: [String, Number],
     },
   },
 };

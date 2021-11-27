@@ -27,22 +27,25 @@
           {{ props.row.artikelcode }}
         </b-table-column>
 
-        <b-table-column width="15%" field="naam" label="Naam" v-slot="props" sortable>
+
+        <b-table-column width="16%" field="naam" label="Naam" v-slot="props" sortable>
           {{ props.row.naam }}
         </b-table-column>
 
-        <b-table-column width="10%" field="prijs" label="Prijs" v-slot="props" sortable>
-          € {{ props.row.prijs }}
+        <b-table-column width="10%" field="inStock" centered label="In stock" v-slot="props">
+          <div style="text-align:center; width: 100%">
+            <b-checkbox @input="changeStock($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.inStock " type="is-success" />
+          </div>
         </b-table-column>
 
-        <b-table-column width="25%" field="omschrijving" label="Omschrijving" v-slot="props" sortable>
+        <b-table-column width="26%" field="omschrijving" label="Omschrijving" v-slot="props" sortable>
           {{ props.row.omschrijving }}
         </b-table-column>
 
-        <b-table-column width="10%" field="inStock" centered label="In stock" v-slot="props">
-          <div style="text-align:center; width: 100%;">
-            <b-checkbox @input="changeStock($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.inStock " type="is-success" />
-          </div>
+        <b-table-column width="8%" field="prijs" label="Prijs" v-slot="props" sortable>
+          <p style="text-align: right; color: green">
+          € {{ props.row.prijs }}
+          </p>
         </b-table-column>
 
         <b-table-column width="10%" field="updated_time" centered label="Tijdstip" v-slot="props">
@@ -63,75 +66,25 @@
 import ArtikelsController from "../../api/calls/artikels";
 import SearchBar from "../../components/common/SearchBar";
 import socketMixin from "../../mixins/socketMixin"
+import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
+import Navigation from '../../logic/factories/navigation';
 
 export default {
   name: "ArtikelsOverview",
-  mixins: [socketMixin],
+  mixins: [socketMixin, tableMixin],
   components: {
     SearchBar
   },
-  data() {
-    return {
-      data: [],
-      total: 0,
-      loading: false,
-      page: 1,
-      perPage: 10,
-      defaultSortOrder: "asc",
-      params: {
-        search: "",
-        sort_by: "artikelcode",
-        sort_order: "asc",
-        limit: 10,
-        page: "",
-      },
-    };
-  },
-  mounted() {
-    Socket.listen(this.socket, Socket.ARTIKELS, () => { this.loadTable() })
-    this.loadTable();
+  created(){
+    this.tableController = ArtikelsController
+    this.navigateRoute = Navigation.ART_UPDATE
+    this.socketName = Socket.ARTIKELS
   },
   methods: {
-    loadTable() {
-      //this.loading = true;
-      ArtikelsController.all(this, this.params, (res) => {
-        //this.loading = false;
-        this.perPage = this.params.limit;
-        this.total = res.data.total;
-        this.data = res.data.list;
-        });
-    },
-    onPageChange(page) {
-      this.params.page = page;
-      this.loadTable();
-    },
-    onSort(field, order) {
-      this.params.sort_by = field;
-      this.params.sort_order = order;
-      this.loadTable();
-    },
     changeStock(value, id){
-      console.log(value);
-      console.log(id);
       ArtikelsController.stock(this, { id: id, inStock: value }, this.socket)
-      //LeveranciersController.esp(this, { id: id, isBlacklisted: value }, this.socket)
     },
-    rowClicked(row){
-      this.$router.push({
-        name: "ArtikelsUpdateview",
-        params: {
-          id: row.id
-        }
-      });
-    },
-    searchTable(obj){
-      this.params.search = obj.search
-      this.params.limit = obj.limit
-      //this.loadTable()
-    }
   },
 };
 </script>
-
-<style></style>

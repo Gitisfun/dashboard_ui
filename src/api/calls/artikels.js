@@ -1,6 +1,5 @@
 import ApiCalls from "../ApiCalls";
-//import { getAllLeveranciers } from "../routes/leveranciers"
-import { getAllArtikels/*, getArtikel,*/, createArtikel/*, updateArtikel, deleteArtikel*/, stockArtikel } from "../routes/artikels"
+import { getAllArtikels, getArtikel, createArtikel, updateArtikel, deleteArtikel, stockArtikel } from "../routes/artikels"
 import Socket from "../../logic/factories/socketFactory"
 
 class ArtikelsController {
@@ -19,7 +18,17 @@ class ArtikelsController {
     }
 
     // Update
-   
+    static getPreData(context, id, callback){
+        ApiCalls.getMultiple([getArtikel(id)], callback, context)
+    }
+
+    static update(context, body, socket){
+        ApiCalls.update(updateArtikel, body, context, true, socket, Socket.ARTIKELS)
+    }
+
+    static deleteById(context, body, socket){
+        ApiCalls.deleteById(deleteArtikel, body.id, context, true, socket, Socket.ARTIKELS)
+    }
 
 }
 

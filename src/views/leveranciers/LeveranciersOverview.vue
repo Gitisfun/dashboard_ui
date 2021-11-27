@@ -55,75 +55,25 @@
 import LeveranciersController from "../../api/calls/leveranciers";
 import SearchBar from "../../components/common/SearchBar";
 import socketMixin from "../../mixins/socketMixin"
+import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
+import Navigation from '../../logic/factories/navigation';
 
 export default {
   name: "LeveranciersOverview",
-  mixins: [socketMixin],
+  mixins: [socketMixin, tableMixin],
   components: {
     SearchBar
   },
-  data() {
-    return {
-      data: [],
-      total: 0,
-      loading: false,
-      page: 1,
-      perPage: 10,
-      defaultSortOrder: "asc",
-      params: {
-        search: "",
-        sort_by: "leveranciers_nr",
-        sort_order: "asc",
-        limit: 10,
-        page: "",
-      },
-    };
-  },
-  mounted() {
-    Socket.listen(this.socket, Socket.LEVERANCIERS, () => { this.loadTable() })
-    this.loadTable();
+  created(){
+    this.tableController = LeveranciersController
+    this.navigateRoute = Navigation.LEV_UPDATE
+    this.socketName = Socket.LEVERANCIERS  
   },
   methods: {
-    loadTable() {
-      //this.loading = true;
-      LeveranciersController.all(this, this.params, (res) => {
-        //this.loading = false;
-        this.perPage = this.params.limit;
-        this.total = res.data.total;
-        this.data = res.data.list;
-        });
-    },
-    onPageChange(page) {
-      this.params.page = page;
-      this.loadTable();
-    },
-    onSort(field, order) {
-      this.params.sort_by = field;
-      this.params.sort_order = order;
-      this.loadTable();
-    },
     blacklist(value, id){
       LeveranciersController.esp(this, { id: id, isBlacklisted: value }, this.socket)
     },
-    rowClicked(row){
-      this.$router.push({
-        name: "LeveranciersUpdateview",
-        params: {
-          id: row.id
-        }
-      });
-    },
-    navCreate(){
-      this.$router.push({
-        name: "LeveranciersCreateview",
-      });
-    },
-    searchTable(obj){
-      this.params.search = obj.search
-      this.params.limit = obj.limit
-      this.loadTable()
-    }
   },
 };
 </script>

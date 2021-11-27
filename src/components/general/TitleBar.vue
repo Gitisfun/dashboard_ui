@@ -21,6 +21,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Navigation from '../../logic/factories/navigation';
 
 export default {
   name: "TitleBar",
@@ -38,7 +39,7 @@ export default {
     logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
-      this.$router.go();
+      Navigation.refresh(this);
     },
   },
 };

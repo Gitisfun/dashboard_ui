@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import Navigation from '../../logic/factories/navigation';
 import GenericBtn from "../buttons/GenericBtn.vue"
 
 export default {
@@ -72,9 +73,7 @@ export default {
             this.$emit("searchTable", { search: this.searchField, limit: this.limitRate })
         },
         navigate(){
-            this.$router.push({
-                name: this.navigateRouteName,
-            });
+            Navigation.navigate(this, this.navigateRouteName, null)
         }
     }
 }

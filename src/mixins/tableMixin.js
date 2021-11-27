@@ -1,6 +1,11 @@
+import Navigation from '../logic/factories/navigation';
+import Socket from '../logic/factories/socketFactory';
+
 export default {
     data(){
         return {
+            navigateRoute: null,
+            socketName: null,
             tableController: null,
             total: 0,
             loading: false,
@@ -20,6 +25,9 @@ export default {
         }
     },
     mounted(){
+        if(this.socketName){
+            Socket.listen(this.socket, this.socketName, () => { this.loadTable() })
+        }
         this.loadTable()
     },
     methods: {
@@ -43,5 +51,13 @@ export default {
             this.params.search = this.search
             this.loadTable()
         },
+        searchTable(obj){
+            this.params.search = obj.search
+            this.params.limit = obj.limit
+            this.loadTable()
+        },
+        rowClicked(row){
+            Navigation.navigate(this, this.navigateRoute, row)
+          },
     }
 }

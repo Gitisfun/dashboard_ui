@@ -65,7 +65,7 @@ export default {
       artikelcode: null,
       naam: null,
       prijs: null,
-      omschrijving: null,
+      omschrijving: "",
       leverancier_id: null,
       leverancier: null,
       verkoopeenheid: null,
@@ -81,23 +81,16 @@ export default {
     betalingstermijnen: [],
     isLoaded: false,
   }),
-  computed: {
-    isInstock() {
-      if(this.artikel.inStock == 1){
-        return "background: linear-gradient(45deg, #e66465, #9198e5); color: white "
-      }
-      else {
-        return "background: linear-gradient(45deg, red, orange); color: white "
-      }
-    },
-  },
   mounted(){
     this.$refs.validatedSearchField.setModal(LeverancierModal);
   },
   methods: {
     onSubmit() {
       console.log(this.artikel);
-      if(this.artikel == null){
+      if(this.artikel.leverancier_id == null) {
+        this.$refs.validatedSearchField.setError(true);
+      }
+      else {
         ArtikelsController.create(this, this.artikel, this.socket)
       }
     },

@@ -2,7 +2,7 @@ import { extend } from "vee-validate";
 import { required, required_if, confirmed, numeric, min, email, alpha_num } from "vee-validate/dist/rules";
 import { setInteractionMode } from 'vee-validate';
 
-setInteractionMode('passive');
+setInteractionMode('eager');
 
 extend("required", {
   ...required,

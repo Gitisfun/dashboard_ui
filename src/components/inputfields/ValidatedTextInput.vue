@@ -16,7 +16,7 @@ export default {
   },
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: "",
     },
     rules: {
@@ -93,7 +93,8 @@ export default {
   -webkit-transition: 1.5s;
   transition: 1.5s;
   background: white;
-  border: 1.7px solid #0be881;
+  /*border: 1.7px solid #0be881;*/
+  border: 1.7px solid grey;
   border-radius: 6px;
   padding: 0 15px;
   resize: none;

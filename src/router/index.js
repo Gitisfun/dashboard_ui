@@ -9,6 +9,7 @@ import Verkopen from "../views/verkopen/VerkopenOverview";
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
 import Artikels from "../views/artikels/ArtikelsOverview";
 import ArtikelsCreateview from "../views/artikels/ArtikelsCreateview";
+import ArtikelsUpdateview from "../views/artikels/ArtikelsUpdateview";
 import Klanten from "../views/klanten/KlantenOverview";
 import KlantenCreateview from "../views/klanten/KlantenCreateview";
 import KlantenUpdateview from "../views/klanten/KlantenUpdateview";
@@ -84,6 +85,15 @@ const routes = [
     path: "/artikels/create",
     name: "ArtikelsCreateview",
     component: ArtikelsCreateview,
+    meta: {
+      group: "Artikels",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/artikels/update/:id",
+    name: "ArtikelsUpdateview",
+    component: ArtikelsUpdateview,
     meta: {
       group: "Artikels",
       requiresAuth: true,

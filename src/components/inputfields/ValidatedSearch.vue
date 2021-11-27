@@ -17,7 +17,6 @@
 
 <script>
 import ModalFactory from "../../logic/factories/modalFactory";
-//import LeverancierModal from '../../modals/LeverancierModal.vue';
 
 export default {
   name: "ValidatedSearch",
@@ -56,11 +55,14 @@ export default {
     setValue(value){
       this.currentValue = value
     },
+    setError(value){
+      this.hasError = value
+    },
     openModal(){
       ModalFactory.showModal(this, this.searchModal, (item) => {
+        this.setError(false)
         this.$emit("choose", item)
       })
-      //this.$emit("openModal");
     }
   }
 };
