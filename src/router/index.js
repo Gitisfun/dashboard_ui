@@ -4,6 +4,7 @@ import store from "../store";
 import Login from "../views/general/Login";
 import Home from "../views/Home";
 import Statistieken from "../views/Statistieken";
+import Andere from "../views/Andere";
 import Aankopen from "../views/aankopen/AankopenOverview";
 import Verkopen from "../views/verkopen/VerkopenOverview";
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
@@ -152,7 +153,16 @@ const routes = [
       group: "Leveranciers",
       requiresAuth: true,
     }
-  }
+  },
+  {
+    path: "/andere",
+    name: "Andere",
+    component: Andere,
+    meta: {
+      group: "Andere",
+      requiresAuth: true,
+    },
+  },
 
 ];
 

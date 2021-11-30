@@ -77,8 +77,6 @@ export default {
       marge: null,
       inStock: 1
     },
-    btws: [],
-    betalingstermijnen: [],
     isLoaded: false,
   }),
   mounted(){

@@ -399,7 +399,13 @@ body {
   background: #81ecec; 
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
-
+  background: #ecf0f1;
+  background: #1abc9c;
+  background: #3498db;
+  background: #f1c40f;
+  background: #ffbe76;
+  background: #ea8685;
+  background: #f7d794
 }
 
 .content-body {
@@ -412,7 +418,13 @@ body {
   background: #81ecec; 
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee);
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
-
+  background: #ecf0f1;
+  background: #1abc9c;
+  background: #3498db;
+  background: #f1c40f;
+  background: #ffbe76;
+  background: #ea8685;
+  background: #f7d794
 }
 
 

@@ -28,6 +28,9 @@ export default {
       else if(this.btnStyle == "danger"){
         return "delete-btn"
       }
+      else if(this.btnStyle == "secundary"){
+        return "secundary-btn"
+      }
       return "default-btn"
     },
     getBtnSize(){
@@ -125,6 +128,10 @@ export default {
   color: white;
   background: red;
 }
+.secundary-btn{
+  color: black;
+  background: #f5cd79;
+}
 
 .small-btn {
   font-size: 8px;
@@ -138,7 +145,7 @@ export default {
 
 .large-btn {
   font-size: 16px; 
-  font-weight: 500;
+  font-weight: 700;
 }
 
 </style>

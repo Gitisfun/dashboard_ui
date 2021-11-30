@@ -8,12 +8,15 @@
     </div>
     <div class="level-right">
       <div class="level-item">
+          <GenericBtn text="Account" @clicked="logout"  />
+        <!--
         <b-dropdown :triggers="['hover']" aria-role="list">
           <template #trigger>
             <b-button label="Account" type="is-primary" icon-right="menu-down" />
           </template>
           <b-dropdown-item @click="logout" aria-role="listitem">Uitloggen</b-dropdown-item>
         </b-dropdown>
+        -->
       </div>
     </div>
   </div>
@@ -22,8 +25,10 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Navigation from '../../logic/factories/navigation';
+import GenericBtn from '../buttons/GenericBtn.vue';
 
 export default {
+  components: { GenericBtn },
   name: "TitleBar",
   computed: mapGetters(["allMenuItems", "currentMenuItem"]),
   created() {

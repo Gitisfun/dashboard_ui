@@ -55,6 +55,14 @@ const menuList = [
     link: "/leveranciers",
     isActive: false,
   },
+  {
+    id: 8,
+    icon: "bx-dots-horizontal-rounded",
+    name: "Andere",
+    group: "Andere",
+    link: "/andere",
+    isActive: false,
+  },
 ];
 
 export default menuList;

@@ -4,7 +4,7 @@ const state = {
     currentMenuItem:  {
         id: 1,
         name: "Home",
-        icon: "home",
+        icon: "bx-home",
         group: "Home",
         route: "/",
         isActive: false,
