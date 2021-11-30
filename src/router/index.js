@@ -5,6 +5,7 @@ import Login from "../views/general/Login";
 import Home from "../views/Home";
 import Statistieken from "../views/Statistieken";
 import Andere from "../views/Andere";
+import Instellingen from "../views/Instellingen"
 import Aankopen from "../views/aankopen/AankopenOverview";
 import Verkopen from "../views/verkopen/VerkopenOverview";
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
@@ -17,7 +18,6 @@ import KlantenUpdateview from "../views/klanten/KlantenUpdateview";
 import Leveranciers from "../views/leveranciers/LeveranciersOverview";
 import LeveranciersCreateview from "../views/leveranciers/LeveranciersCreateview"
 import LeveranciersUpdateview from "../views/leveranciers/LeveranciersUpdateview"
-
 import UtilsFactory from "../logic/utils/utilsFactory"
 
 Vue.use(VueRouter);
@@ -163,7 +163,15 @@ const routes = [
       requiresAuth: true,
     },
   },
-
+  {
+    path: "/instellingen",
+    name: "Instellingen",
+    component: Instellingen,
+    meta: {
+      group: "Instellingen",
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({
