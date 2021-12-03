@@ -63,6 +63,14 @@ const menuList = [
     link: "/andere",
     isActive: false,
   },
+  {
+    id: 9,
+    icon: "bx-cog",
+    name: "Instellingen",
+    group: "Instellingen",
+    link: "/instellingen",
+    isActive: false,
+  },
 ];
 
 export default menuList;

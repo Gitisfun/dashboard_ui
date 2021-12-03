@@ -28,7 +28,7 @@
         <div class="box">
             <div class="columns">
                 <div class="column">
-                    <span style="font-size: 16px; font-weight: 300; margin-right: 50px; vertical-align:middle">Is in stock?</span>
+                    <span style="font-size: 16px; font-weight: 500; margin-right: 50px; vertical-align:middle">Is artikel in stock?</span>
                 </div>
                 <div class="column">
                     <b-checkbox type="is-success" style="argin: auto;" v-model="artikel.inStock" :true-value="1" :false-value="0"></b-checkbox>

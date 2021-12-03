@@ -31,10 +31,12 @@ export default {
       else if(this.btnStyle == "secundary"){
         return "secundary-btn"
       }
+      else if(this.btnStyle == "underlined"){
+        return "underlined"
+      }
       return "default-btn"
     },
     getBtnSize(){
-      console.log(this.size);
       if(this.size == "normal"){
         return "normal-btn"
       }
@@ -131,6 +133,9 @@ export default {
 .secundary-btn{
   color: black;
   background: #f5cd79;
+}
+.underlined{
+  text-decoration: underline;
 }
 
 .small-btn {

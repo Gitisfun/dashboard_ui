@@ -73,6 +73,7 @@ export default {
 <style>
 #login-box{
   background: linear-gradient(-45deg, #12CBC4, #1289A7  , #30336b, #130f40);
+  background: linear-gradient(-45deg,#6a89cc, #4a69bd, #38ada9, #079992);
   background-size: 400% 400%;
 	animation: gradient 15s linear infinite;
 	height: 100vh;
