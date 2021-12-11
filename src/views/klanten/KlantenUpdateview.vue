@@ -156,7 +156,6 @@ export default {
       this.betalingstermijnen = res[1].data;
       this.klant = res[2].data[0];
       this.copyKlant = UtilsFactory.copyObject(this.klant);
-      console.log(res[2].data[0].leverings_adressen);
       if (this.klant.facturatie_adressen != null && JSON.parse(this.klant.facturatie_adressen.length) !== 0) {
         this.facAdressen = JSON.parse(res[2].data[0].facturatie_adressen);
         this.copyFacAdressen = UtilsFactory.copyObject(this.facAdressen);

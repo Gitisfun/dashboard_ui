@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     clickMe() {
-      console.log("Clicked me bro!!");
       this.socket.emit("clicked");
     },
   },

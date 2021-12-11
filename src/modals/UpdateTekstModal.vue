@@ -5,7 +5,7 @@
             <Subtitle text="Tekst aanpassen" />
           </div>
           <div class="level-right">
-              <GenericBtn text="Verwijderen" btnStyle="danger" @clicked="deleteItem"  />
+            <GenericBtn text="Verwijderen" btnStyle="danger" @clicked="deleteItem"  />
           </div>
       </div>
     <hr />

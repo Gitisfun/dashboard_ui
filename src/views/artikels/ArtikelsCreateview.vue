@@ -84,7 +84,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.artikel);
       if(this.artikel.leverancier_id == null) {
         this.$refs.validatedSearchField.setError(true);
       }
@@ -93,7 +92,6 @@ export default {
       }
     },
     changeLeverancier(item){
-      console.log(item);
       this.artikel.leverancier_id = item.id
       this.artikel.leverancier = item.naam
       this.$refs.validatedSearchField.setValue(item.naam);

@@ -36,6 +36,11 @@ class KlantenController {
         ApiCalls.deleteById(deleteKlant, body.id, context, true, socket, Socket.KLANTEN)
     }
 
+    // Others
+    static getKlant(context, id, callback){
+        ApiCalls.getById(getKlant, id, callback, context)
+    }
+
 }
 
 export default KlantenController

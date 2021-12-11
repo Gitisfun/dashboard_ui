@@ -7,6 +7,8 @@ import Statistieken from "../views/Statistieken";
 import Andere from "../views/Andere";
 import Instellingen from "../views/Instellingen"
 import Aankopen from "../views/aankopen/AankopenOverview";
+import AankopenCreateview from "../views/aankopen/AankopenCreateview";
+import AankopenUpdateview from "../views/aankopen/AankopenUpdateview";
 import Verkopen from "../views/verkopen/VerkopenOverview";
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
 import Artikels from "../views/artikels/ArtikelsOverview";
@@ -54,6 +56,24 @@ const routes = [
       group: "Aankopen",
       requiresAuth: true,
     },
+  },
+  {
+    path: "/aankopen/create",
+    name: "AankopenCreateview",
+    component: AankopenCreateview,
+    meta: {
+      group: "Aankopen",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/aankopen/update/:id",
+    name: "AankopenUpdateview",
+    component: AankopenUpdateview,
+    meta: {
+      group: "Aankopen",
+      requiresAuth: true,
+    }
   },
   {
     path: "/verkopen",

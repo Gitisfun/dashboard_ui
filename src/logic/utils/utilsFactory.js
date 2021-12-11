@@ -46,6 +46,14 @@ class UtilsFactory {
       }
     }
   }
+
+  static roundNumber(number){
+    return Math.round(number * 100) / 100
+  }
+
+  static substractPercentage(number, percentage){
+    return number - (number * percentage)
+  }
 }
 
 export default UtilsFactory

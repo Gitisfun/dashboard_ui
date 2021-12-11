@@ -34,6 +34,7 @@ class ApiCalls {
       .then((res) => responseHandler(res))
       .catch((err) => {
         if (err) {
+          console.log(err);
           Notifications.errorMessage("Er ging iets fout met het ophalen van de gegevens", context);
         }
       });

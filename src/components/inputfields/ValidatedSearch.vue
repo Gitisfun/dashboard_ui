@@ -11,8 +11,6 @@
         </div>
         <span v-if="hasError" class="searchinputfielderror">Dit veld is verplicht</span>
     </div>
-        <!--
-        -->
 </template>
 
 <script>
