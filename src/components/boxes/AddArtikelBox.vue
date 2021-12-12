@@ -23,7 +23,7 @@
                 </div>
             </div>
             <br>    
-            <div class="box" style="background: white; font-weight: 600; color: black; margin-bottom: 35px">
+            <div class="box" style="border: 2px solid lightgrey; background: white; font-weight: 600; color: black; margin-bottom: 35px">
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <SaveBottomBar @save="handleSubmit(onSubmit)" @cancel="close" />
+            <ButtonsBottomBar ref="buttonBottomBar" @save="handleSubmit(onSubmit)" @cancel="close" @deleteItem="deleteItem" />
         </ValidationObserver>
     </div>
   </div>
@@ -50,8 +50,9 @@ import ValidatedSearch from "../../components/inputfields/ValidatedSearch.vue"
 import ValidatedTextInput from "../../components/inputfields/ValidatedTextInput.vue"
 import TextInput from "../../components/inputfields/TextInput.vue"
 import ArtikelsModal from "../../modals/ArtikelsModal.vue"
-import SaveBottomBar from "../../components/general/SaveBottomBar.vue"
+import ButtonsBottomBar from "../../components/general/ButtonsBottomBar.vue"
 import UtilsFactory from '../../logic/utils/utilsFactory';
+import ViewStates from "../../logic/constants/viewStates"
 
 export default {
     name: "AddArtikelBox",
@@ -61,10 +62,12 @@ export default {
         ValidatedSearch,
         ValidatedTextInput,
         TextInput,
-        SaveBottomBar
+        ButtonsBottomBar
     },
     data(){
         return {
+            id: 1,
+            type: null,
             artikel: {
                 id: null,
                 artikelcode: null,
@@ -92,7 +95,6 @@ export default {
     },
     methods: {
         chooseArtikel(item){
-            this.artikel.id = item.id
             this.artikel.prijs = item.prijs
             this.artikel.naam = item.naam
             this.artikel.memo = item.memo
@@ -100,8 +102,39 @@ export default {
             this.$refs.validatedSearchArtikelField.setValue(item.artikelcode);
         },
         onSubmit(){
+            this.artikel.totaal = this.calculateTotaal
+            if(this.type === ViewStates.ADD) {
+                this.artikel.id = this.id
+                this.id++
+            }
             this.$emit("addArtikelToList", UtilsFactory.copyObject(this.artikel))
             this.clear()
+        },
+        setArtikel(item){
+            /*
+            this.artikel.id = item.id
+            this.artikelcode = item.artikelcode
+            this.artikel.naam = item.naam
+            this.artikel.memo = item.memo
+            this.artikel.prijs = item.prijs
+            this.artikel.hoeveelheid = item.hoeveelheid
+            this.artikel.korting_een = item.korting_een
+            this.artikel.korting_twee = item.korting_twee
+            this.artikel.totaal = item.totaal
+            */
+           console.log("--- Id start update ---");
+           console.log(this.id);
+           this.artikel = UtilsFactory.copyObject(item)
+           this.$refs.validatedSearchArtikelField.setValue(item.artikelcode);
+        },
+        setType(value){
+            if(value === ViewStates.ADD) this.$refs.buttonBottomBar.setIsUpdate(false)
+            else this.$refs.buttonBottomBar.setIsUpdate(true)
+            this.type = value
+        },
+        deleteItem(){
+            this.$emit("deleteArtikelFromList", UtilsFactory.copyObject(this.artikel))
+            //this.clear()
         },
         close(){
             this.clear()
@@ -119,21 +152,6 @@ export default {
             this.artikel.totaal = 0
             this.$refs.validatedSearchArtikelField.setValue(null);
         },
-        setArtikel(item){
-            /*
-            this.artikel.id = item.id
-            this.artikelcode = item.artikelcode
-            this.artikel.naam = item.naam
-            this.artikel.memo = item.memo
-            this.artikel.prijs = item.prijs
-            this.artikel.hoeveelheid = item.hoeveelheid
-            this.artikel.korting_een = item.korting_een
-            this.artikel.korting_twee = item.korting_twee
-            this.artikel.totaal = item.totaal
-            */
-           this.artikel = item
-            this.$refs.validatedSearchArtikelField.setValue(item.artikelcode);
-        }
     }
 
 }

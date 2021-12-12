@@ -44,9 +44,9 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <SmallHeaderAdder title="Artikels" @add="addArtikel" />
             <div>
-                <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" />
+                <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" @deleteArtikelFromList="deleteArtikelFromList" />
             </div>
-            <b-table @dblclick="updateArtikel" :data="aankoop.artikels" :columns="columns">
+            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.artikels" :columns="columns">
                 <!--
                 <b-table-column width="12%" field="artikel_nr" label="Artikelcode" v-slot="props" sortable>
                     {{ props.row.artikelcode }}
@@ -78,71 +78,12 @@
                 </template>
             </b-table>
         </div>
-        <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-            <SmallTitle text="Totaal" />
-            <br>
-            <div class="box" style="background: #4834d4; font-weight: 600; color: white;">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <p>Subtotaal (zonder BTW)</p>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item">
-                            <p>140.95 EUR</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="box" style="background: #EA2027; font-weight: 600; color: white;">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <p>BTW</p>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item">
-                            <p>12%</p>
-                        </div>
-                    </div>
-                </div>
-            </div>            
-            <div class="box" style="background: #130f40; font-weight: 600; color: white;">
-                <div class="level">
-                    <div class="level-left">
-                        <div class="level-item">
-                            <p>Totaal</p>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item">
-                            <p>157.86 EUR</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <TotalBox :subtotaal="subtotaal" :btw="btw" :totaal="totaal" />
         </div>
     </div>
-    <div class="box">
-        <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-            <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <SmallTitle text="Opmerking" />
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <b-tooltip label="Een opmerking voor intern gebruik, deze opmerking verschijnt niet op de factuur." type="is-info is-light" position="is-left" multilined>
-                            <i class='bx bx-info-circle bx-sm custom-opmerking-info' ></i>
-                        </b-tooltip>
-                    </div>
-                </div>
-            </div>
-            <textarea placeholder="..." v-model="aankoop.opmerking" class="multilinetextareainputfieldinput" rows="4" cols="50"/>
-        </div>
+    <div>
+        <OpmerkingBox />
     </div>
   </div>
 </template>
@@ -162,11 +103,16 @@ import LeverancierModal from '../../modals/LeverancierModal.vue';
 import MultilineTextInput from "../../components/inputfields/MultilineTextInput.vue"
 import AdresSearch from "../../components/inputfields/AdresSearch.vue"
 import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue"
-import SmallTitle from "../../components/textfields/SmallTitle.vue"
+//import SmallTitle from "../../components/textfields/SmallTitle.vue"
 import AankopenController from "../../api/calls/aankopen"
 import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectInput.vue"
 import AddArtikelBox from '../../components/boxes/AddArtikelBox.vue';
-
+import UtilsFactory from '../../logic/utils/utilsFactory';
+import ViewStates from '../../logic/constants/viewStates';
+import ModalFactory from '../../logic/factories/modalFactory';
+import ConfirmationModal from '../../modals/ConfirmationModal.vue';
+import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
+import TotalBox from "../../components/boxes/TotalBox.vue"
 export default {
     name: "AankopenCreateview",
     mixins: [socketMixin],
@@ -179,8 +125,29 @@ export default {
         AdresSearch,
         MultilineTextInput,
         SmallHeaderAdder,
-        SmallTitle,
-        AddArtikelBox
+        //SmallTitle,
+        AddArtikelBox,
+        OpmerkingBox,
+        TotalBox
+    },
+    computed: {
+        subtotaal(){
+            if(this.aankoop.artikels.length != 0){
+                return UtilsFactory.sum(this.aankoop.artikels, "totaal");   
+            }
+            return 0
+        },
+        btw() {
+            const value = UtilsFactory.searchValueById(this.btws, this.aankoop.btw_id)
+            console.log(value);
+            if(value) return value
+            return "..."
+        },
+        totaal(){
+            if(this.btw === "...") return 0
+            if(this.subtotaal === 0) return 0
+            return UtilsFactory.addPercentage(this.subtotaal, this.btw)
+        }
     },
     data: () => ({
         aankoop: {
@@ -212,6 +179,7 @@ export default {
             opmerking: null,
             artikels: []
         },
+        tableKey: 0,
         btws: [],
         selectedKlant: null,
         isArtikelBoxShown: false,
@@ -274,15 +242,50 @@ export default {
             this.$refs.validatedSearchLeverancierField.setValue(item.naam);
         },
         addArtikelToList(item){
-            this.aankoop.artikels.push(item)
+            const index = UtilsFactory.searchIndexById(this.aankoop.artikels, item)
+            if(index == -1) this.aankoop.artikels.push(item)
+            else {
+                console.log("Found");
+                
+                //this.aankoop.artikels[index] = item
+                console.log(this.aankoop.artikels[index]);
+                this.aankoop.artikels[index].id = item.id
+                this.aankoop.artikels[index].artikelcode = item.artikelcode
+                this.aankoop.artikels[index].naam = item.naam
+                this.aankoop.artikels[index].memo = item.memo
+                this.aankoop.artikels[index].prijs = item.prijs
+                this.aankoop.artikels[index].hoeveelheid = item.hoeveelheid
+                this.aankoop.artikels[index].korting_een = item.korting_een
+                this.aankoop.artikels[index].korting_twee = item.korting_twee
+                this.aankoop.artikels[index].totaal = item.totaal
+                
+               //this.aankoop.artikels[index] = item
+               this.tableKey++
+               //this.$forceUpdate();
+
+            } 
             this.closeArtikelBox()
+        },
+        deleteArtikelFromList(item){
+            ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit artikel wilt verwijderen?", null, (isConfirmed) => {
+                if (isConfirmed) {
+                    //UtilsFactory.deleteItemFromList(this.list, adres.id);
+                    UtilsFactory.deleteItemFromList(this.aankoop.artikels, item.id)
+                    this.closeArtikelBox()
+                    this.$refs.addArtikelBox.clear()
+
+                }
+            });
         },
         onSubmit(){},
         addArtikel(){
+            this.$refs.addArtikelBox.setType(ViewStates.ADD);
             this.isArtikelBoxShown = true;
         },
         updateArtikel(row){
+            this.$refs.addArtikelBox.setType(ViewStates.UPDATE);
             this.$refs.addArtikelBox.setArtikel(row);
+
             this.isArtikelBoxShown = true;
         },
         closeArtikelBox(){

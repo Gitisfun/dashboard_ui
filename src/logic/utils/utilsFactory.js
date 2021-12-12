@@ -29,6 +29,31 @@ class UtilsFactory {
     return "";
   }
 
+  static searchValueById(list, id){
+    for(let i = 0; i < list.length; i++){
+      if(list[i].id === id){
+        return list[i].prijs
+      }
+    }
+    return null  }
+
+  static searchIndexById(list, obj){
+    for(let i = 0; i < list.length; i++){
+      if(list[i].id === obj.id){
+        return i
+      }
+    }
+    return -1
+  }
+  
+  static sum(list, field){
+    let sum = 0
+    for(let i = 0; i < list.length; i++){
+      sum += list[i][field]
+    }
+    return sum
+  }
+
   static max(list){
     let highest = 0;
     for(let i = 0; i < list.length; i++){
@@ -53,6 +78,10 @@ class UtilsFactory {
 
   static substractPercentage(number, percentage){
     return number - (number * percentage)
+  }
+
+  static addPercentage(number, percentage){
+    return number + (number * percentage)
   }
 }
 
