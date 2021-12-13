@@ -32,7 +32,7 @@
                     </div>
                     <div class="level-right">
                         <div class="level-item">
-                            <p>{{ calculateTotaal }} EUR</p>
+                            <p>{{ calculateTotaal | currencyFormatter }}</p>
                         </div>
                     </div>
                 </div>

@@ -46,8 +46,8 @@
             <div>
                 <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" @deleteArtikelFromList="deleteArtikelFromList" />
             </div>
-            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.artikels" :columns="columns">
-                <!--
+            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.artikels">
+
                 <b-table-column width="12%" field="artikel_nr" label="Artikelcode" v-slot="props" sortable>
                     {{ props.row.artikelcode }}
                 </b-table-column>
@@ -64,15 +64,15 @@
                     {{ props.row.hoeveelheid }}
                 </b-table-column>
                 <b-table-column width="12%" field="korting_een" label="Korting I" v-slot="props" sortable>
-                    {{ props.row.korting_een }}
+                    {{ props.row.korting_een | kortingFormatter }}
                 </b-table-column>
                 <b-table-column width="12%" field="korting_twee" label="Korting I" v-slot="props" sortable>
-                    {{ props.row.korting_twee }}
+                    {{ props.row.korting_twee | kortingFormatter }}
                 </b-table-column>
                 <b-table-column width="12%" field="totaal" label="Totaal" v-slot="props" sortable>
-                    {{ props.row.totaal }}
+                    {{ props.row.totaal | currencyFormatter }}
                 </b-table-column>
-                -->
+
                 <template #empty>
                     <div class="custom-table-empty">Nog geen artikels toegevoegd...</div>
                 </template>
