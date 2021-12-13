@@ -127,14 +127,14 @@ export default {
 }
 
 #input-search-box{
-
-    float: right;
-    vertical-align: middle;
-    line-height: 35px;
+  float: right;
+  vertical-align: middle;
+  line-height: 35px;
 }
 
 #input-search-box:hover{
   color: grey;
+  cursor: pointer;
 }
 
 #input-search-box:active{

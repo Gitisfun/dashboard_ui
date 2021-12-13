@@ -7,7 +7,7 @@
         <b-tooltip class="multilineicon" label="Klik hier om een adres te zoeken" type="is-info is-light" position="is-left" multilined>
           -->
           <div @click="openModal">
-            <i class='bx bx-search-alt multilineicon' style="cursor: pointer" ></i>
+            <i class='bx bx-search-alt multilineicon'></i>
           </div>
        <!-- </b-tooltip> -->
     </div>
@@ -102,6 +102,11 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.multilineicon:hover{
+  cursor: pointer;
+  color: grey;
 }
 </style>
 
