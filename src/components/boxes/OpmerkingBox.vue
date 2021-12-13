@@ -32,6 +32,7 @@ export default {
         return {
             text: null
         }
-    }
+    },
+    
 }
 </script>

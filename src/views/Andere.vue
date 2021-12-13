@@ -68,78 +68,78 @@ export default {
                     id: 1,
                     name: "BTW",
                     columns: [
-                    {
-                        field: 'naam',
-                        label: 'Btw',
-                    },
-                    {
-                        field: 'prijs',
-                        label: 'Prijs',
-                    },
-                    {
-                        field: 'time',
-                        label: 'Tijdstip',
-                    },
-                    {
-                        field: 'date',
-                        label: 'Datum',
-                    },
-                    {
-                        field: 'user',
-                        label: 'Door',
-                    }
+                        {
+                            field: 'naam',
+                            label: 'Btw',
+                        },
+                        {
+                            field: 'prijs',
+                            label: 'Prijs',
+                        },
+                        {
+                            field: 'time',
+                            label: 'Tijdstip',
+                        },
+                        {
+                            field: 'date',
+                            label: 'Datum',
+                        },
+                        {
+                            field: 'user',
+                            label: 'Door',
+                        }
                     ]
                 },
                  {
                     id: 2,
                     name: "Betalingstermijnen",
                     columns: [
-                    {
-                        field: 'naam',
-                        label: 'Betalingstermijn',
-                    },
-                    {
-                        field: 'termijn',
-                        label: 'Dagen',
-                    },
-                    {
-                        field: 'time',
-                        label: 'Tijdstip',
-                    },
-                    {
-                        field: 'date',
-                        label: 'Datum',
-                    },
-                    {
-                        field: 'user',
-                        label: 'Door',
-                    }
+                        {
+                            field: 'naam',
+                            label: 'Betalingstermijn',
+                        },
+                        {
+                            field: 'termijn',
+                            label: 'Dagen',
+                        },
+                        {
+                            field: 'time',
+                            label: 'Tijdstip',
+                        },
+                        {
+                            field: 'date',
+                            label: 'Datum',
+                        },
+                        {
+                            field: 'user',
+                            label: 'Door',
+                        }
                     ]
                 },
                  {
                     id: 3,
                     name: "Teksten",
                     columns: [
-                    {
-                        field: 'tekst',
-                        label: 'Tekst voor klant',
-                    },
-                    {
-                        field: 'type',
-                        label: 'Type',
-                    },
-                    {
-                        field: 'time',
-                        label: 'Tijdstip',
-                    },
-                    {
-                        field: 'date',
-                        label: 'Datum',
-                    },
-                    {
-                        field: 'user',
-                        label: 'Door',
-                    }
+                        {
+                            field: 'tekst',
+                            label: 'Tekst voor klant',
+                        },
+                        {
+                            field: 'type',
+                            label: 'Type',
+                        },
+                        {
+                            field: 'time',
+                            label: 'Tijdstip',
+                        },
+                        {
+                            field: 'date',
+                            label: 'Datum',
+                        },
+                        {
+                            field: 'user',
+                            label: 'Door',
+                        }
                     ]
                 }
             ]

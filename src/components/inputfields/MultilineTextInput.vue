@@ -6,13 +6,18 @@
       <!--
         <b-tooltip class="multilineicon" label="Klik hier om een adres te zoeken" type="is-info is-light" position="is-left" multilined>
           -->
-          <i class='bx bx-search-alt multilineicon' style="cursor: pointer" ></i>
+          <div @click="openModal">
+            <i class='bx bx-search-alt multilineicon' style="cursor: pointer" ></i>
+          </div>
        <!-- </b-tooltip> -->
     </div>
   </div>
 </template>
 
 <script>
+import ModalFactory from "../../logic/factories/modalFactory";
+import TekstChooseModal from "../../modals/TekstChooseModal.vue"
+
 export default {
   name: "MultilineTextInput",
   props: {
@@ -44,10 +49,24 @@ export default {
     },
   },
   created() {
+    this.searchModal = TekstChooseModal
     if (this.value) {
       this.innerValue = this.value;
     }
   },
+  methods: {
+    setModal(modal){
+      this.searchModal = modal
+    },
+    setValue(value){
+      this.currentValue = value
+    },
+    openModal(){
+      ModalFactory.showModal(this, this.searchModal, (item) => {
+        this.$emit("choose", item)
+      })
+    }
+  }
 };
 </script>
 

@@ -123,20 +123,23 @@ $link-focus-border: $primary;
 
 <style>
 :root{
+  
   /*
-  --mytextcolor: white;
+    --mytextcolor: white;
   --mysidebarcolor: black;
   --mytooltipcolortext: orange;
   --mytooltipcolor: red;
   --myhovercolor: white;
   --myhovercolortext: black;
   */
+
   --mytextcolor: black;
   --mysidebarcolor: white;
   --mytooltipcolortext: white;
   --mytooltipcolor: black;
   --myhovercolor: black;
   --myhovercolortext: white;
+
 }
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
 * {
@@ -401,11 +404,15 @@ body {
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
   background: #ecf0f1;
   background: #1abc9c;
-  background: #3498db;
   background: #f1c40f;
   background: #ffbe76;
   background: #ea8685;
-  background: #f7d794
+  background: #f7d794;
+  background: #3498db;
+  background: #130f40;
+  background: lightgray;
+  background: lightcyan;
+  background: lightblue;
 }
 
 .content-body {
@@ -420,11 +427,15 @@ body {
   background: linear-gradient(45deg,#dff9fb, #81ecec, #c7ecee, #81ecec);
   background: #ecf0f1;
   background: #1abc9c;
-  background: #3498db;
   background: #f1c40f;
   background: #ffbe76;
   background: #ea8685;
-  background: #f7d794
+  background: #f7d794;
+  background: #3498db;
+  background: #130f40;
+  background: lightgray;
+  background: lightcyan;
+  background: lightblue;
 }
 
 

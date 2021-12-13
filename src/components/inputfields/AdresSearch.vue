@@ -12,7 +12,8 @@
             <i class='bx bx-search-alt bx-border adressearch-icon'></i>
         </div>
     </div>
-    <span v-if="hasError" class="searchinputfielderror">Dit veld is verplicht</span>    
+    <span v-if="hasError" class="adressearcherror">Dit veld is verplicht</span>    
+    <span v-if="hasErrorKlant" class="adressearcherror">Selecteer eerst een klant</span>
   </div>
 </template>
 
@@ -31,19 +32,17 @@ export default {
     components: {
       AddressBoxRead
     },
+    computed: {
+        hasErrorKlant(){
+            if(this.isKlantSelected === 0) return false
+            else if(this.isKlantSelected === 1) return true
+            else return false
+        }
+    },
     data(){
         return {
             adressen: [],
             hasError: false,
-            fulladres: {
-                id: 1,
-                straat: "Brusselsesteenweg",
-                huisnummer: "179",
-                bus: null,
-                postcode: "1860",
-                gemeente: "Grimbergen",
-                land: "Belgie"
-            },
             adres: {
                 id: null,
                 straat: null,
@@ -52,7 +51,8 @@ export default {
                 postcode: null,
                 gemeente: null,
                 land: null
-            }
+            },
+            isKlantSelected: 0
         }
     },
     methods: {
@@ -70,15 +70,36 @@ export default {
                     this.adres.postcode = newAdres.postcode;
                     this.adres.gemeente = newAdres.gemeente;
                     this.adres.land = newAdres.land;
+                    this.setError(false)
                 });
             }
             else {
-                // TODO: selecteer eerst een klant
-                console.log("Selecteer eerst een klant...");
+                this.isKlantSelected = 1;
             }
+        },
+        isEmpty(){
+            console.log(this.adres.straat);
+            if(this.adres.straat) return false
+            return true
+        },
+        getAdres(){
+            return this.adres
         },
         setAdressen(item){
             this.adressen = item;
+        },
+        setIsklantSelected(value){
+            this.isKlantSelected = value
+        },
+        clear(){
+            this.adres.id = null
+            this.adres.straat = null
+            this.adres.huisnummer = null
+            this.adres.bus = null
+            this.adres.postcode = null
+            this.adres.gemeente = null
+            this.adres.land = null
+            
         }
     },
 }
@@ -117,6 +138,11 @@ export default {
 .adressearch-icon {
   position: absolute;
   right: 0; 
+}
+
+.adressearcherror {
+  color: red;
+  font-size: 12px;
 }
 
 .adressearch-icon:hover {

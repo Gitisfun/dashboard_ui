@@ -7,14 +7,14 @@
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput type="date" v-model="aankoop.datum" name="Datum" rules="required" />
-                        <ValidatedSearch ref="validatedSearchKlantField" @choose="changeKlant" :value="aankoop.klant_naam" name="Klant" />
+                        <ValidatedSearch ref="klantField" @choose="changeKlant" :value="aankoop.klant_naam" name="Klant" />
                         <ValidatedTextInput v-model="aankoop.leverings_nr" name="Referentie nr." rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.vervaldag" name="Vervaldag" rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.leverdatum" name="Leveringsdatum" rules="required" />
                     </div>
                     <div class="column">
                         <ValidatedTextInput v-model="aankoop.valuta" name="Valuta" rules="required" />
-                        <ValidatedSearch ref="validatedSearchLeverancierField" @choose="changeLeverancier" :value="aankoop.leverancier_naam" name="Leverancier" />
+                        <ValidatedSearch ref="leverancierField" @choose="changeLeverancier" :value="aankoop.leverancier_naam" name="Leverancier" />
                         <ValidatedTextInput v-model="aankoop.incoterm" name="Incoterm" rules="required" />
                         <ValidatedSelectInput v-model="aankoop.btw_id" name="Btw categorie" rules="required">
                             <option v-for="option in btws" :value="option.id" :key="option.id">
@@ -25,18 +25,18 @@
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <AdresSearch ref="validatedSearchAdresFacturatie" text="Facturatie adres" />
+                        <AdresSearch ref="facAdresField" text="Facturatie adres" />
                     </div>
                     <div class="column">
-                        <AdresSearch ref="validatedSearchAdresLeverings" text="Leveringsadres" />
+                        <AdresSearch ref="levAdresField" text="Leveringsadres" />
                     </div>
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <MultilineTextInput v-model="aankoop.begintekst" name="Begintekst" />
+                        <MultilineTextInput @choose="chooseBeginTekst" :value="aankoop.begintekst" name="Begintekst" />
                     </div>
                     <div class="column">
-                        <MultilineTextInput v-model="aankoop.eindtekst" name="Eindtekst" />
+                        <MultilineTextInput @choose="chooseEindTekst" :value="aankoop.eindtekst" name="Eindtekst" />
                     </div>
                 </div>
             </ValidationObserver>
@@ -77,13 +77,14 @@
                     <div class="custom-table-empty">Nog geen artikels toegevoegd...</div>
                 </template>
             </b-table>
+            <span v-if="hasError" class="artikeltableerror">Kies minstens een artikel</span>
         </div>
         <div>
             <TotalBox :subtotaal="subtotaal" :btw="btw" :totaal="totaal" />
         </div>
     </div>
     <div>
-        <OpmerkingBox />
+        <OpmerkingBox :text=aankoop.opmerking />
     </div>
   </div>
 </template>
@@ -113,6 +114,8 @@ import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from '../../modals/ConfirmationModal.vue';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import TotalBox from "../../components/boxes/TotalBox.vue"
+import { artikelColumns } from "../../logic/constants/table"
+
 export default {
     name: "AankopenCreateview",
     mixins: [socketMixin],
@@ -128,7 +131,7 @@ export default {
         //SmallTitle,
         AddArtikelBox,
         OpmerkingBox,
-        TotalBox
+        TotalBox,
     },
     computed: {
         subtotaal(){
@@ -183,72 +186,52 @@ export default {
         btws: [],
         selectedKlant: null,
         isArtikelBoxShown: false,
-        columns: [
-            {
-                field: 'artikelcode',
-                label: 'Artikel nr',
-            },
-            {
-                field: 'naam',
-                label: 'Artikel',
-            },
-            {
-                field: 'memo',
-                label: 'Memo',
-            },
-            {
-                field: 'prijs',
-                label: 'Prijs',
-            },
-            {
-                field: 'hoeveelheid',
-                label: 'Aantal',
-            },
-            {
-                field: 'korting_een',
-                label: 'Korting 1',
-            },
-            {
-                field: 'korting_twee',
-                label: 'Korting 2',
-            },
-            {
-                field: 'totaal',
-                label: 'Totaal',
-            }
-        ]    
+        columns: [],
+        hasError: false
     }),
+    created(){
+        this.columns = artikelColumns
+    },
     mounted(){
         AankopenController.getPreData(this, (res) => {
             this.btws = res[0].data
         })
-        this.$refs.validatedSearchKlantField.setModal(KlantModal);
-        this.$refs.validatedSearchLeverancierField.setModal(LeverancierModal);
+        this.$refs.klantField.setModal(KlantModal);
+        this.$refs.leverancierField.setModal(LeverancierModal);
     },
     methods: {
         changeKlant(item){
             this.aankoop.klant_id = item.id
             this.aankoop.klant_naam = item.naam
-            this.$refs.validatedSearchKlantField.setValue(item.naam);
+            this.$refs.klantField.setValue(item.naam);
             KlantenController.getKlant(this, item.id, (res) => { 
                 this.selectedKlant = res.data[0]
-                this.$refs.validatedSearchAdresFacturatie.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
-                this.$refs.validatedSearchAdresLeverings.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
+                this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
+                this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
              })
+            this.$refs.facAdresField.setIsklantSelected(2);
+            this.$refs.levAdresField.setIsklantSelected(2);
+            this.aankoop.factuuradres = null
+            this.aankoop.leveradres = null
+            this.$refs.facAdresField.clear();
+            this.$refs.levAdresField.clear();
         },
         changeLeverancier(item){
             this.aankoop.leverancier_id = item.id
             this.aankoop.leverancier_naam = item.naam
-            this.$refs.validatedSearchLeverancierField.setValue(item.naam);
+            this.$refs.leverancierField.setValue(item.naam);
+        },
+        chooseBeginTekst(item){
+            this.aankoop.begintekst = item.tekst
+        },
+        chooseEindTekst(item){
+            this.aankoop.eindtekst = item.tekst
         },
         addArtikelToList(item){
+            this.hasError = false
             const index = UtilsFactory.searchIndexById(this.aankoop.artikels, item)
             if(index == -1) this.aankoop.artikels.push(item)
             else {
-                console.log("Found");
-                
-                //this.aankoop.artikels[index] = item
-                console.log(this.aankoop.artikels[index]);
                 this.aankoop.artikels[index].id = item.id
                 this.aankoop.artikels[index].artikelcode = item.artikelcode
                 this.aankoop.artikels[index].naam = item.naam
@@ -258,11 +241,7 @@ export default {
                 this.aankoop.artikels[index].korting_een = item.korting_een
                 this.aankoop.artikels[index].korting_twee = item.korting_twee
                 this.aankoop.artikels[index].totaal = item.totaal
-                
-               //this.aankoop.artikels[index] = item
-               this.tableKey++
-               //this.$forceUpdate();
-
+                this.tableKey++
             } 
             this.closeArtikelBox()
         },
@@ -277,7 +256,14 @@ export default {
                 }
             });
         },
-        onSubmit(){},
+        onSubmit(){
+            console.log(this.$refs.facAdresField.getAdres());
+            if(!this.aankoop.klant_id) this.$refs.klantField.setError(true)
+            if(!this.aankoop.leverancier_id) this.$refs.leverancierField.setError(true)
+            if(this.$refs.facAdresField.isEmpty()) this.$refs.facAdresField.setError(true);
+            if(this.$refs.levAdresField.isEmpty()) this.$refs.levAdresField.setError(true);
+            if(this.aankoop.artikels.length === 0) this.hasError = true;
+        },
         addArtikel(){
             this.$refs.addArtikelBox.setType(ViewStates.ADD);
             this.isArtikelBoxShown = true;
@@ -290,7 +276,7 @@ export default {
         },
         closeArtikelBox(){
             this.isArtikelBoxShown = false;
-        }
+        },
     }
 }
 </script>
@@ -315,5 +301,9 @@ export default {
     padding-right: 15px;
     border-radius: 6px;
     outline: none;
+}
+.artikeltableerror{
+    color: red;
+    font-size: 12px;
 }
 </style>
