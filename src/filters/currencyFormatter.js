@@ -1,3 +1,3 @@
 export default function currencyFormatter (value) {
-    return `€ ${value.toFixed(2)}`
+    return `€ ${parseFloat(value).toFixed(2)}`
 }
