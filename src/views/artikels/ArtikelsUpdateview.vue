@@ -30,11 +30,11 @@
             <InfoField text="Verkoopeenheid:" />
           </div>
           <div class="column">
-            <InfoFieldValue :text="artikel.prijs" />
+            <InfoFieldValue :text="`€ ${artikel.prijs}`" />
             <InfoFieldValue :text="artikel.valuta" />
-            <InfoFieldValue :text="artikel.netto" />
-            <InfoFieldValue :text="artikel.kosten" />
-            <InfoFieldValue :text="artikel.marge" />
+            <InfoFieldValue :text="`€ ${artikel.netto}`" />
+            <InfoFieldValue :text="`€ ${artikel.kosten}`" />
+            <InfoFieldValue :text="`€ ${artikel.marge}`" />
             <InfoFieldValue :text="artikel.verkoopeenheid" />
           </div>
         </div>

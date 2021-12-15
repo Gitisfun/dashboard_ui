@@ -8,7 +8,7 @@
                     <div class="column">
                         <ValidatedTextInput type="date" v-model="aankoop.datum" name="Datum" rules="required" />
                         <ValidatedSearch ref="klantField" @choose="changeKlant" :value="aankoop.klant_naam" name="Klant" />
-                        <ValidatedTextInput v-model="aankoop.leverings_nr" name="Referentie nr." rules="required" />
+                        <ValidatedTextInput v-model="aankoop.ref_nr" name="Referentie nr." rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.vervaldag" name="Vervaldag" rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.leverdatum" name="Leveringsdatum" rules="required" />
                     </div>
@@ -152,12 +152,11 @@ export default {
     },
     data: () => ({
         aankoop: {
-            factuur_nr: null,
+            bestellings_nr: null,
             datum: null,
             klant_id: null,
             klant_naam: null,
             leverings_nr: null,
-            bestel_nr: null,
             btw_id: null,
             vervaldag: null,
             leverdatum: null,
@@ -261,6 +260,7 @@ export default {
             if(this.$refs.facAdresField.isEmpty()) this.$refs.facAdresField.setError(true);
             if(this.$refs.levAdresField.isEmpty()) this.$refs.levAdresField.setError(true);
             if(this.aankoop.artikels.length === 0) this.hasError = true;
+            console.log(this.aankoop);
         },
         addArtikel(){
             this.$refs.addArtikelBox.setType(ViewStates.ADD);

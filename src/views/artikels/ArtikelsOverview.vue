@@ -27,7 +27,6 @@
           {{ props.row.artikelcode }}
         </b-table-column>
 
-
         <b-table-column width="16%" field="naam" label="Naam" v-slot="props" sortable>
           {{ props.row.naam }}
         </b-table-column>

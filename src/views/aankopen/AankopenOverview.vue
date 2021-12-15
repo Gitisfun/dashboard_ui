@@ -94,10 +94,10 @@ export default {
   },
   methods: {
     changeDelivered(value, id){
-      AankopenController.delivered(this, { id: id, inStock: value }, this.socket)
+      AankopenController.delivered(this, { id: id, isGeleverd: value }, this.socket)
     },
     changePaid(value, id){
-      AankopenController.paid(this, { id: id, inStock: value }, this.socket)
+      AankopenController.paid(this, { id: id, isBetaald: value }, this.socket)
     },
   },
 };
