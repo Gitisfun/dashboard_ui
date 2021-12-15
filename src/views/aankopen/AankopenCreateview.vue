@@ -4,17 +4,18 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <ValidationObserver v-slot="{ handleSubmit }">
                 <CreateHeader title="Nieuwe bestelling" @save="handleSubmit(onSubmit)" />
+                <b-button @click="test">Show it</b-button>
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput type="date" v-model="aankoop.datum" name="Datum" rules="required" />
-                        <ValidatedSearch ref="klantField" @choose="changeKlant" :value="aankoop.klant_naam" name="Klant" />
+                        <ValidatedSearchInput @changeto="changeKlant" ref="klantField" v-model="aankoop.klant_naam" name="Klant" rules="required" />
                         <ValidatedTextInput v-model="aankoop.ref_nr" name="Referentie nr." rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.vervaldag" name="Vervaldag" rules="required" />
                         <ValidatedTextInput type="date" v-model="aankoop.leverdatum" name="Leveringsdatum" rules="required" />
                     </div>
                     <div class="column">
                         <ValidatedTextInput v-model="aankoop.valuta" name="Valuta" rules="required" />
-                        <ValidatedSearch ref="leverancierField" @choose="changeLeverancier" :value="aankoop.leverancier_naam" name="Leverancier" />
+                        <ValidatedSearchInput ref="leverancierField" v-model="aankoop.leverancier_naam" name="Leverancier" rules="required" />
                         <ValidatedTextInput v-model="aankoop.incoterm" name="Incoterm" rules="required" />
                         <ValidatedSelectInput v-model="aankoop.btw_id" name="Btw categorie" rules="required">
                             <option v-for="option in btws" :value="option.id" :key="option.id">
@@ -93,10 +94,10 @@
 import CreateHeader from "../../components/general/CreateHeader.vue";
 import { ValidationObserver } from "vee-validate";
 import ValidatedTextInput from "../../components/inputfields/ValidatedTextInput.vue";
+import ValidatedSearchInput from "../../components/inputfields/ValidatedSearchInput.vue"
 //import ArtikelsController from "../../api/calls/artikels"
 import KlantenController from "../../api/calls/klanten"
 import socketMixin from "../../mixins/socketMixin"
-import ValidatedSearch from '../../components/inputfields/ValidatedSearch.vue';
 import KlantModal from "../../modals/KlantModal.vue"
 import LeverancierModal from '../../modals/LeverancierModal.vue';
 import MultilineTextInput from "../../components/inputfields/MultilineTextInput.vue"
@@ -122,7 +123,7 @@ export default {
         ValidationObserver,
         ValidatedTextInput,
         ValidatedSelectInput,
-        ValidatedSearch,
+        ValidatedSearchInput,
         AdresSearch,
         MultilineTextInput,
         SmallHeaderAdder,
@@ -197,26 +198,22 @@ export default {
         this.$refs.leverancierField.setModal(LeverancierModal);
     },
     methods: {
-        changeKlant(item){
-            this.aankoop.klant_id = item.id
-            this.aankoop.klant_naam = item.naam
-            this.$refs.klantField.setValue(item.naam);
-            KlantenController.getKlant(this, item.id, (res) => { 
-                this.selectedKlant = res.data[0]
-                this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
-                this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
-             })
-            this.$refs.facAdresField.setIsklantSelected(2);
-            this.$refs.levAdresField.setIsklantSelected(2);
-            this.aankoop.factuuradres = null
-            this.aankoop.leveradres = null
-            this.$refs.facAdresField.clear();
-            this.$refs.levAdresField.clear();
+        test(){
+            console.log("Test it");
+            console.log("-------");
+            console.log(this.aankoop.leverancier_naam);
+            console.log("-------");
         },
-        changeLeverancier(item){
-            this.aankoop.leverancier_id = item.id
-            this.aankoop.leverancier_naam = item.naam
-            this.$refs.leverancierField.setValue(item.naam);
+        changeKlant(item){
+            console.log(item);
+            this.clearAdressen()
+            if(item){
+                KlantenController.getKlant(this, item.id, (res) => { 
+                    this.selectedKlant = res.data[0]
+                    this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
+                    this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
+                })
+            }
         },
         chooseBeginTekst(item){
             this.aankoop.begintekst = item.tekst
@@ -249,14 +246,11 @@ export default {
                     UtilsFactory.deleteItemFromList(this.aankoop.artikels, item.id)
                     this.closeArtikelBox()
                     this.$refs.addArtikelBox.clear()
-
                 }
             });
         },
         onSubmit(){
             console.log(this.$refs.facAdresField.getAdres());
-            if(!this.aankoop.klant_id) this.$refs.klantField.setError(true)
-            if(!this.aankoop.leverancier_id) this.$refs.leverancierField.setError(true)
             if(this.$refs.facAdresField.isEmpty()) this.$refs.facAdresField.setError(true);
             if(this.$refs.levAdresField.isEmpty()) this.$refs.levAdresField.setError(true);
             if(this.aankoop.artikels.length === 0) this.hasError = true;
@@ -269,12 +263,17 @@ export default {
         updateArtikel(row){
             this.$refs.addArtikelBox.setType(ViewStates.UPDATE);
             this.$refs.addArtikelBox.setArtikel(row);
-
             this.isArtikelBoxShown = true;
         },
         closeArtikelBox(){
             this.isArtikelBoxShown = false;
         },
+        clearAdressen(){
+            this.aankoop.factuuradres = null
+            this.aankoop.leveradres = null
+            this.$refs.facAdresField.clear();
+            this.$refs.levAdresField.clear();
+        }
     }
 }
 </script>
