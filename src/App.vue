@@ -410,9 +410,9 @@ body {
   background: #f7d794;
   background: #3498db;
   background: #130f40;
-  background: lightgray;
   background: lightcyan;
   background: lightblue;
+  background: #c7ecee;
 }
 
 .content-body {
@@ -433,9 +433,9 @@ body {
   background: #f7d794;
   background: #3498db;
   background: #130f40;
-  background: lightgray;
   background: lightcyan;
   background: lightblue;
+  background: #c7ecee;
 }
 
 

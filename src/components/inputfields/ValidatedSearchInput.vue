@@ -53,9 +53,6 @@ export default {
         fullObject: null
     }
   },
-  created(){
-    this.innerValue = this.value
-  },
   watch: {
     innerValue(val) {
       // allows us to use v-model on our input.

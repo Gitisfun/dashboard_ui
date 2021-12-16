@@ -34,10 +34,10 @@
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <MultilineTextInput @choose="chooseBeginTekst" :value="aankoop.begintekst" name="Begintekst" />
+                        <MultilineTextInput v-model="aankoop.begintekst" name="Begintekst" />
                     </div>
                     <div class="column">
-                        <MultilineTextInput @choose="chooseEindTekst" :value="aankoop.eindtekst" name="Eindtekst" />
+                        <MultilineTextInput v-model="aankoop.eindtekst" name="Eindtekst" />
                     </div>
                 </div>
             </ValidationObserver>
@@ -214,12 +214,6 @@ export default {
                     this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
                 })
             }
-        },
-        chooseBeginTekst(item){
-            this.aankoop.begintekst = item.tekst
-        },
-        chooseEindTekst(item){
-            this.aankoop.eindtekst = item.tekst
         },
         addArtikelToList(item){
             this.hasError = false

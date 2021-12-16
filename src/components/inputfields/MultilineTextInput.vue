@@ -34,9 +34,11 @@ export default {
       default: "text",
     },
   },
-  data: () => ({
-    innerValue: "",
-  }),
+  data(){ 
+    return {
+      innerValue: null,
+    }
+  },
   watch: {
     // Handles internal model changes.
     innerValue(val) {
@@ -58,12 +60,10 @@ export default {
     setModal(modal){
       this.searchModal = modal
     },
-    setValue(value){
-      this.currentValue = value
-    },
     openModal(){
       ModalFactory.showModal(this, this.searchModal, (item) => {
-        this.$emit("choose", item)
+        console.log(item);
+        this.innerValue = item.tekst
       })
     }
   }
