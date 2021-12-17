@@ -13,7 +13,7 @@
         </div>
     </div>
     <span v-if="hasError" class="adressearcherror">Dit veld is verplicht</span>    
-    <span v-if="hasErrorKlant" class="adressearcherror">Selecteer eerst een klant</span>
+    <span v-if="hasErrorKlant && !firstLoad" class="adressearcherror">Selecteer eerst een klant</span>
   </div>
 </template>
 
@@ -27,6 +27,9 @@ export default {
     props: {
         text: {
             type: String
+        },
+        klant: {
+            type: String
         }
     },
     components: {
@@ -34,15 +37,15 @@ export default {
     },
     computed: {
         hasErrorKlant(){
-            if(this.isKlantSelected === 0) return false
-            else if(this.isKlantSelected === 1) return true
-            else return false
+            if(!this.klant) return true
+            return false
         }
     },
     data(){
         return {
             adressen: [],
             hasError: false,
+            firstLoad: true,
             adres: {
                 id: null,
                 straat: null,
@@ -52,7 +55,6 @@ export default {
                 gemeente: null,
                 land: null
             },
-            isKlantSelected: 0
         }
     },
     methods: {
@@ -60,6 +62,9 @@ export default {
             this.hasError = value
         },
         openModal(){
+            if(this.firstLoad){
+                this.firstLoad = false;
+            }
             if(this.adressen.length != 0){
                 console.log("Open modal...");
                 ModalFactory.showModalWithParamas(this, AddressChooseModal, "Adres kiezen", this.adressen, (newAdres) => {
@@ -73,12 +78,8 @@ export default {
                     this.setError(false)
                 });
             }
-            else {
-                this.isKlantSelected = 1;
-            }
         },
         isEmpty(){
-            console.log(this.adres.straat);
             if(this.adres.straat) return false
             return true
         },
@@ -87,9 +88,6 @@ export default {
         },
         setAdressen(item){
             this.adressen = item;
-        },
-        setIsklantSelected(value){
-            this.isKlantSelected = value
         },
         clear(){
             this.adres.id = null

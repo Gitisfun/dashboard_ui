@@ -2,7 +2,7 @@ import { extend } from "vee-validate";
 import { required, required_if, confirmed, numeric, min, email, alpha_num } from "vee-validate/dist/rules";
 import { setInteractionMode } from 'vee-validate';
 
-setInteractionMode('eager');
+setInteractionMode('aggressive');
 
 extend("required", {
   ...required,
@@ -41,9 +41,15 @@ extend("alpha_num", {
 })
 
 extend('positive', value => {
-  if (value >= 0) {
+  if (value > 0) {
     return true;
   }
-
   return "Dit veld moet een getal groter dan 0 zijn";
+});
+
+extend('percentage', value => {
+  if (value >= 0 && value <= 1) {
+    return true;
+  }
+  return "Dit veld moet een getal zijn dat tussen 0 en 1 ligt, gebruik een punt als komma";
 });

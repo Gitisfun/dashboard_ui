@@ -14,12 +14,12 @@
             </div>
             <div class="columns">
                 <div class="column">
-                    <ValidatedTextInput v-model="artikel.prijs" name="Prijs" rules="required" />
-                    <ValidatedTextInput v-model="artikel.korting_een" name="Korting I" rules="" />
+                    <ValidatedTextInput v-model="artikel.prijs" name="Prijs" rules="required|positive" />
+                    <ValidatedTextInput v-model="artikel.korting_een" name="Korting I" rules="percentage" />
                 </div>
                 <div class="column">
-                    <ValidatedTextInput v-model="artikel.hoeveelheid" name="Hoeveelheid" rules="required" />
-                    <ValidatedTextInput v-model="artikel.korting_twee" name="Korting II" rules="" />
+                    <ValidatedTextInput v-model="artikel.hoeveelheid" name="Hoeveelheid" rules="required|numeric" />
+                    <ValidatedTextInput v-model="artikel.korting_twee" name="Korting II" rules="percentage" />
                 </div>
             </div>
             <br>    

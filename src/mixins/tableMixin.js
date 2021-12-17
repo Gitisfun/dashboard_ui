@@ -33,6 +33,7 @@ export default {
     methods: {
         loadTable() {
             this.tableController.all(this, this.params, (res) => {
+                console.log(res);
                 this.perPage = this.params.limit;
                 this.total = res.data.total;
                 this.data = res.data.list;

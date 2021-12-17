@@ -23,16 +23,16 @@
         :default-sort="[params.sort_by, params.sort_order]"
         @sort="onSort"
       >
-        <b-table-column width="10%" field="datum" label="Datum" v-slot="props" sortable>
-          {{ props.row.datum }}
+        <b-table-column width="11%" field="datum" label="Datum" v-slot="props" sortable>
+          {{ props.row.datum | dateFormatter }}
         </b-table-column>
 
         <b-table-column width="10%" field="factuur_nr" label="Factuur nr" v-slot="props" sortable>
-          {{ props.row.factuur_nr }}
+          {{ props.row.bestellings_nr }}
         </b-table-column>
 
         <b-table-column width="10%" field="leverings_nr" label="Referentie nr" v-slot="props" sortable>
-          {{ props.row.leverings_nr }}
+          {{ props.row.ref_nr }}
         </b-table-column>
 
         <b-table-column width="10%" field="leverancier_naam" label="Leverancier" v-slot="props">
@@ -47,23 +47,23 @@
           {{ props.row.leverdatum | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="10%" field="isGeleverd" centered label="Geleverd" v-slot="props">
+        <b-table-column width="8%" field="isGeleverd" centered label="Geleverd" v-slot="props">
           <div style="text-align:center; width: 100%">
-            <b-checkbox @input="changeStock($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isGeleverd " type="is-success" />
+            <b-checkbox @input="changeDelivered($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isGeleverd " type="is-success" />
           </div>
         </b-table-column>
 
-        <b-table-column width="10%" field="isBetaald" centered label="Betaald" v-slot="props">
+        <b-table-column width="8%" field="isBetaald" centered label="Betaald" v-slot="props">
           <div style="text-align:center; width: 100%">
-            <b-checkbox @input="changeStock($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBetaald " type="is-success" />
+            <b-checkbox @input="changePaid($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBetaald " type="is-success" />
           </div>
         </b-table-column>
 
-        <b-table-column width="10%" field="updated_time" centered label="Tijdstip" v-slot="props">
+        <b-table-column width="8%" field="updated_time" centered label="Tijdstip" v-slot="props">
           {{ props.row.updated_time | timeFormatter }}
         </b-table-column>
 
-        <b-table-column widh="10%" field="updated_time" centered label="Datum" v-slot="props">
+        <b-table-column widh="15%" field="updated_time" centered label="Datum" v-slot="props">
           {{ props.row.updated_time | dateFormatter }}
         </b-table-column>
 

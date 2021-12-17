@@ -4,7 +4,6 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <ValidationObserver v-slot="{ handleSubmit }">
                 <CreateHeader title="Nieuwe bestelling" @save="handleSubmit(onSubmit)" />
-                <b-button @click="test">Show it</b-button>
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput type="date" v-model="aankoop.datum" name="Datum" rules="required" />
@@ -26,10 +25,10 @@
                 </div>
                 <div class="columns">
                     <div class="column">
-                        <AdresSearch ref="facAdresField" text="Facturatie adres" />
+                        <AdresSearch :klant="aankoop.klant_naam" ref="facAdresField" text="Facturatie adres" />
                     </div>
                     <div class="column">
-                        <AdresSearch ref="levAdresField" text="Leveringsadres" />
+                        <AdresSearch :klant="aankoop.klant_naam" ref="levAdresField" text="Leveringsadres" />
                     </div>
                 </div>
                 <div class="columns">
@@ -47,7 +46,7 @@
             <div>
                 <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" @deleteArtikelFromList="deleteArtikelFromList" />
             </div>
-            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.artikels">
+            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.tempArtikels">
                 <b-table-column width="10%" field="artikel_nr" label="Artikelcode" v-slot="props" sortable>
                     {{ props.row.artikelcode }}
                 </b-table-column>
@@ -83,19 +82,16 @@
         </div>
     </div>
     <div>
-        <OpmerkingBox :text=aankoop.opmerking />
+        <OpmerkingBox v-model="aankoop.opmerking" />
     </div>
   </div>
 </template>
 
 <script>
-// TODO: Opmerking toevoegen
-
 import CreateHeader from "../../components/general/CreateHeader.vue";
 import { ValidationObserver } from "vee-validate";
 import ValidatedTextInput from "../../components/inputfields/ValidatedTextInput.vue";
 import ValidatedSearchInput from "../../components/inputfields/ValidatedSearchInput.vue"
-//import ArtikelsController from "../../api/calls/artikels"
 import KlantenController from "../../api/calls/klanten"
 import socketMixin from "../../mixins/socketMixin"
 import KlantModal from "../../modals/KlantModal.vue"
@@ -103,7 +99,6 @@ import LeverancierModal from '../../modals/LeverancierModal.vue';
 import MultilineTextInput from "../../components/inputfields/MultilineTextInput.vue"
 import AdresSearch from "../../components/inputfields/AdresSearch.vue"
 import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue"
-//import SmallTitle from "../../components/textfields/SmallTitle.vue"
 import AankopenController from "../../api/calls/aankopen"
 import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectInput.vue"
 import AddArtikelBox from '../../components/boxes/AddArtikelBox.vue';
@@ -127,21 +122,19 @@ export default {
         AdresSearch,
         MultilineTextInput,
         SmallHeaderAdder,
-        //SmallTitle,
         AddArtikelBox,
         OpmerkingBox,
         TotalBox,
     },
     computed: {
         subtotaal(){
-            if(this.aankoop.artikels.length != 0){
-                return UtilsFactory.sum(this.aankoop.artikels, "totaal");   
+            if(this.aankoop.tempArtikels.length != 0){
+                return UtilsFactory.sum(this.aankoop.tempArtikels, "totaal");   
             }
             return 0
         },
         btw() {
             const value = UtilsFactory.searchValueById(this.btws, this.aankoop.btw_id)
-            console.log(value);
             if(value) return value
             return "..."
         },
@@ -157,7 +150,7 @@ export default {
             datum: null,
             klant_id: null,
             klant_naam: null,
-            leverings_nr: null,
+            ref_nr: null,
             btw_id: null,
             vervaldag: null,
             leverdatum: null,
@@ -178,6 +171,7 @@ export default {
             updated_by: null,
             bedrijfs_id: null,
             opmerking: null,
+            tempArtikels: [],
             artikels: []
         },
         tableKey: 0,
@@ -198,14 +192,7 @@ export default {
         this.$refs.leverancierField.setModal(LeverancierModal);
     },
     methods: {
-        test(){
-            console.log("Test it");
-            console.log("-------");
-            console.log(this.aankoop.leverancier_naam);
-            console.log("-------");
-        },
         changeKlant(item){
-            console.log(item);
             this.clearAdressen()
             if(item){
                 KlantenController.getKlant(this, item.id, (res) => { 
@@ -217,18 +204,18 @@ export default {
         },
         addArtikelToList(item){
             this.hasError = false
-            const index = UtilsFactory.searchIndexById(this.aankoop.artikels, item)
-            if(index == -1) this.aankoop.artikels.push(item)
+            const index = UtilsFactory.searchIndexById(this.aankoop.tempArtikels, item)
+            if(index == -1) this.aankoop.tempArtikels.push(item)
             else {
-                this.aankoop.artikels[index].id = item.id
-                this.aankoop.artikels[index].artikelcode = item.artikelcode
-                this.aankoop.artikels[index].naam = item.naam
-                this.aankoop.artikels[index].memo = item.memo
-                this.aankoop.artikels[index].prijs = item.prijs
-                this.aankoop.artikels[index].hoeveelheid = item.hoeveelheid
-                this.aankoop.artikels[index].korting_een = item.korting_een
-                this.aankoop.artikels[index].korting_twee = item.korting_twee
-                this.aankoop.artikels[index].totaal = item.totaal
+                this.aankoop.tempArtikels[index].id = item.id
+                this.aankoop.tempArtikels[index].artikelcode = item.artikelcode
+                this.aankoop.tempArtikels[index].naam = item.naam
+                this.aankoop.tempArtikels[index].memo = item.memo
+                this.aankoop.tempArtikels[index].prijs = item.prijs
+                this.aankoop.tempArtikels[index].hoeveelheid = item.hoeveelheid
+                this.aankoop.tempArtikels[index].korting_een = item.korting_een
+                this.aankoop.tempArtikels[index].korting_twee = item.korting_twee
+                this.aankoop.tempArtikels[index].totaal = item.totaal
                 this.tableKey++
             } 
             this.closeArtikelBox()
@@ -236,19 +223,38 @@ export default {
         deleteArtikelFromList(item){
             ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit artikel wilt verwijderen?", null, (isConfirmed) => {
                 if (isConfirmed) {
-                    //UtilsFactory.deleteItemFromList(this.list, adres.id);
-                    UtilsFactory.deleteItemFromList(this.aankoop.artikels, item.id)
+                    UtilsFactory.deleteItemFromList(this.aankoop.tempArtikels, item.id)
                     this.closeArtikelBox()
                     this.$refs.addArtikelBox.clear()
                 }
             });
         },
         onSubmit(){
-            console.log(this.$refs.facAdresField.getAdres());
-            if(this.$refs.facAdresField.isEmpty()) this.$refs.facAdresField.setError(true);
-            if(this.$refs.levAdresField.isEmpty()) this.$refs.levAdresField.setError(true);
-            if(this.aankoop.artikels.length === 0) this.hasError = true;
-            console.log(this.aankoop);
+            let isValidated = true;
+
+            if(this.$refs.facAdresField.isEmpty()){
+                this.$refs.facAdresField.setError(true); 
+                isValidated = false;
+            }
+            if(this.$refs.levAdresField.isEmpty()) {
+                this.$refs.levAdresField.setError(true); 
+                isValidated = false;
+            }
+            if(this.aankoop.tempArtikels.length === 0) {
+                this.hasError = true; 
+                isValidated = false;
+            }
+
+            if(isValidated){
+                this.aankoop.klant_id = this.$refs.klantField.getItem().id
+                this.aankoop.leverancier_id = this.$refs.leverancierField.getItem().id
+                this.aankoop.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
+                this.aankoop.leveradres = JSON.stringify(this.$refs.levAdresField.getAdres())
+                this.aankoop.artikels = JSON.stringify(this.aankoop.tempArtikels)
+                this.aankoop.subtotaal = this.subtotaal;
+                this.aankoop.totaal = this.totaal;
+                AankopenController.create(this, this.aankoop, this.socket)
+            }
         },
         addArtikel(){
             this.$refs.addArtikelBox.setType(ViewStates.ADD);

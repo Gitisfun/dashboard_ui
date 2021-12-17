@@ -15,7 +15,7 @@
                     </div>
                 </div>
             </div>
-            <textarea placeholder="..." v-model="text" class="multilinetextareainputfieldinput" rows="4" cols="50"/>
+            <textarea placeholder="..." v-model="innerValue" class="multilinetextareainputfieldinput" rows="4" cols="50"/>
         </div>
     </div>
 </template>
@@ -30,9 +30,17 @@ export default {
     },
     data(){
         return {
-            text: null
+            innerValue: null
         }
     },
-    
+    watch: {
+        innerValue(val) {
+        // allows us to use v-model on our input.
+        this.$emit("input", val);
+        },
+        value(newVal) {
+        this.innerValue = newVal;
+    },
+  },
 }
 </script>
