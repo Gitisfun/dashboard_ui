@@ -81,7 +81,11 @@ class UtilsFactory {
   }
 
   static addPercentage(number, percentage){
-    return number + (number * percentage)
+    console.log(number);
+    console.log(percentage);
+    console.log(number * percentage);
+    console.log(number + (number * percentage));
+    return parseFloat(number) + (parseFloat(number) * parseFloat(percentage))
   }
 }
 

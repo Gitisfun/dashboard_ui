@@ -62,7 +62,6 @@ export default {
     },
     openModal(){
       ModalFactory.showModal(this, this.searchModal, (item) => {
-        console.log(item);
         this.innerValue = item.tekst
       })
     }

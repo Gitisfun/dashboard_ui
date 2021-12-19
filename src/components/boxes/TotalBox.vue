@@ -126,7 +126,7 @@ export default {
       type: [Number, String],
     },
     totaal: {
-      type: Number,
+      type: [Number, String],
     },
   },
   filters: {

@@ -15,7 +15,8 @@
                     </div>
                 </div>
             </div>
-            <textarea placeholder="..." v-model="innerValue" class="multilinetextareainputfieldinput" rows="4" cols="50"/>
+            <p v-if="value">{{ value }}</p>
+            <p v-else>...</p>
         </div>
     </div>
 </template>
@@ -30,23 +31,8 @@ export default {
     },
     props: {
         value: {
-            type: [String],
-            default: "",
-        },
-    },
-    data(){
-        return {
-            innerValue: null
+            type: String
         }
-    },
-    watch: {
-        innerValue(val) {
-        // allows us to use v-model on our input.
-        this.$emit("input", val);
-        },
-        value(newVal) {
-        this.innerValue = newVal;
-    },
-  },
+    }
 }
 </script>

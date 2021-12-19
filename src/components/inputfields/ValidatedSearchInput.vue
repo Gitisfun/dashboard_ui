@@ -50,7 +50,8 @@ export default {
         hasError: false,
         searchModal: null,
         innerValue: null,
-        fullObject: null
+        fullObject: null,
+        id: null,
     }
   },
   watch: {
@@ -78,12 +79,19 @@ export default {
       ModalFactory.showModal(this, this.searchModal, (item) => {
         this.innerValue = item.naam
         this.fullObject = item
+        this.id = item.id
         this.$emit("changeto", item);
 
       })
     },
     getItem(){
       return this.fullObject
+    },
+    setId(id){
+      this.id = id
+    },
+    getId(){
+      return this.id
     }
   }
 };

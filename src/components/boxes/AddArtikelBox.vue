@@ -110,6 +110,14 @@ export default {
             this.$emit("addArtikelToList", UtilsFactory.copyObject(this.artikel))
             this.clear()
         },
+        setId(list){
+            console.log("Hier in artikel");
+            if(list.length != 0){
+                console.log("hier");
+                console.log(UtilsFactory.max(list))
+                this.id = UtilsFactory.max(list) + 1
+            }
+        },
         setArtikel(item){
             /*
             this.artikel.id = item.id

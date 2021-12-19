@@ -27,7 +27,7 @@
           {{ props.row.datum | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="10%" field="factuur_nr" label="Factuur nr" v-slot="props" sortable>
+        <b-table-column width="10%" field="factuur_nr" label="Bestelling nr" v-slot="props" sortable>
           {{ props.row.bestellings_nr }}
         </b-table-column>
 

@@ -66,7 +66,6 @@ export default {
                 this.firstLoad = false;
             }
             if(this.adressen.length != 0){
-                console.log("Open modal...");
                 ModalFactory.showModalWithParamas(this, AddressChooseModal, "Adres kiezen", this.adressen, (newAdres) => {
                     this.adres.id = newAdres.id;
                     this.adres.straat = newAdres.straat;
@@ -86,8 +85,11 @@ export default {
         getAdres(){
             return this.adres
         },
-        setAdressen(item){
-            this.adressen = item;
+        setAdres(item){
+            this.adres = item
+        },
+        setAdressen(list){
+            this.adressen = list;
         },
         clear(){
             this.adres.id = null

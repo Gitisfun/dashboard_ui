@@ -21,7 +21,6 @@ export default {
   }),
   created(){
     this.adressen = this.$attrs.obj;
-    console.log(this.$attrs.obj);
   },
   methods: {
     choose(adres) {

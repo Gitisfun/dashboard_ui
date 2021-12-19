@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "AddressBox",
+  name: "AddressBoxRead",
   props: {
     address: {
       type: Object,

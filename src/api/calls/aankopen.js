@@ -31,7 +31,7 @@ class AankopenController {
 
     // Update
     static getPreDataUpdate(context, id, callback){
-        ApiCalls.getMultiple(["...", getAankoop(id)], callback, context)
+        ApiCalls.getMultiple([getAllBtws(), getAankoop(id)], callback, context)
     }
 
     static update(context, body, socket){
