@@ -9,7 +9,11 @@ import Instellingen from "../views/Instellingen"
 import Aankopen from "../views/aankopen/AankopenOverview";
 import AankopenCreateview from "../views/aankopen/AankopenCreateview";
 import AankopenUpdateview from "../views/aankopen/AankopenUpdateview";
+import AankopenPrint from "../views/aankopen/AankopenPrint"
 import Verkopen from "../views/verkopen/VerkopenOverview";
+import VerkopenCreateview from "../views/verkopen/VerkopenCreateview";
+import VerkopenUpdateview from "../views/verkopen/VerkopenUpdateview";
+import VerkopenPrint from "../views/verkopen/VerkopenPrint"
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
 import Artikels from "../views/artikels/ArtikelsOverview";
 import ArtikelsCreateview from "../views/artikels/ArtikelsCreateview";
@@ -76,6 +80,15 @@ const routes = [
     }
   },
   {
+    path: "/aankopen/print/:id",
+    name: "AankopenPrint",
+    component: AankopenPrint,
+    meta: {
+      group: "Print",
+      requiresAuth: true
+    }
+  },
+  {
     path: "/verkopen",
     name: "Verkopen",
     component: Verkopen,
@@ -83,6 +96,33 @@ const routes = [
       group: "Verkopen",
       requiresAuth: true,
     },
+  },
+  {
+    path: "/verkopen/create",
+    name: "VerkopenCreateview",
+    component: VerkopenCreateview,
+    meta: {
+      group: "Verkopen",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/verkopen/update/:id",
+    name: "VerkopenUpdateview",
+    component: VerkopenUpdateview,
+    meta: {
+      group: "Verkopen",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/verkopen/print/:id",
+    name: "VerkopenPrint",
+    component: VerkopenPrint,
+    meta: {
+      group: "Print",
+      requiresAuth: true
+    }
   },
   {
     path: "/creditnotas",

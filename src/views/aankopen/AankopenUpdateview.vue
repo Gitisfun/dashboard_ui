@@ -3,7 +3,7 @@
     <div v-show="isReadVisible" >
       <div class="box">
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-          <ReadHeader :title="bestellingTitle" @edit="edit" />
+          <ReadHeaderWithPrint :title="bestellingTitle" @print="print" @edit="edit" />
           <br>
           <div class="columns">
             <div class="column">
@@ -140,7 +140,10 @@
 </template>
 
 <script>
-import ReadHeader from "../../components/general/ReadHeader.vue";
+// TODO: fix facturatie en leveringsadres default click when is filled in
+
+
+import ReadHeaderWithPrint from "../../components/general/ReadHeaderWithPrint.vue";
 import UpdateHeader from "../../components/general/UpdateHeader.vue";
 import { ValidationObserver } from "vee-validate";
 import AankopenController from '../../api/calls/aankopen'
@@ -168,12 +171,13 @@ import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import moment from  "moment"
+import Navigation from '../../logic/factories/navigation';
 
 export default {
     name: "AankopenUpdateview",
     mixins: [socketMixin],
     components: {
-      ReadHeader,
+      ReadHeaderWithPrint,
       UpdateHeader,
       ValidationObserver,
       InfoLine,
@@ -287,6 +291,10 @@ export default {
       },
       edit(){
         this.isReadVisible = false;
+      },
+      print(){
+        console.log(this.aankoop);
+        Navigation.navigate(this, Navigation.AK_PRINT, this.aankoop)
       },
       onSubmit(){
         console.log(this.aankoop);

@@ -1,10 +1,10 @@
 <template>
-  <div>Verkopen overview</div>
+  <div>Verkopen update</div>
 </template>
 
 <script>
 export default {
-    name: "VerkopenOverview"
+    name: "VerkopenUpdateview"
 }
 </script>
 

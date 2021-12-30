@@ -28,6 +28,9 @@ export default {
       else if(this.btnStyle == "danger"){
         return "delete-btn"
       }
+      else if(this.btnStyle == "info"){
+        return "info-btn"
+      }
       else if(this.btnStyle == "secundary"){
         return "secundary-btn"
       }
@@ -133,6 +136,10 @@ export default {
 .secundary-btn{
   color: black;
   background: #f5cd79;
+}
+.info-btn{
+  color: white;
+  background: #3742fa;
 }
 .underlined{
   text-decoration: underline;

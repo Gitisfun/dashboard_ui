@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="isLogin">
+    <div v-if="isLogin || isPrint">
       <router-view />
     </div>
     <div v-else>
@@ -29,6 +29,9 @@ export default {
     isLogin() {
       return this.$route.name == "Login";
     },
+    isPrint(){
+      return this.$route.name == "AankopenPrint"
+    }
   },
   data: () => ({
     test: false,

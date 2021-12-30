@@ -3,6 +3,7 @@ class Navigation {
     static AK_OVERVIEW = "AankopenOverview"
     static AK_CREATE = "AankopenCreateview"
     static AK_UPDATE = "AankopenUpdateview"
+    static AK_PRINT = "AankopenPrint"
 
     static LEV_OVERVIEW = "LeveranciersOverview"
     static LEV_CREATE = "LeveranciersCreateview"
