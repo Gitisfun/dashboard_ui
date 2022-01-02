@@ -116,7 +116,7 @@
               <b-table-column width="12%" centered field="korting_een" label="Korting I" v-slot="props" sortable>
                   {{ props.row.korting_een | kortingFormatter }}
               </b-table-column>
-              <b-table-column width="12%" centered field="korting_twee" label="Korting I" v-slot="props" sortable>
+              <b-table-column width="12%" centered field="korting_twee" label="Korting II" v-slot="props" sortable>
                   {{ props.row.korting_twee | kortingFormatter }}
               </b-table-column>
               <b-table-column width="13%" centered field="totaal" label="Totaal" v-slot="props" sortable>
@@ -165,8 +165,6 @@ import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue"
 import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectInput.vue"
 import AddArtikelBox from '../../components/boxes/AddArtikelBox.vue';
 import ViewStates from '../../logic/constants/viewStates';
-//import ModalFactory from '../../logic/factories/modalFactory';
-//import ConfirmationModal from '../../modals/ConfirmationModal.vue';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
@@ -371,6 +369,7 @@ export default {
             if (isConfirmed) {
                 UtilsFactory.deleteItemFromList(this.aankoop.tempArtikels, item.id)
                 this.closeArtikelBox()
+                this.tableKey++
                 this.$refs.addArtikelBox.clear()
             }
         });

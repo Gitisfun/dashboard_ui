@@ -52,7 +52,7 @@ export default {
 
 .infofield-address-value {
   margin-bottom: 0px;
-  color: #182C61;
+  /*color: #182C61;*/
   font-style: normal;
   font-size: 14px;
 }

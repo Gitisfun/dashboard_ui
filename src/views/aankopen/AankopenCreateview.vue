@@ -65,7 +65,7 @@
                 <b-table-column width="12%" centered field="korting_een" label="Korting I" v-slot="props" sortable>
                     {{ props.row.korting_een | kortingFormatter }}
                 </b-table-column>
-                <b-table-column width="12%" centered field="korting_twee" label="Korting I" v-slot="props" sortable>
+                <b-table-column width="12%" centered field="korting_twee" label="Korting II" v-slot="props" sortable>
                     {{ props.row.korting_twee | kortingFormatter }}
                 </b-table-column>
                 <b-table-column width="13%" centered field="totaal" label="Totaal" v-slot="props" sortable>
@@ -108,7 +108,6 @@ import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from '../../modals/ConfirmationModal.vue';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import TotalBox from "../../components/boxes/TotalBox.vue"
-import { artikelColumns } from "../../logic/constants/table"
 
 export default {
     name: "AankopenCreateview",
@@ -178,12 +177,8 @@ export default {
         btws: [],
         selectedKlant: null,
         isArtikelBoxShown: false,
-        columns: [],
         hasError: false
     }),
-    created(){
-        this.columns = artikelColumns
-    },
     mounted(){
         AankopenController.getPreData(this, (res) => {
             this.btws = res[0].data

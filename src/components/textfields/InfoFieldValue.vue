@@ -19,7 +19,7 @@ export default {
 <style scoped>
 .infofieldvalue {
   margin-bottom: 20px;
-  color: #182C61;
+  /*color: #182C61;*/
   font-style: normal;
   font-size: 14px;
 }

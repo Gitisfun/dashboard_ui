@@ -5,6 +5,11 @@ class Navigation {
     static AK_UPDATE = "AankopenUpdateview"
     static AK_PRINT = "AankopenPrint"
 
+    static VK_OVERVIEW = "VerkopenOverview"
+    static VK_CREATE = "VerkopenCreateview"
+    static VK_UPDATE = "VerkopenUpdateview"
+    static VK_PRINT = "VerkopenPrint"
+
     static LEV_OVERVIEW = "LeveranciersOverview"
     static LEV_CREATE = "LeveranciersCreateview"
     static LEV_UPDATE = "LeveranciersUpdateview"
