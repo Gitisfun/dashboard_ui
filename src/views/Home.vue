@@ -11,6 +11,9 @@
 // TODO: delete console logs
 // TODO: Facturen titel beter maken bij zowel aankoop als verkoop
 // TODO: Opmerking order aanpassen qua naam voor AK, VK, CR
+
+// TODO: ENV Variables - check for TODO's in all files
+
 export default {
   name: "Home",
   components: {

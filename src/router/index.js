@@ -15,6 +15,9 @@ import VerkopenCreateview from "../views/verkopen/VerkopenCreateview";
 import VerkopenUpdateview from "../views/verkopen/VerkopenUpdateview";
 import VerkopenPrint from "../views/verkopen/VerkopenPrint"
 import Creditnotas from "../views/creditnotas/CreditnotasOverview";
+import CreditnotasCreateview from "../views/creditnotas/CreditnotasCreateview";
+import CreditnotasUpdateview from "../views/creditnotas/CreditnotasUpdateview";
+import CreditnotasPrint from "../views/creditnotas/CreditnotasPrint" 
 import Artikels from "../views/artikels/ArtikelsOverview";
 import ArtikelsCreateview from "../views/artikels/ArtikelsCreateview";
 import ArtikelsUpdateview from "../views/artikels/ArtikelsUpdateview";
@@ -132,6 +135,33 @@ const routes = [
       group: "Creditnotas",
       requiresAuth: true,
     },
+  },
+  {
+    path: "/creditnotas/create",
+    name: "CreditnotasCreateview",
+    component: CreditnotasCreateview,
+    meta: {
+      group: "Creditnotas",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/creditnotas/update/:id",
+    name: "CreditnotasUpdateview",
+    component: CreditnotasUpdateview,
+    meta: {
+      group: "Creditnotas",
+      requiresAuth: true,
+    }
+  },
+  {
+    path: "/creditnotas/print/:id",
+    name: "CreditnotasPrint",
+    component: CreditnotasPrint,
+    meta: {
+      group: "Print",
+      requiresAuth: true
+    }
   },
   {
     path: "/artikels",

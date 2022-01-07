@@ -9,10 +9,12 @@ class Socket {
   static CLICKED = "clicked"
   static AANKOPEN = "aankopen"
   static VERKOPEN = "verkopen"
+  static CREDITNOTAS = "creditnotas"
   static ARTIKELS = "artikels"
   static LEVERANCIERS = "leveranciers"
   static KLANTEN = "klanten"
   static ANDERE = "andere"
+  static INSTELLINGEN = "instellingen"
   
   static listen(socket, from, refresh) {
     socket.on(from, (data) => {
