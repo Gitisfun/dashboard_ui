@@ -23,40 +23,43 @@
         :default-sort="[params.sort_by, params.sort_order]"
         @sort="onSort"
       >
-        <b-table-column width="10%" field="artikelcode" label="Artikelcode" v-slot="props" sortable>
+        <b-table-column :width="getWidth.artikelcode" field="artikelcode" label="Artikelcode" v-slot="props" sortable>
           {{ props.row.artikelcode }}
         </b-table-column>
 
-        <b-table-column width="16%" field="naam" label="Naam" v-slot="props" sortable>
+        <b-table-column :width="getWidth.naam" field="naam" label="Naam" v-slot="props" sortable>
           {{ props.row.naam }}
         </b-table-column>
 
-        <b-table-column width="10%" field="inStock" centered label="In stock" v-slot="props">
+        <b-table-column :width="getWidth.inStock" field="inStock" centered label="In stock" v-slot="props">
           <div style="text-align:center; width: 100%">
             <b-checkbox @input="changeStock($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.inStock " type="is-success" />
           </div>
         </b-table-column>
 
-        <b-table-column width="26%" field="omschrijving" label="Omschrijving" v-slot="props" sortable>
+        <b-table-column :width="getWidth.omschrijving" field="omschrijving" label="Omschrijving" v-slot="props" sortable>
           {{ props.row.omschrijving }}
         </b-table-column>
 
-        <b-table-column width="8%" field="prijs" label="Prijs" v-slot="props" sortable>
+        <b-table-column :width="getWidth.prijs" field="prijs" label="Prijs" v-slot="props" sortable>
           <p style="text-align: right; color: green">
           € {{ props.row.prijs }}
           </p>
         </b-table-column>
 
-        <b-table-column width="10%" field="updated_time" centered label="Tijdstip" v-slot="props">
+        <b-table-column :width="getWidth.updated_time" :visible="updatedByIsVisible" field="updated_time" centered label="Tijdstip" v-slot="props">
           {{ props.row.updated_time | timeFormatter }}
         </b-table-column>
 
-        <b-table-column widh="10%" field="updated_time" centered label="Datum" v-slot="props">
+        <b-table-column :width="getWidth.updated_date" :visible="updatedByIsVisible" field="updated_time" centered label="Datum" v-slot="props">
           {{ props.row.updated_time | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="10%" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
+        <b-table-column :width="getWidth.updated_by" :visible="updatedByIsVisible" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
       </b-table>
+    </div>
+    <div class="box" style="padding-top: 25px">            
+      <b-checkbox type="is-link" v-model="updatedByIsVisible">Toon aanpassingen</b-checkbox>
     </div>
   </div>
 </template>
@@ -67,7 +70,8 @@ import SearchBar from "../../components/common/SearchBar";
 import socketMixin from "../../mixins/socketMixin"
 import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
-import Navigation from '../../logic/factories/navigation';
+import Navigation from "../../logic/factories/navigation";
+import TableColumns from "../../logic/constants/table"
 
 export default {
   name: "ArtikelsOverview",
@@ -79,6 +83,11 @@ export default {
     this.tableController = ArtikelsController
     this.navigateRoute = Navigation.ART_UPDATE
     this.socketName = Socket.ARTIKELS
+  },
+  computed: {
+    getWidth() {
+      return TableColumns.getArtikelColumns(this.updatedByIsVisible)
+    }
   },
   methods: {
     changeStock(value, id){

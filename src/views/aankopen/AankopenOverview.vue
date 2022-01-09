@@ -23,52 +23,55 @@
         :default-sort="[params.sort_by, params.sort_order]"
         @sort="onSort"
       >
-        <b-table-column width="11%" field="datum" label="Datum" v-slot="props" sortable>
+        <b-table-column :width="getWidth.datum" field="datum" label="Datum" v-slot="props" sortable>
           {{ props.row.datum | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="10%" field="factuur_nr" label="Bestelling nr" v-slot="props" sortable>
+        <b-table-column :width="getWidth.factuur_nr" field="factuur_nr" label="Bestelling nr" v-slot="props" sortable>
           {{ props.row.bestellings_nr }}
         </b-table-column>
 
-        <b-table-column width="10%" field="leverings_nr" label="Referentie nr" v-slot="props" sortable>
+        <b-table-column :width="getWidth.leverings_nr" field="leverings_nr" label="Referentie nr" v-slot="props" sortable>
           {{ props.row.ref_nr }}
         </b-table-column>
 
-        <b-table-column width="10%" field="leverancier_naam" label="Leverancier" v-slot="props">
+        <b-table-column :width="getWidth.leverancier_naam" field="leverancier_naam" label="Leverancier" v-slot="props">
           {{ props.row.leverancier_naam }}
         </b-table-column>
 
-        <b-table-column width="10%" field="klant_naam" label="Klant" v-slot="props">
+        <b-table-column :width="getWidth.klant_naam" field="klant_naam" label="Klant" v-slot="props">
           {{ props.row.klant_naam }}
         </b-table-column>
 
-        <b-table-column widh="10%" field="leverdatum" centered label="Leverdatum" v-slot="props">
+        <b-table-column :width="getWidth.leverdatum" field="leverdatum" centered label="Leverdatum" v-slot="props">
           {{ props.row.leverdatum | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="8%" field="isGeleverd" centered label="Geleverd" v-slot="props">
+        <b-table-column :width="getWidth.isGeleverd" field="isGeleverd" centered label="Geleverd" v-slot="props">
           <div style="text-align:center; width: 100%">
             <b-checkbox @input="changeDelivered($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isGeleverd " type="is-success" />
           </div>
         </b-table-column>
 
-        <b-table-column width="8%" field="isBetaald" centered label="Betaald" v-slot="props">
+        <b-table-column :width="getWidth.isBetaald" field="isBetaald" centered label="Betaald" v-slot="props">
           <div style="text-align:center; width: 100%">
             <b-checkbox @input="changePaid($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBetaald " type="is-success" />
           </div>
         </b-table-column>
 
-        <b-table-column width="8%" field="updated_time" centered label="Tijdstip" v-slot="props">
+        <b-table-column :width="getWidth.updated_time" :visible="updatedByIsVisible" field="updated_time" centered label="Tijdstip" v-slot="props">
           {{ props.row.updated_time | timeFormatter }}
         </b-table-column>
 
-        <b-table-column widh="15%" field="updated_time" centered label="Datum" v-slot="props">
+        <b-table-column  :width="getWidth.updated_date" :visible="updatedByIsVisible" field="updated_time" centered label="Datum" v-slot="props">
           {{ props.row.updated_time | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="10%" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
+        <b-table-column :width="getWidth.updated_by" :visible="updatedByIsVisible" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
       </b-table>
+    </div>
+    <div class="box" style="padding-top: 25px">            
+      <b-checkbox type="is-link" v-model="updatedByIsVisible">Toon aanpassingen</b-checkbox>
     </div>
   </div>
 </template>
@@ -80,6 +83,7 @@ import socketMixin from "../../mixins/socketMixin"
 import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
 import Navigation from '../../logic/factories/navigation';
+import TableColumns from "../../logic/constants/table"
 
 export default {
   name: "AankopenOverview",
@@ -91,6 +95,11 @@ export default {
     this.tableController = AankopenController
     this.navigateRoute = Navigation.AK_UPDATE
     this.socketName = Socket.AANKOPEN
+  },
+  computed: {
+    getWidth() {
+      return TableColumns.getAankoopColumns(this.updatedByIsVisible)
+    },
   },
   methods: {
     changeDelivered(value, id){

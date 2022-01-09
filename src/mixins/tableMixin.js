@@ -21,7 +21,7 @@ export default {
             },
             data: [],   
             selected: null,
-            search: ""
+            search: "",
         }
     },
     mounted(){
@@ -29,6 +29,18 @@ export default {
             Socket.listen(this.socket, this.socketName, () => { this.loadTable() })
         }
         this.loadTable()
+    },
+    computed: {
+        updatedByIsVisible: {
+            get(){
+              return this.$store.getters.getTableUpdatedByIsVisible
+            },
+            set(value){
+                console.log("Called setter");
+              console.log(value);
+              this.$store.dispatch("changeTableUpdatedByIsVisible", value);
+            }
+          },
     },
     methods: {
         loadTable() {

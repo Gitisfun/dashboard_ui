@@ -4,9 +4,9 @@
 </template>
 
 <script>
-// TODO: Select adres not working in update when klant is already selected                    ---- 
+// TODO: Select adres not working in update when klant is already selected                    ---- OK
 // TODO: Datum fixen, telt altijd een dag terug in aankoop, verkoop en creditnota             ---- OK (99%)
-// TODO: Tabel toggle aangepast door                                                          ---- 
+// TODO: Table toggle aangepast door                                                          ---- 
 // TODO: Update show when last updated and by who                                             ---- OK
 // TODO: Add bestelling en order nr in create and use api call for correct index              ---- 
 // TODO: delete console logs                                                                  ---- 

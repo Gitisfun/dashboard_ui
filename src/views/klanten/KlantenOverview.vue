@@ -23,30 +23,33 @@
         :default-sort="[params.sort_by, params.sort_order]"
         @sort="onSort"
       >
-        <b-table-column width="20%" field="klant_nr" label="Klant nr" v-slot="props" sortable>
+        <b-table-column :width="getWidth.klant_nr" field="klant_nr" label="Klant nr" v-slot="props" sortable>
           {{ props.row.klant_nr }}
         </b-table-column>
 
-        <b-table-column width="25%" field="naam" label="Naam" v-slot="props" sortable>
+        <b-table-column :width="getWidth.naam" field="naam" label="Naam" v-slot="props" sortable>
           {{ props.row.naam }}
         </b-table-column>
 
-        <b-table-column width="10%" field="isBlacklisted" centered label="Blacklist" v-slot="props">
+        <b-table-column :width="getWidth.blacklist" field="isBlacklisted" centered label="Blacklist" v-slot="props">
           <div style="text-align:center; width: 100%;">
             <b-checkbox @input="blacklist($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBlacklisted " type="is-danger" />
           </div>
         </b-table-column>
 
-        <b-table-column width="10%" field="updated_time" centered label="Tijdstip" v-slot="props">
+        <b-table-column :width="getWidth.updated_time" :visible="updatedByIsVisible" field="updated_time" centered label="Tijdstip" v-slot="props">
           {{ props.row.updated_time | timeFormatter }}
         </b-table-column>
 
-        <b-table-column widh="15%" field="updated_time" centered label="Datum" v-slot="props">
+        <b-table-column :width="getWidth.updated_date" :visible="updatedByIsVisible" field="updated_time" centered label="Datum" v-slot="props">
           {{ props.row.updated_time | dateFormatter }}
         </b-table-column>
 
-        <b-table-column width="20%" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
+        <b-table-column :width="getWidth.updated_by" :visible="updatedByIsVisible" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
       </b-table>
+    </div>
+    <div class="box" style="padding-top: 25px">            
+      <b-checkbox type="is-link" v-model="updatedByIsVisible">Toon aanpassingen</b-checkbox>
     </div>
   </div>
 </template>
@@ -57,7 +60,8 @@ import SearchBar from "../../components/common/SearchBar";
 import socketMixin from "../../mixins/socketMixin"
 import tableMixin from "../../mixins/tableMixin"
 import Socket from "../../logic/factories/socketFactory"
-import Navigation from '../../logic/factories/navigation';
+import Navigation from "../../logic/factories/navigation";
+import TableColumns from "../../logic/constants/table"
 
 export default {
   name: "KlantenOverview",
@@ -69,6 +73,11 @@ export default {
     this.tableController = KlantenController
     this.navigateRoute = Navigation.KL_UPDATE
     this.socketName = Socket.KLANTEN  
+  },  
+  computed: {
+    getWidth() {
+      return TableColumns.getKlantColumns(this.updatedByIsVisible)
+    }
   },
   methods: {
     blacklist(value, id){
