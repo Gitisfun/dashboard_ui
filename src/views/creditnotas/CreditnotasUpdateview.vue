@@ -4,6 +4,7 @@
       <div class="box">
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ReadHeaderWithPrint :title="orderTitle" @print="print" @edit="edit" />
+          <UpdatedByInfo :updatedObj="creditnota" />
           <br>
           <div class="columns">
             <div class="column">
@@ -158,12 +159,14 @@ import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
+import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 
 export default {
     name: "CreditnotasUpdateview",
     mixins: [socketMixin],
     components: {
       ReadHeaderWithPrint,
+      UpdatedByInfo,
       UpdateHeader,
       ValidationObserver,
       InfoLine,
@@ -233,10 +236,10 @@ export default {
         this.creditnota.read_factuuradres = JSON.parse(this.creditnota.factuuradres)
         this.creditnota.tempArtikels = JSON.parse(this.creditnota.artikels)
         this.$refs.facAdresField.setAdres(this.creditnota.read_factuuradres);
-        this.creditnota.update_datum = moment.utc(this.creditnota.datum).format('yyyy-MM-DD');
-        this.creditnota.update_betalingsdatum = moment.utc(this.creditnota.betalingsdatum).format('yyyy-MM-DD');
-        this.creditnota.read_datum = moment.utc(this.creditnota.datum).format('DD-MM-yyyy');
-        this.creditnota.read_betalingsdatum = moment.utc(this.creditnota.betalingsdatum).format('DD-MM-yyyy');
+        this.creditnota.update_datum = moment(this.creditnota.datum).format('yyyy-MM-DD');
+        this.creditnota.update_betalingsdatum = moment(this.creditnota.betalingsdatum).format('yyyy-MM-DD');
+        this.creditnota.read_datum = moment(this.creditnota.datum).format('DD-MM-yyyy');
+        this.creditnota.read_betalingsdatum = moment(this.creditnota.betalingsdatum).format('DD-MM-yyyy');
         this.$refs.addArtikelBox.setId(this.creditnota.tempArtikels)
         this.setSubtotaal()
         this.setTotaal()

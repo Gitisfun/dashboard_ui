@@ -81,12 +81,17 @@ class UtilsFactory {
   }
 
   static addPercentage(number, percentage){
-    console.log(number);
-    console.log(percentage);
-    console.log(number * percentage);
-    console.log(number + (number * percentage));
     return parseFloat(number) + (parseFloat(number) * parseFloat(percentage))
   }
+
+  static date(timestamp){
+    return moment(timestamp).format("DD-MM-YYYY");
+  }
+
+  static time(timestamp){
+    return moment(timestamp).format("HH:mm"); 
+  }
+
 }
 
 export default UtilsFactory

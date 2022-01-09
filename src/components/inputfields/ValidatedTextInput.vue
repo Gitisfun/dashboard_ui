@@ -48,13 +48,11 @@ export default {
       this.innerValue = newVal;
     },
   },
-  /*
   created() {
     if (this.value) {
       this.innerValue = this.value;
     }
   },
-  */
 };
 </script>
 

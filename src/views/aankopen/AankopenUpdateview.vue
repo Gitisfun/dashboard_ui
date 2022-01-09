@@ -4,6 +4,7 @@
       <div class="box">
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ReadHeaderWithPrint :title="bestellingTitle" @print="print" @edit="edit" />
+          <UpdatedByInfo :updatedObj="aankoop" />
           <br>
           <div class="columns">
             <div class="column">
@@ -170,6 +171,7 @@ import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
+import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 
 export default {
     name: "AankopenUpdateview",
@@ -191,6 +193,7 @@ export default {
       SmallHeaderAdder,
       AddArtikelBox,
       OpmerkingBox,
+      UpdatedByInfo,
     },
     data: () =>({
       isReadVisible: true,
@@ -251,17 +254,18 @@ export default {
       AankopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
         this.btws = res[0].data
         this.aankoop = res[1].data[0]
+        console.log(this.aankoop);
         this.aankoop.read_factuuradres = JSON.parse(this.aankoop.factuuradres)
         this.aankoop.read_leveradres = JSON.parse(this.aankoop.leveradres)
         this.aankoop.tempArtikels = JSON.parse(this.aankoop.artikels)
         this.$refs.facAdresField.setAdres(this.aankoop.read_factuuradres);
         this.$refs.levAdresField.setAdres(this.aankoop.read_leveradres);
-        this.aankoop.update_datum = moment.utc(this.aankoop.datum).format('yyyy-MM-DD');
-        this.aankoop.update_vervaldag = moment.utc(this.aankoop.vervaldag).format('yyyy-MM-DD');
-        this.aankoop.update_leverdatum = moment.utc(this.aankoop.leverdatum).format('yyyy-MM-DD');
-        this.aankoop.read_datum = moment.utc(this.aankoop.datum).format('DD-MM-yyyy');
-        this.aankoop.read_vervaldag = moment.utc(this.aankoop.vervaldag).format('DD-MM-yyyy');
-        this.aankoop.read_leverdatum = moment.utc(this.aankoop.leverdatum).format('DD-MM-yyyy');
+        this.aankoop.update_datum = moment(this.aankoop.datum).format('yyyy-MM-DD');
+        this.aankoop.update_vervaldag = moment(this.aankoop.vervaldag).format('yyyy-MM-DD');
+        this.aankoop.update_leverdatum = moment(this.aankoop.leverdatum).format('yyyy-MM-DD');
+        this.aankoop.read_datum = moment(this.aankoop.datum).format('DD-MM-yyyy');
+        this.aankoop.read_vervaldag = moment(this.aankoop.vervaldag).format('DD-MM-yyyy');
+        this.aankoop.read_leverdatum = moment(this.aankoop.leverdatum).format('DD-MM-yyyy');
         this.$refs.addArtikelBox.setId(this.aankoop.tempArtikels)
         this.setSubtotaal()
         this.setTotaal()

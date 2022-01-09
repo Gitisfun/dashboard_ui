@@ -3,6 +3,7 @@
     <div v-show="isReadVisible" class="box">
       <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
         <ReadHeader title="Leverancier details" @edit="edit" />
+        <UpdatedByInfo :updatedObj="leverancier" />
         <br />
         <div class="columns">
           <div class="column">
@@ -94,12 +95,14 @@ import socketMixin from "../../mixins/socketMixin";
 import InfoField from "../../components/textfields/InfoField.vue";
 import InfoFieldValue from "../../components/textfields/InfoFieldValue.vue";
 import UtilsFactory from '../../logic/utils/utilsFactory';
+import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 
 export default {
   name: "LeverancierUpdateview",
   mixins: [socketMixin],
   components: {
     ReadHeader,
+    UpdatedByInfo,
     UpdateHeader,
     ValidationObserver,
     ValidatedTextInput,

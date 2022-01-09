@@ -4,6 +4,7 @@
       <div class="box">
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ReadHeaderWithPrint :title="orderTitle" @print="print" @edit="edit" />
+          <UpdatedByInfo :updatedObj="verkoop" />
           <br>
           <div class="columns">
             <div class="column">
@@ -158,12 +159,14 @@ import ModalFactory from '../../logic/factories/modalFactory';
 import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
+import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 
 export default {
     name: "VerkopenUpdateview",
     mixins: [socketMixin],
     components: {
       ReadHeaderWithPrint,
+      UpdatedByInfo,
       UpdateHeader,
       ValidationObserver,
       InfoLine,
@@ -233,10 +236,10 @@ export default {
         this.verkoop.read_factuuradres = JSON.parse(this.verkoop.factuuradres)
         this.verkoop.tempArtikels = JSON.parse(this.verkoop.artikels)
         this.$refs.facAdresField.setAdres(this.verkoop.read_factuuradres);
-        this.verkoop.update_datum = moment.utc(this.verkoop.datum).format('yyyy-MM-DD');
-        this.verkoop.update_betalingsdatum = moment.utc(this.verkoop.betalingsdatum).format('yyyy-MM-DD');
-        this.verkoop.read_datum = moment.utc(this.verkoop.datum).format('DD-MM-yyyy');
-        this.verkoop.read_betalingsdatum = moment.utc(this.verkoop.betalingsdatum).format('DD-MM-yyyy');
+        this.verkoop.update_datum = moment(this.verkoop.datum).format('yyyy-MM-DD');
+        this.verkoop.update_betalingsdatum = moment(this.verkoop.betalingsdatum).format('yyyy-MM-DD');
+        this.verkoop.read_datum = moment(this.verkoop.datum).format('DD-MM-yyyy');
+        this.verkoop.read_betalingsdatum = moment(this.verkoop.betalingsdatum).format('DD-MM-yyyy');
         this.$refs.addArtikelBox.setId(this.verkoop.tempArtikels)
         this.setSubtotaal()
         this.setTotaal()
