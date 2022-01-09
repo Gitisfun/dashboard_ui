@@ -245,6 +245,7 @@ export default {
         this.setTotaal()
         this.$refs.klantField.setId(this.verkoop.klant_id);
         this.copyVerkoop = UtilsFactory.copyObject(this.verkoop)
+        this.fetchAdressen(this.verkoop.klant_id)
       })
       this.$refs.klantField.setModal(KlantModal);
     },
@@ -304,11 +305,14 @@ export default {
       changeKlant(item){
         this.clearAdressen()
         if(item){
-            KlantenController.getKlant(this, item.id, (res) => { 
-                this.selectedKlant = res.data[0]
-                this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
-            })
+          this.fetchAdressen(item.id)
         }
+      },
+      fetchAdressen(id){
+        KlantenController.getKlant(this, id, (res) => { 
+            this.selectedKlant = res.data[0]
+            this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
+          })
       },
       addArtikelToList(item){
         this.hasError = false

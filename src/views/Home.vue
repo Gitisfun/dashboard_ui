@@ -7,7 +7,7 @@
 // TODO: Select adres not working in update when klant is already selected                    ---- 
 // TODO: Datum fixen, telt altijd een dag terug in aankoop, verkoop en creditnota             ---- OK (99%)
 // TODO: Tabel toggle aangepast door                                                          ---- 
-// TODO: Update show when last updated and by who                                             ---- 
+// TODO: Update show when last updated and by who                                             ---- OK
 // TODO: Add bestelling en order nr in create and use api call for correct index              ---- 
 // TODO: delete console logs                                                                  ---- 
 // TODO: Facturen titel beter maken bij zowel aankoop als verkoop                             ---- 

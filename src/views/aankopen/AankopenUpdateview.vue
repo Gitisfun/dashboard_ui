@@ -272,6 +272,7 @@ export default {
         this.$refs.klantField.setId(this.aankoop.klant_id);
         this.$refs.leverancierField.setId(this.aankoop.leverancier_id);
         this.copyAankoop = UtilsFactory.copyObject(this.aankoop)
+        this.fetchAdressen(this.aankoop.klant_id)
       })
       this.$refs.klantField.setModal(KlantModal);
       this.$refs.leverancierField.setModal(LeverancierModal);
@@ -338,12 +339,15 @@ export default {
       changeKlant(item){
         this.clearAdressen()
         if(item){
-            KlantenController.getKlant(this, item.id, (res) => { 
-                this.selectedKlant = res.data[0]
-                this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
-                this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
-            })
+          this.fetchAdressen(item.id)
         }
+      },
+      fetchAdressen(id){
+        KlantenController.getKlant(this, id, (res) => { 
+            this.selectedKlant = res.data[0]
+            this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
+            this.$refs.levAdresField.setAdressen(JSON.parse(this.selectedKlant.leverings_adressen));
+          })
       },
       addArtikelToList(item){
         this.hasError = false
