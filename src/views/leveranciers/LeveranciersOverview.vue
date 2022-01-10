@@ -18,6 +18,7 @@
         aria-previous-label="Previous page"
         aria-page-label="Page"
         aria-current-label="Current page"
+        pagination-size="is-small"
         backend-sorting
         :default-sort-direction="defaultSortOrder"
         :default-sort="[params.sort_by, params.sort_order]"
