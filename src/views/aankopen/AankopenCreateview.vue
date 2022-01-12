@@ -6,6 +6,12 @@
                 <CreateHeader title="Nieuwe bestelling" @save="handleSubmit(onSubmit)" />
                 <div class="columns">
                     <div class="column">
+                        <ValidatedTextInput v-model="aankoop.bestellings_nr" name="Bestelling nr." rules="required" />
+                    </div>
+                    <div class="column"></div>
+                </div>
+                <div class="columns">
+                    <div class="column">
                         <ValidatedTextInput type="date" v-model="aankoop.datum" name="Datum" rules="required" />
                         <ValidatedSearchInput @changeto="changeKlant" ref="klantField" v-model="aankoop.klant_naam" name="Klant" rules="required" />
                         <ValidatedTextInput v-model="aankoop.ref_nr" name="Referentie nr." rules="required" />
@@ -182,6 +188,7 @@ export default {
     mounted(){
         AankopenController.getPreData(this, (res) => {
             this.btws = res[0].data
+            this.aankoop.bestellings_nr = `BS${res[1].data[0].aankopen}`
         })
         this.$refs.klantField.setModal(KlantModal);
         this.$refs.leverancierField.setModal(LeverancierModal);
@@ -245,7 +252,7 @@ export default {
                 this.aankoop.leverancier_id = this.$refs.leverancierField.getItem().id
                 this.aankoop.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
                 this.aankoop.leveradres = JSON.stringify(this.$refs.levAdresField.getAdres())
-                this.aankoop.artikels = JSON.stringify(this.aankoop.tempArtikels)
+                this.aankoop.artikels = this.aankoop.tempArtikels
                 this.aankoop.subtotaal = this.subtotaal;
                 this.aankoop.totaal = this.totaal;
                 AankopenController.create(this, this.aankoop, this.socket)

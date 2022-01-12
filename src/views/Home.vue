@@ -13,6 +13,7 @@
 // TODO: Add bestelling en order nr in create and use api call for correct index              ---- 
 // TODO: Facturen titel beter maken bij zowel aankoop als verkoop                             ---- 
 // TODO: Opmerking order aanpassen qua naam voor AK, VK, CR                                   ---- 
+// TODO: Artikel beter maken                                                                  ---- 
 
 // TODO: ENV Variables - check for TODO's in all files                                        ---- 
 // TODO: delete console logs                                                                  ---- 
