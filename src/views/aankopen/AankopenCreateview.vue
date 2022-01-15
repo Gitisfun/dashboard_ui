@@ -47,44 +47,8 @@
                 </div>
             </ValidationObserver>
         </div>
-        <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-            <SmallHeaderAdder title="Artikels" @add="addArtikel" />
-            <div>
-                <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" @deleteArtikelFromList="deleteArtikelFromList" />
-            </div>
-            <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="aankoop.tempArtikels">
-                <b-table-column width="10%" field="artikel_nr" label="Artikelcode" v-slot="props" sortable>
-                    {{ props.row.artikelcode }}
-                </b-table-column>
-                <b-table-column width="15%" field="naam" label="Naam" v-slot="props" sortable>
-                    {{ props.row.naam }}
-                </b-table-column>
-                <b-table-column width="20%" field="memo" label="Memo" v-slot="props" sortable>
-                    {{ props.row.memo }}
-                </b-table-column>
-                <b-table-column width="10%" centered field="prijs" label="Prijs" v-slot="props" sortable>
-                    {{ props.row.prijs | currencyFormatter }}
-                </b-table-column>
-                <b-table-column width="8%" centered field="hoeveelheid" label="Aantal" v-slot="props" sortable>
-                    {{ props.row.hoeveelheid }}
-                </b-table-column>
-                <b-table-column width="12%" centered field="korting_een" label="Korting I" v-slot="props" sortable>
-                    {{ props.row.korting_een | kortingFormatter }}
-                </b-table-column>
-                <b-table-column width="12%" centered field="korting_twee" label="Korting II" v-slot="props" sortable>
-                    {{ props.row.korting_twee | kortingFormatter }}
-                </b-table-column>
-                <b-table-column width="13%" centered field="totaal" label="Totaal" v-slot="props" sortable>
-                    {{ props.row.totaal | currencyFormatter }}
-                </b-table-column>
-                <template #empty>
-                    <div class="custom-table-empty">Nog geen artikels toegevoegd...</div>
-                </template>
-            </b-table>
-            <span v-if="hasError" class="artikeltableerror">Kies minstens een artikel</span>
-        </div>
         <div>
-            <TotalBox :subtotaal="subtotaal" :btw="btw" :totaal="totaal" />
+            <ArtikelBox ref="artikelbox" :btw="btw" />
         </div>
     </div>
     <div>
@@ -104,16 +68,11 @@ import KlantModal from "../../modals/KlantModal.vue"
 import LeverancierModal from '../../modals/LeverancierModal.vue';
 import MultilineTextInput from "../../components/inputfields/MultilineTextInput.vue"
 import AdresSearch from "../../components/inputfields/AdresSearch.vue"
-import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue"
 import AankopenController from "../../api/calls/aankopen"
 import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectInput.vue"
-import AddArtikelBox from '../../components/boxes/AddArtikelBox.vue';
 import UtilsFactory from '../../logic/utils/utilsFactory';
-import ViewStates from '../../logic/constants/viewStates';
-import ModalFactory from '../../logic/factories/modalFactory';
-import ConfirmationModal from '../../modals/ConfirmationModal.vue';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
-import TotalBox from "../../components/boxes/TotalBox.vue"
+import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
 
 export default {
     name: "AankopenCreateview",
@@ -126,28 +85,15 @@ export default {
         ValidatedSearchInput,
         AdresSearch,
         MultilineTextInput,
-        SmallHeaderAdder,
-        AddArtikelBox,
         OpmerkingBox,
-        TotalBox,
+        ArtikelBox,
     },
     computed: {
-        subtotaal(){
-            if(this.aankoop.tempArtikels.length != 0){
-                return UtilsFactory.sum(this.aankoop.tempArtikels, "totaal");   
-            }
-            return 0
-        },
         btw() {
             const value = UtilsFactory.searchValueById(this.btws, this.aankoop.btw_id)
             if(value) return value
             return "..."
         },
-        totaal(){
-            if(this.btw === "...") return 0
-            if(this.subtotaal === 0) return 0
-            return UtilsFactory.addPercentage(this.subtotaal, this.btw)
-        }
     },
     data: () => ({
         aankoop: {
@@ -182,7 +128,6 @@ export default {
         tableKey: 0,
         btws: [],
         selectedKlant: null,
-        isArtikelBoxShown: false,
         hasError: false
     }),
     mounted(){
@@ -204,33 +149,6 @@ export default {
                 })
             }
         },
-        addArtikelToList(item){
-            this.hasError = false
-            const index = UtilsFactory.searchIndexById(this.aankoop.tempArtikels, item)
-            if(index == -1) this.aankoop.tempArtikels.push(item)
-            else {
-                this.aankoop.tempArtikels[index].id = item.id
-                this.aankoop.tempArtikels[index].artikelcode = item.artikelcode
-                this.aankoop.tempArtikels[index].naam = item.naam
-                this.aankoop.tempArtikels[index].memo = item.memo
-                this.aankoop.tempArtikels[index].prijs = item.prijs
-                this.aankoop.tempArtikels[index].hoeveelheid = item.hoeveelheid
-                this.aankoop.tempArtikels[index].korting_een = item.korting_een
-                this.aankoop.tempArtikels[index].korting_twee = item.korting_twee
-                this.aankoop.tempArtikels[index].totaal = item.totaal
-                this.tableKey++
-            } 
-            this.closeArtikelBox()
-        },
-        deleteArtikelFromList(item){
-            ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit artikel wilt verwijderen?", null, (isConfirmed) => {
-                if (isConfirmed) {
-                    UtilsFactory.deleteItemFromList(this.aankoop.tempArtikels, item.id)
-                    this.closeArtikelBox()
-                    this.$refs.addArtikelBox.clear()
-                }
-            });
-        },
         onSubmit(){
             let isValidated = true;
 
@@ -242,8 +160,9 @@ export default {
                 this.$refs.levAdresField.setError(true); 
                 isValidated = false;
             }
-            if(this.aankoop.tempArtikels.length === 0) {
-                this.hasError = true; 
+
+            if(this.$refs.artikelbox.isEmpty()) {
+                this.$refs.artikelbox.setError(true) 
                 isValidated = false;
             }
 
@@ -252,23 +171,11 @@ export default {
                 this.aankoop.leverancier_id = this.$refs.leverancierField.getItem().id
                 this.aankoop.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
                 this.aankoop.leveradres = JSON.stringify(this.$refs.levAdresField.getAdres())
-                this.aankoop.artikels = this.aankoop.tempArtikels
-                this.aankoop.subtotaal = this.subtotaal;
-                this.aankoop.totaal = this.totaal;
+                this.aankoop.artikels = this.$refs.artikelbox.getArtikels()
+                this.aankoop.subtotaal = this.$refs.artikelbox.getSubtotaal();
+                this.aankoop.totaal = this.$refs.artikelbox.getTotaal();
                 AankopenController.create(this, this.aankoop, this.socket)
             }
-        },
-        addArtikel(){
-            this.$refs.addArtikelBox.setType(ViewStates.ADD);
-            this.isArtikelBoxShown = true;
-        },
-        updateArtikel(row){
-            this.$refs.addArtikelBox.setType(ViewStates.UPDATE);
-            this.$refs.addArtikelBox.setArtikel(row);
-            this.isArtikelBoxShown = true;
-        },
-        closeArtikelBox(){
-            this.isArtikelBoxShown = false;
         },
         clearAdressen(){
             this.aankoop.factuuradres = null
@@ -300,9 +207,5 @@ export default {
     padding-right: 15px;
     border-radius: 6px;
     outline: none;
-}
-.artikeltableerror{
-    color: red;
-    font-size: 12px;
 }
 </style>

@@ -49,7 +49,7 @@ class UtilsFactory {
   static sum(list, field){
     let sum = 0
     for(let i = 0; i < list.length; i++){
-      sum += list[i][field]
+      sum += parseFloat(list[i][field])
     }
     return sum
   }

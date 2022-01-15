@@ -14,6 +14,7 @@
 // TODO: Facturen titel beter maken bij zowel aankoop als verkoop                             ---- 
 // TODO: Opmerking order aanpassen qua naam voor AK, VK, CR                                   ---- 
 // TODO: Artikel beter maken                                                                  ---- 
+// TODO: Table pagination when search text is changed set page again to 1                     ---- 
 
 // TODO: ENV Variables - check for TODO's in all files                                        ---- 
 // TODO: delete console logs                                                                  ---- 
