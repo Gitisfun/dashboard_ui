@@ -60,7 +60,7 @@
                 <div class="column">
                     <ValidatedTextInput v-model="creditnota.ref_nr" name="Referentie nr." rules="required" />
                     <ValidatedTextInput v-model="creditnota.valuta" name="Valuta" rules="required" />
-                    <ValidatedSelectInput @change.native="setTotaal" v-model="creditnota.btw_id" name="Btw categorie" rules="required">
+                    <ValidatedSelectInput v-model="creditnota.btw_id" name="Btw categorie" rules="required">
                         <option v-for="option in btws" :value="option.id" :key="option.id">
                         {{ option.naam }}
                         </option>
@@ -82,44 +82,8 @@
                 </div>
           </ValidationObserver>
         </div>
-        <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-          <SmallHeaderAdder title="Artikels" @add="addArtikel" />
-          <div>
-              <AddArtikelBox ref="addArtikelBox" v-show="isArtikelBoxShown" @addArtikelToList="addArtikelToList" @closeArtikelBox="closeArtikelBox" @deleteArtikelFromList="deleteArtikelFromList" />
-          </div>
-          <b-table striped :key="tableKey" @dblclick="updateArtikel" :data="creditnota.tempArtikels">
-              <b-table-column width="10%" field="artikel_nr" label="Artikelcode" v-slot="props" sortable>
-                  {{ props.row.artikelcode }}
-              </b-table-column>
-              <b-table-column width="15%" field="naam" label="Naam" v-slot="props" sortable>
-                  {{ props.row.naam }}
-              </b-table-column>
-              <b-table-column width="20%" field="memo" label="Memo" v-slot="props" sortable>
-                  {{ props.row.memo }}
-              </b-table-column>
-              <b-table-column width="10%" centered field="prijs" label="Prijs" v-slot="props" sortable>
-                  {{ props.row.prijs | currencyFormatter }}
-              </b-table-column>
-              <b-table-column width="8%" centered field="hoeveelheid" label="Aantal" v-slot="props" sortable>
-                  {{ props.row.hoeveelheid }}
-              </b-table-column>
-              <b-table-column width="12%" centered field="korting_een" label="Korting I" v-slot="props" sortable>
-                  {{ props.row.korting_een | kortingFormatter }}
-              </b-table-column>
-              <b-table-column width="12%" centered field="korting_twee" label="Korting II" v-slot="props" sortable>
-                  {{ props.row.korting_twee | kortingFormatter }}
-              </b-table-column>
-              <b-table-column width="13%" centered field="totaal" label="Totaal" v-slot="props" sortable>
-                  {{ props.row.totaal | currencyFormatter }}
-              </b-table-column>
-              <template #empty>
-                  <div class="custom-table-empty">Nog geen artikels toegevoegd...</div>
-              </template>
-          </b-table>
-          <span v-if="hasError" class="artikeltableerror">Kies minstens een artikel</span>
-        </div>
         <div>
-          <TotalBox :subtotaal="creditnota.subtotaal" :btw="btw" :totaal="creditnota.totaal" />
+            <ArtikelBox ref="artikelbox" :btw="btw" />
         </div>
       </div>
       <div>
@@ -133,15 +97,14 @@
 // TODO: fix facturatie en leveringsadres default click when is filled in
 
 
-import CreditnotasController from '../../api/calls/creditnotas';
 import ReadHeaderWithPrint from "../../components/general/ReadHeaderWithPrint.vue";
 import UpdateHeader from "../../components/general/UpdateHeader.vue";
 import { ValidationObserver } from "vee-validate";
+import CreditnotasController from '../../api/calls/creditnotas';
 import socketMixin from "../../mixins/socketMixin"
 import InfoLine from "../../components/textfields/InfoLine.vue"
 import InfoAdresLine from "../../components/textfields/InfoAdresLine.vue"
 import ArtikelTableBox from '../../components/boxes/ArtikelTableBox.vue';
-import TotalBox from "../../components/boxes/TotalBox.vue";
 import UtilsFactory from '../../logic/utils/utilsFactory';
 import OpmerkingBoxRead from '../../components/boxes/OpmerkingBoxRead.vue';
 import ValidatedTextInput from "../../components/inputfields/ValidatedTextInput.vue";
@@ -150,38 +113,34 @@ import KlantenController from "../../api/calls/klanten"
 import KlantModal from "../../modals/KlantModal.vue"
 import MultilineTextInput from "../../components/inputfields/MultilineTextInput.vue"
 import AdresSearch from "../../components/inputfields/AdresSearch.vue"
-import SmallHeaderAdder from "../../components/general/SmallHeaderAdder.vue"
 import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectInput.vue"
-import AddArtikelBox from '../../components/boxes/AddArtikelBox.vue';
-import ViewStates from '../../logic/constants/viewStates';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
-import ModalFactory from '../../logic/factories/modalFactory';
-import ConfirmationModal from "../../modals/ConfirmationModal.vue";
+import TotalBox from "../../components/boxes/TotalBox.vue";
 import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
+import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
 
 export default {
     name: "CreditnotasUpdateview",
     mixins: [socketMixin],
     components: {
       ReadHeaderWithPrint,
-      UpdatedByInfo,
       UpdateHeader,
       ValidationObserver,
       InfoLine,
       InfoAdresLine,
       ArtikelTableBox,
-      TotalBox,
       OpmerkingBoxRead,
       ValidatedTextInput,
       ValidatedSelectInput,
       ValidatedSearchInput,
       AdresSearch,
       MultilineTextInput,
-      SmallHeaderAdder,
-      AddArtikelBox,
+      TotalBox,
       OpmerkingBox,
+      ArtikelBox,
+      UpdatedByInfo,
     },
     data: () => ({
       creditnota: {
@@ -208,12 +167,9 @@ export default {
         artikels: []
       },
       isReadVisible: true,
-      selectedKlant: null,
-      isArtikelBoxShown: false,
-      copyCreditnota: null,
-      tableKey: 0,
       btws: [],
-      hasError: false
+      selectedKlant: null,
+      copyCreditnota: null,
     }),
     computed: {
       orderTitle(){
@@ -232,17 +188,19 @@ export default {
     mounted(){
       CreditnotasController.getPreDataUpdate(this, this.$route.params.id, (res) => {
         this.btws = res[0].data
-        this.creditnota = res[1].data[0]
+        this.creditnota = res[1].data
         this.creditnota.read_factuuradres = JSON.parse(this.creditnota.factuuradres)
-        this.creditnota.tempArtikels = JSON.parse(this.creditnota.artikels)
+        this.creditnota.tempArtikels = this.creditnota.artikels
+        this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.creditnota.artikels))
+
         this.$refs.facAdresField.setAdres(this.creditnota.read_factuuradres);
+
         this.creditnota.update_datum = moment(this.creditnota.datum).format('yyyy-MM-DD');
         this.creditnota.update_betalingsdatum = moment(this.creditnota.betalingsdatum).format('yyyy-MM-DD');
         this.creditnota.read_datum = moment(this.creditnota.datum).format('DD-MM-yyyy');
         this.creditnota.read_betalingsdatum = moment(this.creditnota.betalingsdatum).format('DD-MM-yyyy');
-        this.$refs.addArtikelBox.setId(this.creditnota.tempArtikels)
-        this.setSubtotaal()
-        this.setTotaal()
+        
+        this.$refs.artikelbox.setId(this.creditnota.tempArtikels)
         this.$refs.klantField.setId(this.creditnota.klant_id);
         this.copyCreditnota = UtilsFactory.copyObject(this.creditnota)
         this.fetchAdressen(this.creditnota.klant_id)
@@ -250,20 +208,6 @@ export default {
       this.$refs.klantField.setModal(KlantModal);
     },
     methods: {
-      setSubtotaal(){
-        if(this.creditnota.tempArtikels.length != 0){
-            const sum = UtilsFactory.sum(this.creditnota.tempArtikels, "totaal");
-            this.creditnota.subtotaal = sum
-        }
-        else{
-          this.creditnota.subtotaal = 0
-        }
-      },
-      setTotaal(){
-        if(this.btw === "...") this.creditnota.totaal = 0
-        if(this.creditnota.subtotaal === 0) this.creditnota.totaal = 0
-        this.creditnota.totaal = UtilsFactory.addPercentage(this.creditnota.subtotaal, this.btw)
-      },
       edit(){
         this.isReadVisible = false;
       },
@@ -280,9 +224,9 @@ export default {
             isValidated = false;
         }
 
-        if(this.creditnota.tempArtikels.length === 0) {
-            this.hasError = true; 
-            isValidated = false;
+        if(this.$refs.artikelbox.isEmpty()) {
+              this.$refs.artikelbox.setError(true) 
+              isValidated = false;
         }
 
         if(isValidated){
@@ -290,7 +234,9 @@ export default {
           this.creditnota.betalingsdatum = this.creditnota.update_betalingsdatum
           this.creditnota.klant_id = this.$refs.klantField.getId()
           this.creditnota.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
-          this.creditnota.artikels = JSON.stringify(this.creditnota.tempArtikels) 
+          this.creditnota.artikels = this.$refs.artikelbox.getArtikels()
+          this.creditnota.subtotaal = this.$refs.artikelbox.getSubtotaal();
+          this.creditnota.totaal = this.$refs.artikelbox.getTotaal();
           CreditnotasController.update(this, this.creditnota, this.socket)
           console.log(this.creditnota);
         }
@@ -313,51 +259,6 @@ export default {
             this.selectedKlant = res.data[0]
             this.$refs.facAdresField.setAdressen(JSON.parse(this.selectedKlant.facturatie_adressen));
           })
-      },
-      addArtikelToList(item){
-        this.hasError = false
-        const index = UtilsFactory.searchIndexById(this.creditnota.tempArtikels, item)
-        if(index == -1) {
-          this.creditnota.tempArtikels.push(item); 
-          this.tableKey++
-        }
-        else {
-          this.creditnota.tempArtikels[index].id = item.id
-          this.creditnota.tempArtikels[index].artikelcode = item.artikelcode
-          this.creditnota.tempArtikels[index].naam = item.naam
-          this.creditnota.tempArtikels[index].memo = item.memo
-          this.creditnota.tempArtikels[index].prijs = item.prijs
-          this.creditnota.tempArtikels[index].hoeveelheid = item.hoeveelheid
-          this.creditnota.tempArtikels[index].korting_een = item.korting_een
-          this.creditnota.tempArtikels[index].korting_twee = item.korting_twee
-          this.creditnota.tempArtikels[index].totaal = item.totaal
-          this.tableKey++
-        } 
-        this.setSubtotaal()
-        this.setTotaal()
-        this.closeArtikelBox()
-      },
-      deleteArtikelFromList(item){
-        ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u dit artikel wilt verwijderen?", null, (isConfirmed) => {
-            if (isConfirmed) {
-                UtilsFactory.deleteItemFromList(this.creditnota.tempArtikels, item.id)
-                this.closeArtikelBox()
-                this.tableKey++
-                this.$refs.addArtikelBox.clear()
-            }
-        });
-      },
-      addArtikel(){
-        this.$refs.addArtikelBox.setType(ViewStates.ADD);
-        this.isArtikelBoxShown = true;
-      },
-      updateArtikel(row){
-        this.$refs.addArtikelBox.setType(ViewStates.UPDATE);
-        this.$refs.addArtikelBox.setArtikel(row);
-        this.isArtikelBoxShown = true;
-      },
-      closeArtikelBox(){
-        this.isArtikelBoxShown = false;
       },
       clearAdressen(){
         this.creditnota.factuuradres = null
@@ -387,9 +288,5 @@ export default {
     padding-right: 15px;
     border-radius: 6px;
     outline: none;
-}
-.artikeltableerror{
-    color: red;
-    font-size: 12px;
 }
 </style>

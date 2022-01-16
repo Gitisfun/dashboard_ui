@@ -1,8 +1,8 @@
 import ApiCalls from "../ApiCalls";
 import { getAllVerkopen, getVerkoop, createVerkoop, updateVerkoop, deleteVerkoop, paidVerkoop } from "../routes/verkopen"
 import { getAllBtws } from "../routes/btw"
+import { getCounter } from "../routes/counters";
 import Socket from "../../logic/factories/socketFactory"
-
 class VerkopenController {
 
     // Overview
@@ -17,7 +17,7 @@ class VerkopenController {
 
     // Create View
     static getPreData(context, callback){
-        ApiCalls.getMultiple([getAllBtws()], callback, context)
+        ApiCalls.getMultiple([getAllBtws(), getCounter()], callback, context)
     }
 
     static create(context, body, socket){

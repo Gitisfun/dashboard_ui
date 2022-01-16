@@ -205,7 +205,6 @@ export default {
     },
     mounted(){
       AankopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
-        console.log(res);
         this.btws = res[0].data
         this.aankoop = res[1].data
         this.aankoop.read_factuuradres = JSON.parse(this.aankoop.factuuradres)
@@ -222,7 +221,7 @@ export default {
         this.aankoop.read_datum = moment(this.aankoop.datum).format('DD-MM-yyyy');
         this.aankoop.read_vervaldag = moment(this.aankoop.vervaldag).format('DD-MM-yyyy');
         this.aankoop.read_leverdatum = moment(this.aankoop.leverdatum).format('DD-MM-yyyy');
-        console.log(this.aankoop.tempArtikels);
+        
         this.$refs.artikelbox.setId(this.aankoop.tempArtikels)
         this.$refs.klantField.setId(this.aankoop.klant_id);
         this.$refs.leverancierField.setId(this.aankoop.leverancier_id);

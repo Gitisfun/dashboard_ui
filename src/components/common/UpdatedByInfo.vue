@@ -1,5 +1,8 @@
 <template>
-  <div class="updated-info-text" v-if="updatedObj">Laatst aangepast door {{ person }} om {{ time }} op {{ date }}</div>
+    <div v-if="updatedObj">
+        <div class="updated-info-text">Laatst aangepast door {{ person }} om {{ time }} op {{ date }}</div>
+        <hr>
+    </div>
 </template>
 
 <script>
@@ -30,7 +33,7 @@ export default {
 
 <style scoped>
 .updated-info-text{
-    font-size: 14;
+    font-size: 14px;
     color: black;
     margin-bottom: 15px;
     font-style: italic;

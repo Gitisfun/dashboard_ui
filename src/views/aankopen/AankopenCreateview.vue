@@ -125,10 +125,8 @@ export default {
             tempArtikels: [],
             artikels: []
         },
-        tableKey: 0,
         btws: [],
         selectedKlant: null,
-        hasError: false
     }),
     mounted(){
         AankopenController.getPreData(this, (res) => {

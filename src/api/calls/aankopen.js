@@ -1,8 +1,8 @@
 import ApiCalls from "../ApiCalls";
 import { getAllAankopen, getAankoop, createAankoop, updateAankoop, deleteAankoop, deliveredAankoop, paidAankoop } from "../routes/aankopen"
 import { getAllBtws } from "../routes/btw"
-import Socket from "../../logic/factories/socketFactory"
 import { getCounter } from "../routes/counters";
+import Socket from "../../logic/factories/socketFactory"
 
 class AankopenController {
 

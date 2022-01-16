@@ -1,6 +1,7 @@
 import ApiCalls from "../ApiCalls";
 import { getAllCreditnotas, getCreditnota, createCreditnota, updateCreditnota, deleteCreditnota, paidCreditnota } from "../routes/creditnotas"
 import { getAllBtws } from "../routes/btw"
+import { getCounter } from "../routes/counters";
 import Socket from "../../logic/factories/socketFactory"
 
 class CreditnotasController {
@@ -17,7 +18,7 @@ class CreditnotasController {
 
     // Create View
     static getPreData(context, callback){
-        ApiCalls.getMultiple([getAllBtws()], callback, context)
+        ApiCalls.getMultiple([getAllBtws(), getCounter()], callback, context)
     }
 
     static create(context, body, socket){
