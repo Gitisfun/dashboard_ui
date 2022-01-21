@@ -18,16 +18,21 @@
               <InfoLine info="Klant" :value="creditnota.klant_naam" />
               <InfoLine info="Betalingsdatum" :value="creditnota.read_betalingsdatum" />
               <InfoAdresLine info="Facturatie adres" :value="creditnota.read_factuuradres" />
-              <InfoLine info="Eindtekst" :value="creditnota.eindtekst" />
             </div>
             <div class="column">
               <InfoLine info="Referentie nr." :value="creditnota.ref_nr" />
               <InfoLine info="Valuta" :value="creditnota.valuta" />
               <InfoLine info="Btw categorie" :value="btwInfo" />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <InfoLine info="Eindtekst" :value="creditnota.eindtekst" />
+            </div>
+            <div class="column">
               <InfoLine info="Opmerking order" :value="creditnota.opmerking_order" />
             </div>
           </div>
-          <br>
           <div>
             <ArtikelTableBox :artikels="creditnota.tempArtikels" />
           </div>

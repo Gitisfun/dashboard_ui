@@ -18,16 +18,21 @@
               <InfoLine info="Klant" :value="verkoop.klant_naam" />
               <InfoLine info="Betalingsdatum" :value="verkoop.read_betalingsdatum" />
               <InfoAdresLine info="Facturatie adres" :value="verkoop.read_factuuradres" />
-              <InfoLine info="Eindtekst" :value="verkoop.eindtekst" />
             </div>
             <div class="column">
               <InfoLine info="Referentie nr." :value="verkoop.ref_nr" />
               <InfoLine info="Valuta" :value="verkoop.valuta" />
               <InfoLine info="Btw categorie" :value="btwInfo" />
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column">
+              <InfoLine info="Eindtekst" :value="verkoop.eindtekst" />
+            </div>
+            <div class="column">
               <InfoLine info="Opmerking order" :value="verkoop.opmerking_order" />
             </div>
           </div>
-          <br>
           <div>
             <ArtikelTableBox :artikels="verkoop.tempArtikels" />
           </div>
@@ -68,18 +73,18 @@
                 </div>
             </div>
              <div class="columns">
-                    <div class="column is-6">
-                        <AdresSearch :klant="verkoop.klant_naam" ref="facAdresField" text="Facturatie adres" />
-                    </div>
+                <div class="column is-6">
+                    <AdresSearch :klant="verkoop.klant_naam" ref="facAdresField" text="Facturatie adres" />
                 </div>
-                <div class="columns">
-                    <div class="column">
-                        <MultilineTextInput v-model="verkoop.eindtekst" name="Eindtekst" />
-                    </div>
-                    <div class="column">
-                        <MultilineTextInput v-model="verkoop.opmerking_order" name="Opmerking order" />
-                    </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                    <MultilineTextInput v-model="verkoop.eindtekst" name="Eindtekst" />
                 </div>
+                <div class="column">
+                    <MultilineTextInput v-model="verkoop.opmerking_order" name="Opmerking order" />
+                </div>
+             </div>
           </ValidationObserver>
         </div>
         <div>

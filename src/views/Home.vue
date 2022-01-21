@@ -18,6 +18,8 @@
 // TODO: fix bug with sorting table in overview                                               ---- 
 // TODO: fix bug in update with address                                                       ---- 
 // TODO: add error message at top of factuur: aankopen, verkopen, creditnotas                 ---- 
+// TODO: afbeelding toevoegen in print voor aankoop, verkoop en creditnota                    ---- 
+// TODO: add before page refresh a message check when form is filled in and not submitted
 
 // TODO: ENV Variables - check for TODO's in all files                                        ---- 
 // TODO: delete console logs                                                                  ---- 

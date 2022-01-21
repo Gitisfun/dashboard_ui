@@ -155,7 +155,7 @@ export default {
     },
     methods: {
       load(){
-        BedrijvenController.get(this.$store.getters.getUser.bedrijf_id, this, (res) => {
+        BedrijvenController.get(this, (res) => {
           this.bedrijf = res.data[0]
 
           if(this.bedrijf.adres){

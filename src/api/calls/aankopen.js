@@ -2,6 +2,8 @@ import ApiCalls from "../ApiCalls";
 import { getAllAankopen, getAankoop, createAankoop, updateAankoop, deleteAankoop, deliveredAankoop, paidAankoop } from "../routes/aankopen"
 import { getAllBtws } from "../routes/btw"
 import { getCounter } from "../routes/counters";
+import { getKlant } from "../routes/klanten"
+import { getBedrijf } from "../routes/bedrijven";
 import Socket from "../../logic/factories/socketFactory"
 
 class AankopenController {
@@ -43,6 +45,10 @@ class AankopenController {
         ApiCalls.deleteById(deleteAankoop, body.id, context, true, socket, Socket.AANKOPEN)
     }
 
+    // Print
+    static getPrintPreData(context, id, klant_id, callback){
+        ApiCalls.getMultiple([getBedrijf(), getAankoop(id), getKlant(klant_id)], callback, context)
+    }
 }
 
 export default AankopenController

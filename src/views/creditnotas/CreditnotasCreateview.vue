@@ -4,6 +4,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <ValidationObserver v-slot="{ handleSubmit }">
                 <CreateHeader title="Nieuwe creditnota" @save="handleSubmit(onSubmit)" />
+                <div v-show="showError" class="box" style="background: red; color: white">Vul alle velden correct in</div>
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput v-model="creditnota.order_nr" name="Order nr." rules="required" />
@@ -116,6 +117,7 @@ export default {
       },
       btws: [],
       selectedKlant: null,
+      showError: false
     }),
     mounted(){
       CreditnotasController.getPreData(this, (res) => {
@@ -140,14 +142,17 @@ export default {
         if(this.$refs.facAdresField.isEmpty()){
             this.$refs.facAdresField.setError(true); 
             isValidated = false;
+            this.showError = true
         }
 
         if(this.$refs.artikelbox.isEmpty()) {
             this.$refs.artikelbox.setError(true) 
             isValidated = false;
+            this.showError = true
         }
 
         if(isValidated){
+            this.showError = false
             this.creditnota.klant_id = this.$refs.klantField.getItem().id
             this.creditnota.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
             this.creditnota.artikels = this.$refs.artikelbox.getArtikels()

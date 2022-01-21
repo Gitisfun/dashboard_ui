@@ -5,8 +5,8 @@ import Socket from "../../logic/factories/socketFactory"
 class BedrijvenController {
 
     // Overview
-    static get(id, context, callback){
-        ApiCalls.getById(getBedrijf, id, callback, context)
+    static get(context, callback){
+        ApiCalls.getById(getBedrijf, null, callback, context)
     }
 
     static update(context, body, socket){
