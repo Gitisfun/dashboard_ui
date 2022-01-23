@@ -19,6 +19,20 @@ class ApiCalls {
       });
   }
 
+  static check(requestHandler, body, context, callback, errorCallback){
+    requestHandler(body)
+      .then((res) => {
+        if(res){
+          callback(res)
+        }
+      })
+      .catch((err) => {
+        if(err){
+          errorCallback(err)
+        }
+      })
+  }
+
   static getAll(requestHandler, params, responseHandler, context) {
     requestHandler(params)
       .then((res) => responseHandler(res))

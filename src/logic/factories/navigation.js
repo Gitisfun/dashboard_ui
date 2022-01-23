@@ -51,6 +51,12 @@ class Navigation {
     static back(context){
         context.$router.go(-1)
     }
+
+    static logout(context){
+      context.$store.dispatch("setToken", null);
+      context.$store.dispatch("setUser", null);
+      this.refresh(context);
+    }
 }
 
 export default Navigation

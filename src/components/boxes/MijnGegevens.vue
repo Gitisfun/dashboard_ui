@@ -175,7 +175,7 @@ export default {
       },
       save(){
         this.bedrijf.adres = JSON.stringify(this.adres)
-        BedrijvenController.update(this, this.bedrijf, this.socketMixin)
+        BedrijvenController.update(this, this.bedrijf, this.socket)
         setTimeout(() => {
           this.cancel()
           this.load()

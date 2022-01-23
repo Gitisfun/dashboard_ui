@@ -13,6 +13,7 @@ class Socket {
   static ARTIKELS = "artikels"
   static LEVERANCIERS = "leveranciers"
   static KLANTEN = "klanten"
+  static SUNDROPS = "sundrops"
   static ANDERE = "andere"
   static INSTELLINGEN = "instellingen"
   

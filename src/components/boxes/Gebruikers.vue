@@ -23,7 +23,7 @@
             </div>
             <div class="level-left">
               <div class="level-item">
-                <b-button type="is-text">Aanpassen</b-button>
+                <GenericBtn text="Aanpassen" btnStyle="underlined" @clicked="updateUser(item)"  />
               </div>
             </div>
           </div>
@@ -35,53 +35,52 @@
 <script>
 import Subtitle from "../textfields/Subtitle.vue";
 import GenericBtn from "../buttons/GenericBtn.vue"
-/*
-import InfoField from '../components/textfields/InfoField.vue';
-import InfoFieldValue from '../components/textfields/InfoFieldValue.vue';
-import ValidatedTextInput from '../components/inputfields/ValidatedTextInput.vue';
-import TextInput from "../components/inputfields/TextInput.vue";
-import { ValidationObserver } from "vee-validate";
-*/
+import ModalFactory from '../../logic/factories/modalFactory';
+import GebruikerController from "../../api/calls/gebruikers"
+import GebruikersModal from "../../modals/GebruikersModal.vue"
+import GebruikersUpdateModal from '../../modals/GebruikersUpdateModal.vue';
+import socketMixin from '../../mixins/socketMixin';
+import Socket from '../../logic/factories/socketFactory';
 
 export default {
     name: "Gebruikers",
+    mixins: [socketMixin],
     components: {
       Subtitle,
       GenericBtn,
-      /*
-      InfoField,
-      InfoFieldValue,
-      ValidatedTextInput,
-      TextInput,
-      ValidationObserver,
-      */
     },
     data(){
       return {
         isRead: true,
-        gebruikers: [
-          {
-            id: 1,
-            voornaam: "Suzanne",
-            achternaam: "Cooper",
-          },
-          {
-            id: 2,
-            voornaam: "Pauline",
-            achternaam: "De Smedt",
-          },
-          {
-            id: 3,
-            voornaam: "Charlotte",
-            achternaam: "Van De Laan",
-          },
-        ]
+        gebruikers: []
       }
     },
+    mounted(){
+      Socket.listen(this.socket, Socket.ANDERE, () => { this.loadUsers() })
+      this.loadUsers()
+    },
     methods: {
-      addUser(){
-        
+      loadUsers(){
+        GebruikerController.all(this, null, (res) => {
+          this.gebruikers = res.data
+        })
       },
+      addUser(){
+        ModalFactory.showModal(this, GebruikersModal, (gebruiker) => { GebruikerController.create(this, gebruiker, this.socket) });
+      },
+      updateUser(item){
+        ModalFactory.showModalWithParamas(this, GebruikersUpdateModal,"Gebruiker aanpassen", item, (gebruiker) => {
+          if(gebruiker.choice === 1) {
+            GebruikerController.update(this, gebruiker, this.socket)
+          }
+          else if(gebruiker.choice === 2) {
+            GebruikerController.sundrops(this, gebruiker, this.socket)
+          }
+          else if(gebruiker.choice === 3) {
+            GebruikerController.deleteById(this, gebruiker, this.socket)
+          }
+        })
+      }
     }
 }
 </script>

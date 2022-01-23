@@ -42,9 +42,7 @@ export default {
   methods: {
     ...mapActions(["switchMenuItem"]),
     logout() {
-      this.$store.dispatch("setToken", null);
-      this.$store.dispatch("setUser", null);
-      Navigation.refresh(this);
+      Navigation.logout(this)
     },
   },
 };
