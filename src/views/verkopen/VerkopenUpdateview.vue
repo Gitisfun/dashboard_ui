@@ -50,6 +50,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ValidationObserver v-slot="{ handleSubmit }">
               <UpdateHeader title="Verkoopfactuur aanpassen" @save="handleSubmit(onSubmit)" @cancel="cancelEdit" @deleteItem="deleteItem" />
+              <ErrorField :showError="showError"/>
               <div class="columns">
                 <div class="column">
                   <ValidatedTextInput v-model="verkoop.order_nr" name="Order nr." rules="required" />
@@ -125,6 +126,7 @@ import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import ErrorField from '../../components/common/ErrorField.vue'
 
 export default {
     name: "VerkopenUpdateview",
@@ -146,6 +148,7 @@ export default {
       OpmerkingBox,
       ArtikelBox,
       UpdatedByInfo,
+      ErrorField
     },
     data: () => ({
       verkoop: {
@@ -175,6 +178,7 @@ export default {
       btws: [],
       selectedKlant: null,
       copyVerkoop: null,
+      showError: false
     }),
     computed: {
       orderTitle(){
@@ -191,30 +195,34 @@ export default {
       },
     },
     mounted(){
-      VerkopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
-        this.btws = res[0].data
-        this.verkoop = res[1].data
-        this.verkoop.read_factuuradres = JSON.parse(this.verkoop.factuuradres)
-        this.verkoop.tempArtikels = this.verkoop.artikels
-        this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.verkoop.artikels))
-
-        this.$refs.facAdresField.setAdres(this.verkoop.read_factuuradres);
-        
-        this.verkoop.update_datum = moment(this.verkoop.datum).format('yyyy-MM-DD');
-        this.verkoop.update_betalingsdatum = moment(this.verkoop.betalingsdatum).format('yyyy-MM-DD');
-        this.verkoop.read_datum = moment(this.verkoop.datum).format('DD-MM-yyyy');
-        this.verkoop.read_betalingsdatum = moment(this.verkoop.betalingsdatum).format('DD-MM-yyyy');
-        
-        this.$refs.artikelbox.setId(this.verkoop.tempArtikels)
-        this.$refs.klantField.setId(this.verkoop.klant_id);
-        this.copyVerkoop = UtilsFactory.copyObject(this.verkoop)
-        this.fetchAdressen(this.verkoop.klant_id)
-      })
-      this.$refs.klantField.setModal(KlantModal);
+      this.fetchData()
     },
     methods: {
+      fetchData(){
+        VerkopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
+          this.btws = res[0].data
+          this.verkoop = res[1].data
+          this.verkoop.read_factuuradres = JSON.parse(this.verkoop.factuuradres)
+          this.verkoop.tempArtikels = this.verkoop.artikels
+          this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.verkoop.artikels))
+
+          this.$refs.facAdresField.setAdres(this.verkoop.read_factuuradres);
+          
+          this.verkoop.update_datum = moment(this.verkoop.datum).format('yyyy-MM-DD');
+          this.verkoop.update_betalingsdatum = moment(this.verkoop.betalingsdatum).format('yyyy-MM-DD');
+          this.verkoop.read_datum = moment(this.verkoop.datum).format('DD-MM-yyyy');
+          this.verkoop.read_betalingsdatum = moment(this.verkoop.betalingsdatum).format('DD-MM-yyyy');
+          
+          this.$refs.artikelbox.setId(this.verkoop.tempArtikels)
+          this.$refs.klantField.setId(this.verkoop.klant_id);
+          this.copyVerkoop = UtilsFactory.copyObject(this.verkoop)
+          this.fetchAdressen(this.verkoop.klant_id)
+        })
+        this.$refs.klantField.setModal(KlantModal);
+      },
       edit(){
         this.isReadVisible = false;
+        this.showError = false;
       },
       print(){
         console.log(this.verkoop);
@@ -227,14 +235,17 @@ export default {
         if(this.$refs.facAdresField.isEmpty()){
             this.$refs.facAdresField.setError(true); 
             isValidated = false;
+            this.showError = true
         }
 
         if(this.$refs.artikelbox.isEmpty()) {
-              this.$refs.artikelbox.setError(true) 
-              isValidated = false;
+            this.$refs.artikelbox.setError(true) 
+            isValidated = false;
+            this.showError = true
         }
 
         if(isValidated){
+          this.showError = false
           this.verkoop.datum = this.verkoop.update_datum
           this.verkoop.betalingsdatum = this.verkoop.update_betalingsdatum
           this.verkoop.klant_id = this.$refs.klantField.getId()
@@ -243,12 +254,14 @@ export default {
           this.verkoop.subtotaal = this.$refs.artikelbox.getSubtotaal();
           this.verkoop.totaal = this.$refs.artikelbox.getTotaal();
           VerkopenController.update(this, this.verkoop, this.socket)
-          console.log(this.verkoop);
         }
       },
       cancelEdit(){
         this.isReadVisible = true
         this.verkoop = UtilsFactory.copyObject(this.copyVerkoop)
+        this.fetchData()
+        this.$refs.facAdresField.setError(false);
+        this.$refs.artikelbox.setError(false)
       },
       deleteItem(){
         VerkopenController.deleteById(this, this.verkoop, this.socket)

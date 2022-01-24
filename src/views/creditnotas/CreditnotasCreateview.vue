@@ -4,7 +4,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <ValidationObserver v-slot="{ handleSubmit }">
                 <CreateHeader title="Nieuwe creditnota" @save="handleSubmit(onSubmit)" />
-                <div v-show="showError" class="box" style="background: red; color: white">Vul alle velden correct in</div>
+                <ErrorField :showError="showError"/>
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput v-model="creditnota.order_nr" name="Order nr." rules="required" />
@@ -67,6 +67,7 @@ import CreditnotasController from '../../api/calls/creditnotas';
 import UtilsFactory from '../../logic/utils/utilsFactory';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import ErrorField from '../../components/common/ErrorField.vue'
 
 export default {
     name: "CreditnotasCreateview",
@@ -80,7 +81,8 @@ export default {
         AdresSearch,
         MultilineTextInput,
         OpmerkingBox,
-        ArtikelBox
+        ArtikelBox,
+        ErrorField
     },
     computed: {
       btw() {

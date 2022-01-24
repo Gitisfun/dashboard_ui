@@ -4,6 +4,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
             <ValidationObserver v-slot="{ handleSubmit }">
                 <CreateHeader title="Nieuwe verkoopfactuur" @save="handleSubmit(onSubmit)" />
+                <ErrorField :showError="showError"/>
                 <div class="columns">
                     <div class="column">
                         <ValidatedTextInput v-model="verkoop.order_nr" name="Order nr." rules="required" />
@@ -66,6 +67,7 @@ import VerkopenController from '../../api/calls/verkopen';
 import UtilsFactory from '../../logic/utils/utilsFactory';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import ErrorField from '../../components/common/ErrorField.vue'
 
 export default {
     name: "VerkopenCreateview",
@@ -79,7 +81,8 @@ export default {
         AdresSearch,
         MultilineTextInput,
         OpmerkingBox,
-        ArtikelBox
+        ArtikelBox,
+        ErrorField
     },
     computed: {
       btw() {
@@ -116,6 +119,7 @@ export default {
       },
       btws: [],
       selectedKlant: null,
+      showError: false
     }),
     mounted(){
       VerkopenController.getPreData(this, (res) => {
@@ -140,14 +144,17 @@ export default {
         if(this.$refs.facAdresField.isEmpty()){
             this.$refs.facAdresField.setError(true); 
             isValidated = false;
+            this.showError = true
         }
 
         if(this.$refs.artikelbox.isEmpty()) {
             this.$refs.artikelbox.setError(true) 
             isValidated = false;
+            this.showError = true
         }
 
         if(isValidated){
+            this.showError = false
             this.verkoop.klant_id = this.$refs.klantField.getItem().id
             this.verkoop.factuuradres = JSON.stringify(this.$refs.facAdresField.getAdres())
             this.verkoop.artikels = this.$refs.artikelbox.getArtikels()

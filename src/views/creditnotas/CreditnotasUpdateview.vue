@@ -50,6 +50,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ValidationObserver v-slot="{ handleSubmit }">
               <UpdateHeader title="Creditnota aanpassen" @save="handleSubmit(onSubmit)" @cancel="cancelEdit" @deleteItem="deleteItem" />
+              <ErrorField :showError="showError"/>
               <div class="columns">
                 <div class="column">
                   <ValidatedTextInput v-model="creditnota.order_nr" name="Order nr." rules="required" />
@@ -125,6 +126,7 @@ import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import ErrorField from '../../components/common/ErrorField.vue'
 
 export default {
     name: "CreditnotasUpdateview",
@@ -146,6 +148,7 @@ export default {
       OpmerkingBox,
       ArtikelBox,
       UpdatedByInfo,
+      ErrorField
     },
     data: () => ({
       creditnota: {
@@ -175,6 +178,7 @@ export default {
       btws: [],
       selectedKlant: null,
       copyCreditnota: null,
+      showError: false
     }),
     computed: {
       orderTitle(){
@@ -191,30 +195,34 @@ export default {
       },
     },
     mounted(){
-      CreditnotasController.getPreDataUpdate(this, this.$route.params.id, (res) => {
-        this.btws = res[0].data
-        this.creditnota = res[1].data
-        this.creditnota.read_factuuradres = JSON.parse(this.creditnota.factuuradres)
-        this.creditnota.tempArtikels = this.creditnota.artikels
-        this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.creditnota.artikels))
-
-        this.$refs.facAdresField.setAdres(this.creditnota.read_factuuradres);
-
-        this.creditnota.update_datum = moment(this.creditnota.datum).format('yyyy-MM-DD');
-        this.creditnota.update_betalingsdatum = moment(this.creditnota.betalingsdatum).format('yyyy-MM-DD');
-        this.creditnota.read_datum = moment(this.creditnota.datum).format('DD-MM-yyyy');
-        this.creditnota.read_betalingsdatum = moment(this.creditnota.betalingsdatum).format('DD-MM-yyyy');
-        
-        this.$refs.artikelbox.setId(this.creditnota.tempArtikels)
-        this.$refs.klantField.setId(this.creditnota.klant_id);
-        this.copyCreditnota = UtilsFactory.copyObject(this.creditnota)
-        this.fetchAdressen(this.creditnota.klant_id)
-      })
-      this.$refs.klantField.setModal(KlantModal);
+      this.fetchData()
     },
     methods: {
+      fetchData(){
+        CreditnotasController.getPreDataUpdate(this, this.$route.params.id, (res) => {
+          this.btws = res[0].data
+          this.creditnota = res[1].data
+          this.creditnota.read_factuuradres = JSON.parse(this.creditnota.factuuradres)
+          this.creditnota.tempArtikels = this.creditnota.artikels
+          this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.creditnota.artikels))
+
+          this.$refs.facAdresField.setAdres(this.creditnota.read_factuuradres);
+
+          this.creditnota.update_datum = moment(this.creditnota.datum).format('yyyy-MM-DD');
+          this.creditnota.update_betalingsdatum = moment(this.creditnota.betalingsdatum).format('yyyy-MM-DD');
+          this.creditnota.read_datum = moment(this.creditnota.datum).format('DD-MM-yyyy');
+          this.creditnota.read_betalingsdatum = moment(this.creditnota.betalingsdatum).format('DD-MM-yyyy');
+          
+          this.$refs.artikelbox.setId(this.creditnota.tempArtikels)
+          this.$refs.klantField.setId(this.creditnota.klant_id);
+          this.copyCreditnota = UtilsFactory.copyObject(this.creditnota)
+          this.fetchAdressen(this.creditnota.klant_id)
+        })
+        this.$refs.klantField.setModal(KlantModal);
+      },
       edit(){
         this.isReadVisible = false;
+        this.showError = false;
       },
       print(){
         console.log(this.creditnota);
@@ -225,16 +233,20 @@ export default {
         let isValidated = true;
 
         if(this.$refs.facAdresField.isEmpty()){
-            this.$refs.facAdresField.setError(true); 
-            isValidated = false;
+          this.$refs.facAdresField.setError(true); 
+          isValidated = false;
+          this.showError = true
         }
 
+
         if(this.$refs.artikelbox.isEmpty()) {
-              this.$refs.artikelbox.setError(true) 
-              isValidated = false;
+          this.$refs.artikelbox.setError(true) 
+          isValidated = false;
+          this.showError = true
         }
 
         if(isValidated){
+          this.showError = false
           this.creditnota.datum = this.creditnota.update_datum
           this.creditnota.betalingsdatum = this.creditnota.update_betalingsdatum
           this.creditnota.klant_id = this.$refs.klantField.getId()
@@ -243,12 +255,14 @@ export default {
           this.creditnota.subtotaal = this.$refs.artikelbox.getSubtotaal();
           this.creditnota.totaal = this.$refs.artikelbox.getTotaal();
           CreditnotasController.update(this, this.creditnota, this.socket)
-          console.log(this.creditnota);
         }
       },
       cancelEdit(){
         this.isReadVisible = true
         this.creditnota = UtilsFactory.copyObject(this.copyCreditnota)
+        this.fetchData()
+        this.$refs.facAdresField.setError(false);
+        this.$refs.artikelbox.setError(false)
       },
       deleteItem(){
         CreditnotasController.deleteById(this, this.creditnota, this.socket)

@@ -50,6 +50,7 @@
         <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <ValidationObserver v-slot="{ handleSubmit }">
               <UpdateHeader title="Bestelling aanpassen" @save="handleSubmit(onSubmit)" @cancel="cancelEdit" @deleteItem="deleteItem" />
+              <ErrorField :showError="showError"/>
               <div class="columns">
                 <div class="column">
                   <ValidatedTextInput v-model="aankoop.bestellings_nr" name="Bestelling nr." rules="required" />
@@ -129,6 +130,7 @@ import moment from  "moment"
 import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import ErrorField from '../../components/common/ErrorField.vue'
 
 export default {
     name: "AankopenUpdateview",
@@ -150,12 +152,14 @@ export default {
       OpmerkingBox,
       ArtikelBox,
       UpdatedByInfo,
+      ErrorField
     },
     data: () =>({
       isReadVisible: true,
       btws: [],
       selectedKlant: null,
       copyAankoop: null,
+      showError: false,
       aankoop: {
         bestellings_nr: null,
         datum: null,
@@ -204,36 +208,40 @@ export default {
       },
     },
     mounted(){
-      AankopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
-        this.btws = res[0].data
-        this.aankoop = res[1].data
-        this.aankoop.read_factuuradres = JSON.parse(this.aankoop.factuuradres)
-        this.aankoop.read_leveradres = JSON.parse(this.aankoop.leveradres)
-        this.aankoop.tempArtikels = this.aankoop.artikels
-        this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.aankoop.artikels))
-        
-        this.$refs.facAdresField.setAdres(this.aankoop.read_factuuradres);
-        this.$refs.levAdresField.setAdres(this.aankoop.read_leveradres);
-
-        this.aankoop.update_datum = moment(this.aankoop.datum).format('yyyy-MM-DD');
-        this.aankoop.update_vervaldag = moment(this.aankoop.vervaldag).format('yyyy-MM-DD');
-        this.aankoop.update_leverdatum = moment(this.aankoop.leverdatum).format('yyyy-MM-DD');
-        this.aankoop.read_datum = moment(this.aankoop.datum).format('DD-MM-yyyy');
-        this.aankoop.read_vervaldag = moment(this.aankoop.vervaldag).format('DD-MM-yyyy');
-        this.aankoop.read_leverdatum = moment(this.aankoop.leverdatum).format('DD-MM-yyyy');
-        
-        this.$refs.artikelbox.setId(this.aankoop.tempArtikels)
-        this.$refs.klantField.setId(this.aankoop.klant_id);
-        this.$refs.leverancierField.setId(this.aankoop.leverancier_id);
-        this.copyAankoop = UtilsFactory.copyObject(this.aankoop)
-        this.fetchAdressen(this.aankoop.klant_id)
-      })
-      this.$refs.klantField.setModal(KlantModal);
-      this.$refs.leverancierField.setModal(LeverancierModal);
+      this.fetchData()
     },
     methods: {
+      fetchData(){
+        AankopenController.getPreDataUpdate(this, this.$route.params.id, (res) => {
+          this.btws = res[0].data
+          this.aankoop = res[1].data
+          this.aankoop.read_factuuradres = JSON.parse(this.aankoop.factuuradres)
+          this.aankoop.read_leveradres = JSON.parse(this.aankoop.leveradres)
+          this.aankoop.tempArtikels = this.aankoop.artikels
+          this.$refs.artikelbox.setArtikels(UtilsFactory.copyObject(this.aankoop.artikels))
+          
+          this.$refs.facAdresField.setAdres(this.aankoop.read_factuuradres);
+          this.$refs.levAdresField.setAdres(this.aankoop.read_leveradres);
+
+          this.aankoop.update_datum = moment(this.aankoop.datum).format('yyyy-MM-DD');
+          this.aankoop.update_vervaldag = moment(this.aankoop.vervaldag).format('yyyy-MM-DD');
+          this.aankoop.update_leverdatum = moment(this.aankoop.leverdatum).format('yyyy-MM-DD');
+          this.aankoop.read_datum = moment(this.aankoop.datum).format('DD-MM-yyyy');
+          this.aankoop.read_vervaldag = moment(this.aankoop.vervaldag).format('DD-MM-yyyy');
+          this.aankoop.read_leverdatum = moment(this.aankoop.leverdatum).format('DD-MM-yyyy');
+          
+          this.$refs.artikelbox.setId(this.aankoop.tempArtikels)
+          this.$refs.klantField.setId(this.aankoop.klant_id);
+          this.$refs.leverancierField.setId(this.aankoop.leverancier_id);
+          this.copyAankoop = UtilsFactory.copyObject(this.aankoop)
+          this.fetchAdressen(this.aankoop.klant_id)
+        })
+        this.$refs.klantField.setModal(KlantModal);
+        this.$refs.leverancierField.setModal(LeverancierModal);
+      },
       edit(){
         this.isReadVisible = false;
+        this.showError = false;
       },
       print(){
         console.log(this.aankoop);
@@ -246,18 +254,22 @@ export default {
         if(this.$refs.facAdresField.isEmpty()){
             this.$refs.facAdresField.setError(true); 
             isValidated = false;
+            this.showError = true
         }
         if(this.$refs.levAdresField.isEmpty()) {
             this.$refs.levAdresField.setError(true); 
             isValidated = false;
+            this.showError = true
         }
         
         if(this.$refs.artikelbox.isEmpty()) {
             this.$refs.artikelbox.setError(true) 
             isValidated = false;
+            this.showError = true
         }
 
         if(isValidated){
+          this.showError = false
           this.aankoop.datum = this.aankoop.update_datum
           this.aankoop.vervaldag = this.aankoop.update_vervaldag
           this.aankoop.leverdatum = this.aankoop.update_leverdatum
@@ -275,6 +287,10 @@ export default {
       cancelEdit(){
         this.isReadVisible = true
         this.aankoop = UtilsFactory.copyObject(this.copyAankoop)
+        this.fetchData()
+        this.$refs.facAdresField.setError(false); 
+        this.$refs.levAdresField.setError(false);
+        this.$refs.artikelbox.setError(false) 
       },
       deleteItem(){
         AankopenController.deleteById(this, this.aankoop, this.socket)
