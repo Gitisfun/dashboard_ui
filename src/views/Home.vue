@@ -24,7 +24,8 @@
 // TODO: log user out if he is deleted and logged in                                          ---- 
 // TODO: loading feedback                                                                     ---- 
 
-// TODO: add overview for each klant, leverancier and artikel
+// TODO: add overview for each klant, leverancier and artikel                                 ---- 
+// TODO: dagboek toevoegen voor elke dag, week, maand, jaar of aangepaste periode             ---- 
 
 // TODO: ENV Variables - check for TODO's in all files                                        ---- 
 // TODO: delete console logs                                                                  ---- 
