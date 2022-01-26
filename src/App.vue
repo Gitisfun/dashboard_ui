@@ -127,21 +127,21 @@ $link-focus-border: $primary;
 <style>
 :root{
   
-  /*
-    --mytextcolor: white;
+  --mytextcolor: white;
   --mysidebarcolor: black;
   --mytooltipcolortext: orange;
-  --mytooltipcolor: red;
+  --mytooltipcolor: orange;
   --myhovercolor: white;
   --myhovercolortext: black;
-  */
 
+  /*
   --mytextcolor: black;
   --mysidebarcolor: white;
   --mytooltipcolortext: white;
   --mytooltipcolor: black;
   --myhovercolor: black;
   --myhovercolortext: white;
+  */
 
 }
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");

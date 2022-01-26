@@ -2,6 +2,7 @@ import timeFormatter from './timeFormatter';
 import dateFormatter from './dateFormatter';
 import currencyFormatter from './currencyFormatter'
 import kortingFormatter from './kortingFormatter'
+import emptyKortingFormatter from './emptyKortingFormatter';
 
 export default {
      install(Vue) {
@@ -9,5 +10,6 @@ export default {
          Vue.filter('dateFormatter', dateFormatter);
          Vue.filter('currencyFormatter', currencyFormatter);
          Vue.filter('kortingFormatter', kortingFormatter);
+         Vue.filter('emptyKortingFormatter', emptyKortingFormatter);
      }
 }

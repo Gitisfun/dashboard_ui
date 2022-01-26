@@ -36,8 +36,6 @@ export default {
               return this.$store.getters.getTableUpdatedByIsVisible
             },
             set(value){
-                console.log("Called setter");
-              console.log(value);
               this.$store.dispatch("changeTableUpdatedByIsVisible", value);
             }
           },
