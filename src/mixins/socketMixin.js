@@ -7,12 +7,9 @@ export default {
         }
     },
     created(){
-        console.log("Opened socket...");
         this.socket = Socket.getConnection()
-
     },
     destroyed(){
-        console.log("Closed socket...");
         this.socket.close()
     }
 }

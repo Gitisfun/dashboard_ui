@@ -92,6 +92,19 @@ class UtilsFactory {
     return moment(timestamp).format("HH:mm"); 
   }
 
+  static getAllKeys(obj) {
+    return Object.keys(obj);
+  }
+  
+  static getAllValues(obj) {
+    return Object.values(obj);
+  }
+
+  static replaceNullByZero(value) {
+    if (value) return value
+    return "0";
+  }
+
 }
 
 export default UtilsFactory

@@ -214,7 +214,6 @@ export default {
       }
     },
     mounted(){
-      console.log(this.$route.params.obj);
       AankopenController.getPrintPreData(this, this.$route.params.id, this.$route.params.obj.klant_id, (res) => {  
         this.bedrijf = res[0].data[0]
         this.aankoop = res[1].data

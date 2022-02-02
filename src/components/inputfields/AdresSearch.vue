@@ -62,14 +62,10 @@ export default {
             this.hasError = value
         },
         openModal(){
-            console.log("hier");
             if(this.firstLoad){
                 this.firstLoad = false;
-                console.log("First load");
             }
-            console.log(this.adressen);
             if(this.adressen.length != 0){
-                console.log("Open the modal");
                 ModalFactory.showModalWithParamas(this, AddressChooseModal, "Adres kiezen", this.adressen, (newAdres) => {
                     this.adres.id = newAdres.id;
                     this.adres.straat = newAdres.straat;

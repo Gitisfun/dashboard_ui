@@ -1,84 +1,78 @@
 <template>
-  <div class="widget-box" :style="`background-image: linear-gradient(${colorOne}, ${colorTwo})`">
-    <div class="columns">
-      <div class="column">
-        <p id="widget-title" :style="`color: ${colorTitle}`">{{ title }}</p>
-        <p class="widget-text-left">Geleverd:</p>
-        <p class="widget-text-left">Betaald:</p>
-        <p class="widget-text-left">Totaal:</p>
-
+  <div class="widget-period-box">
+      <div style="margin-bottom: 10px">
+        <p id="widget-period-title">{{ title }}</p>
       </div>
-      <div class="column">
-        <p class="widget-title-right">€ {{ getTotal }}</p>
-        <p class="widget-text">60</p>
-        <p class="widget-text">90</p>
-        <p class="widget-text">150</p>
+      <div style="font-size: 14px;">
+        <div style="margin-bottom: 10px;">
+            <div><span>Aankopen</span><span style="float: right">€ {{ aankopen | nullByZeroFormatter }}</span></div>
+        </div>
+        <div style="margin-bottom: 10px">
+            <div><span>Verkopen</span><span style="float: right">€ {{ verkopen | nullByZeroFormatter }}</span></div>
+        </div>
+        <div style="margin-bottom: 10px">
+            <div><span>Creditnotas</span><span style="float: right">€ {{ creditnotas | nullByZeroFormatter }}</span></div>
+        </div>
       </div>
-    </div>
-    <b-progress 
-      :value="45" 
-      size="is-normal" 
-      :type="getColor"
-      show-value>75 / 100</b-progress>
   </div>
 </template>
 
 <script>
+import StatisticsController from '../../api/calls/statistics'
+import Widget from "../../logic/charts/widget"
+
 export default {
-  name: "Widget",
-  props: {
-    title: String,
-    total: String,
-    colorTitle: String,
-    colorOne: String,
-    colorTwo: String,
-  },
-  computed: {
-    getTotal() {
-      if (this.total) {
-        return this.total;
-      }
-      return "0.00";
+    name: "Widget",
+    props: {
+        title: {
+          type: String
+        },
+        period: {
+          type: String
+        }
     },
-    getColor(){
-      if(this.title === "Aankopen") return "is-danger"
-      if(this.title === "Verkopen") return "is-warning"
-      if(this.title === "Creditnotas") return "is-info"
-      //if(this.title === "Totaal") 
-      return "is-success"
+    data(){
+      return {
+        aankopen: null,
+        verkopen: null,
+        creditnotas: null,
+        options: null,
+      }
+    },
+    created(){
+      this.options = Widget.bundle()
+
+    },
+    mounted(){
+      this.fetchData()
+    },
+    methods: {
+      fetchData(){
+        StatisticsController.getWidgetForPeriod(this, this.options[this.period], (res) => {
+          this.aankopen = res[0].data[0].totaal
+          this.verkopen = res[1].data[0].totaal
+          this.creditnotas = res[2].data[0].totaal
+        })
+      }
     }
-  },
-};
+}
 </script>
 
 <style>
-.widget-box{
+.widget-period-box{
   border-radius: 5px;
-  padding: 15px
+  padding: 15px;
+  /*
+  background: white;
+  */
+  background: linear-gradient(#dff9fb, #dff9fb);
+  margin-bottom: 10px;
 }
 
-#widget-title {
+#widget-period-title {
   font-weight: 700;
-  font-size: 20px;
+  font-size: 17px;
   color: black;
-  margin-bottom: 5px;
 }
 
-.widget-title-right{
-  font-weight: 700;
-  font-size: 20px;
-  color: black;
-  text-align: right;
-  margin-bottom: 5px;
-}
-.widget-text {
-  font-weight: 400;
-  text-align: right;
-  color: grey;
-}
-.widget-text-left {
-  font-weight: 400;
-  text-align: left;
-  color: grey;
-}
 </style>

@@ -29,6 +29,33 @@
 
 // TODO: ENV Variables - check for TODO's in all files                                        ---- 
 // TODO: delete console logs                                                                  ---- 
+// TODO: Confirmation yes or no modal                                                         ---- 
+// TODO: Counter change for aankopen, verkopen en creditnota                                  ---- 
+/*
+// TODO: Statistieken: 
+
+- Aankopen, verkopen en creditnota:
+    o Totaal aantal                                             --- OK 
+    o Totaal prijs                                              --- OK
+    o Periode: dag, week, maand, jaar en aagepaste periode      --- OK
+- Klanten aankopen, verkopen en creditnotas
+    o Totaal aantal                                             --- 
+    o Totaal prijs                                              --- 
+    o Periode: dag, week, maand, jaar en aagepaste periode      --- 
+- Leveranciers aankopen, verkopen, creditnotas 
+    o Totaal prijs                                              --- 
+    o Totaal aantal                                             ---  
+    o Periode: dag, week, maand, jaar en aagepaste periode      --- 
+- Artikels
+    o Totaal prijs                                              --- 
+    o Totaal aantal                                             --- 
+    o Periode: dag, week, maand, jaar en aagepaste periode      --- 
+
+--> Totaal
+--> Per klant of leverancier 
+--> Per artikel
+
+*/
 
 export default {
   name: "Home",

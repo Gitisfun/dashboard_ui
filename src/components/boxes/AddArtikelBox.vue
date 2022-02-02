@@ -111,27 +111,11 @@ export default {
             this.clear()
         },
         setId(list){
-            console.log("Hier in artikel");
             if(list.length != 0){
-                console.log("hier");
-                console.log(UtilsFactory.max(list))
                 this.id = UtilsFactory.max(list) + 1
             }
         },
         setArtikel(item){
-            /*
-            this.artikel.id = item.id
-            this.artikelcode = item.artikelcode
-            this.artikel.naam = item.naam
-            this.artikel.memo = item.memo
-            this.artikel.prijs = item.prijs
-            this.artikel.hoeveelheid = item.hoeveelheid
-            this.artikel.korting_een = item.korting_een
-            this.artikel.korting_twee = item.korting_twee
-            this.artikel.totaal = item.totaal
-            */
-           console.log("--- Id start update ---");
-           console.log(this.id);
            this.artikel = UtilsFactory.copyObject(item)
            this.$refs.validatedSearchArtikelField.setValue(item.artikelcode);
         },
@@ -142,7 +126,6 @@ export default {
         },
         deleteItem(){
             this.$emit("deleteArtikelFromList", UtilsFactory.copyObject(this.artikel))
-            //this.clear()
         },
         close(){
             this.clear()
