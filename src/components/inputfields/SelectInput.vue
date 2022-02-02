@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  name: "SelectInput",
   props: {
     // must be included in props
     value: {

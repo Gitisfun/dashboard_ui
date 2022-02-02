@@ -10,7 +10,7 @@
 import { ValidationProvider } from "vee-validate";
 
 export default {
-  name: "TextInputField",
+  name: "ValidatedTextInputField",
   components: {
     ValidationProvider,
   },

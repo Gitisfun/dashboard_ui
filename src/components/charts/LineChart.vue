@@ -8,6 +8,21 @@
     <div class="column">
       <div class="box" style="background: linear-gradient(#dff9fb, #dff9fb); height: 100%">
         <p style="font-weight: 900; color: black; margin-bottom: 15px">Legende</p> 
+        <div>
+          <StatisticsDateBox :start_date="currentPeriod.start_date" :end_date="currentPeriod.end_date" />
+        </div>
+        <div style="margin-top: 25px">
+          <b-field>
+              <b-checkbox :true-value="true" :false-value="false" size="is-small" type="is-info" v-model="isToggleAankopen" @input="toggleSeriesAankopen">Aankopen</b-checkbox>
+          </b-field>
+          <b-field>
+              <b-checkbox size="is-small" type="is-success" v-model="isToggleVerkopen" @input="toggleSeriesVerkopen">Verkopen</b-checkbox>
+          </b-field>
+          <b-field>
+              <b-checkbox size="is-small" type="is-warning" v-model="isToggleCreditnota" @input="toggleSeriesCreditnotas">Creditnotas</b-checkbox>
+          </b-field>
+        </div>
+        <div style="margin-top: 15px; margin-bottom: 20px; border-bottom-style: dashed; border-bottom-color: white"></div>
         <div class="columns">
           <div class="column">
             <b-select @input="changeMonth" size="is-small" v-model="currentMonth" placeholder="Maand" expanded>
@@ -30,18 +45,18 @@
             </b-select>
           </div>
         </div>
-        <div>
-          <b-field>
-              <b-checkbox :true-value="true" :false-value="false" size="is-small" type="is-info" v-model="isToggleAankopen" @input="toggleSeriesAankopen">Aankopen</b-checkbox>
-          </b-field>
-          <b-field>
-              <b-checkbox size="is-small" type="is-success" v-model="isToggleVerkopen" @input="toggleSeriesVerkopen">Verkopen</b-checkbox>
-          </b-field>
-          <b-field>
-              <b-checkbox size="is-small" type="is-warning" v-model="isToggleCreditnota" @input="toggleSeriesCreditnotas">Creditnotas</b-checkbox>
-          </b-field>
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <div style="font-size: 14px; font-weight: 900">Aangepaste periode</div>
+            </div>
+          </div>
+          <div class="level-right">
+            <div class="level-item">
+                <GenericBtn text="Kies" size="small" btnStyle="light" @clicked="choosePeriod"  />
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -52,9 +67,17 @@ import StatisticsController from '../../api/calls/statistics.js';
 import lines from "../../logic/charts/lines.js";
 import DateHelper from '../../logic/utils/dateHelper.js';
 import UtilsFactory from '../../logic/utils/utilsFactory.js';
+import GenericBtn from "../buttons/GenericBtn.vue"
+import StatisticsDateBox from "../boxes/StatisticsDateBox.vue"
+import ModalFactory from '../../logic/factories/modalFactory.js';
+import StatisticsDatePickerModal from "../../modals/StasticsDatePickerModal.vue"
 
 export default {
   name: "LineChart",
+  components: {
+    GenericBtn,
+    StatisticsDateBox
+  },
   data() {
     return {
       firstLoad: true,
@@ -63,9 +86,14 @@ export default {
       years: [],
       currentYear: null,
       currentMonth: null,
+      currentPeriod: {
+        start_date: null,
+        end_date: null
+      },
       isToggleAankopen: true,
       isToggleVerkopen: true,
-      isToggleCreditnota: true
+      isToggleCreditnota: true,
+      list: []
     };
   },
   created() {
@@ -77,8 +105,7 @@ export default {
   },
   methods: {
     fetchData() {
-      const list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
-      StatisticsController.getLineChartForPeriod(this, list.days, (res) => {
+      StatisticsController.getLineChartForPeriod(this, this.list.days, (res) => {
         this.drawLine("Aankopen", res[0].data[0])
         this.drawLine("Verkopen", res[1].data[0])
         this.drawLine("Creditnotas", res[2].data[0])
@@ -94,14 +121,6 @@ export default {
         name: name,
         data: values,
       });
-      /*
-
-      this.$refs.linechart.updateSeries([{
-        name: name,
-        data: values
-      }])
-
-      */
       if (!this.firstLoad) {
         this.$refs.linechart.refresh();
       }
@@ -131,6 +150,16 @@ export default {
       this.years = DateHelper.getYears()
       this.currentMonth = DateHelper.getCurrentMonth()
       this.currentYear = DateHelper.getCurrentYear()
+      this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
+      this.setListByMonth()
+    },
+    setCurrentDate(month, year, newPeriod, options){
+      if(options) {
+        this.currentPeriod = newPeriod
+      }
+      else {
+        this.currentPeriod = DateHelper.getStartAndEndOfMonthDate(month, year)
+      }
     },
     reload() {
       this.clearGraph();
@@ -142,6 +171,8 @@ export default {
         month: this.currentMonth,
         year: this.currentYear
       }
+      this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
+      this.setListByMonth()
       this.$emit("changeDate", temp)
       this.reload()
     },
@@ -151,8 +182,21 @@ export default {
         month: this.currentMonth,
         year: this.currentYear
       }
+      this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
+      this.setListByMonth()
       this.$emit("changeDate", temp)
       this.reload()
+    },
+    choosePeriod(){
+      ModalFactory.showModal(this, StatisticsDatePickerModal, (value) => { 
+        this.list = DateHelper.getAllDaysInPeriod(value)
+        this.$emit("changeCustomPeriod", value)
+        this.setCurrentDate(null, null, DateHelper.formatPeriodToRead(value), true) 
+        this.reload()
+      });
+    },
+    setListByMonth(){
+      this.list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
     },
     clearGraph() {
       this.options.series = [];

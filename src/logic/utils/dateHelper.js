@@ -158,21 +158,63 @@ class DateHelper {
       return tempObj;
     }
 
+    static getAllDaysInPeriod(period){
+      let tempDate = moment(period.start_date)
+      const tempEndDate = moment(period.end_date)
+      let temp = []
+      
+      while(tempDate.isBefore(tempEndDate, "day")){
+        temp.push(tempDate.format("YYYY-MM-DD"));
+        tempDate = tempDate.add(1, "days");
+      }
+      temp.push(tempDate.format("YYYY-MM-DD"));
+      const tempObj = {
+        days: temp,
+        daysInMonth: temp.length,
+      };
+    
+      return tempObj;    
+    }
+
     static getStartAndEndOfMonth(month, year){
-      let startDate = moment();
-      let endDate = moment();
+      let start_date = moment();
+      let end_date = moment();
       if (month != null || year != null) {
-        startDate = moment({ year: year, month: month, day: 1 });
-        endDate = startDate.clone().endOf("month")
+        start_date = moment({ year: year, month: month, day: 1 });
+        end_date = start_date.clone().endOf("month")
       }
       else {
-        startDate = moment({ year: this.getCurrentYear(), month: this.getCurrentMonth(), day: 1 });
-        endDate = startDate.clone().endOf("month")
+        start_date = moment({ year: this.getCurrentYear(), month: this.getCurrentMonth(), day: 1 });
+        end_date = start_date.clone().endOf("month")
       }
       return {
-        "start_date": startDate.format("YYYY-MM-DD"),
-        "end_date": endDate.format("YYYY-MM-DD")
+        "start_date": start_date.format("YYYY-MM-DD"),
+        "end_date": end_date.format("YYYY-MM-DD")
+      }
     }
+
+    static getStartAndEndOfMonthDate(month, year){
+      let start_date = moment();
+      let end_date = moment();
+      if (month != null || year != null) {
+        start_date = moment({ year: year, month: month, day: 1 });
+        end_date = start_date.clone().endOf("month")
+      }
+      else {
+        start_date = moment({ year: this.getCurrentYear(), month: this.getCurrentMonth(), day: 1 });
+        end_date = start_date.clone().endOf("month")
+      }
+      return {
+        "start_date": start_date.format("DD-MM-YYYY"),
+        "end_date": end_date.format("DD-MM-YYYY")
+      }
+    }
+
+    static formatPeriodToRead(period){
+      return { 
+        start_date: moment(period.start_date).format("DD-MM-YYYY"),
+        end_date: moment(period.end_date).format("DD-MM-YYYY")
+      }
     }
 
 }

@@ -12,6 +12,7 @@
 import { ValidationProvider } from "vee-validate";
 
 export default {
+  name: "ValidatedSelectInput",
   components: {
     ValidationProvider,
   },
