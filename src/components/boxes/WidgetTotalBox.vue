@@ -9,8 +9,6 @@
         <div class="column">
             <WidgetTotal ref="widgetcreditnota" title="Creditnotas" :period="period" widgetStyle="warning"/>
         </div>
-        <div class="column">
-        </div>
     </div>
 </template>
 

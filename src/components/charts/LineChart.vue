@@ -1,59 +1,64 @@
 <template>
-  <div class="columns">
-    <div class="column is-9">
-      <div class="box" style="background: linear-gradient(#dff9fb, #dff9fb);">
-        <apexchart ref="linechart" type="area" height="300" :options="options.chartOptions" :series="options.series"></apexchart>
-      </div>
-    </div>
-    <div class="column">
-      <div class="box" style="background: linear-gradient(#dff9fb, #dff9fb); height: 100%">
-        <p style="font-weight: 900; color: black; margin-bottom: 15px">Legende</p> 
+  <div>
+    <div class="columns">
+      <div class="column is-9">
+        <div class="box" style="background: linear-gradient(#dff9fb, #dff9fb);">
+          <apexchart ref="linechart" type="area" height="300" :options="options.chartOptions" :series="options.series"></apexchart>
+        </div>
         <div>
-          <StatisticsDateBox :start_date="currentPeriod.start_date" :end_date="currentPeriod.end_date" />
+          <WidgetTotalBox ref="widgetotalbox" :period="widgetPeriod"/>
         </div>
-        <div style="margin-top: 25px">
-          <b-field>
-              <b-checkbox :true-value="true" :false-value="false" size="is-small" type="is-info" v-model="isToggleAankopen" @input="toggleSeriesAankopen">Aankopen</b-checkbox>
-          </b-field>
-          <b-field>
-              <b-checkbox size="is-small" type="is-success" v-model="isToggleVerkopen" @input="toggleSeriesVerkopen">Verkopen</b-checkbox>
-          </b-field>
-          <b-field>
-              <b-checkbox size="is-small" type="is-warning" v-model="isToggleCreditnota" @input="toggleSeriesCreditnotas">Creditnotas</b-checkbox>
-          </b-field>
-        </div>
-        <div style="margin-top: 15px; margin-bottom: 20px; border-bottom-style: dashed; border-bottom-color: white"></div>
-        <div class="columns">
-          <div class="column">
-            <b-select @input="changeMonth" size="is-small" v-model="currentMonth" placeholder="Maand" expanded>
-                <option
-                    v-for="option in months"
-                    :value="option.id"
-                    :key="option.id">
-                    {{ option.name }}
-                </option>
-            </b-select>
+      </div>
+      <div class="column">
+        <div class="box" style="background: linear-gradient(#dff9fb, #dff9fb); height: 100%">
+          <p style="font-weight: 900; color: black; margin-bottom: 15px">Legende</p> 
+          <div>
+            <StatisticsDateBox :start_date="currentPeriod.start_date" :end_date="currentPeriod.end_date" />
           </div>
-          <div class="column">
-            <b-select @input="changeYear" size="is-small" v-model="currentYear" placeholder="Jaar" expanded>
-                <option
-                    v-for="option in years"
-                    :value="option.id"
-                    :key="option.id">
-                    {{ option.name }}
-                </option>
-            </b-select>
+          <div style="margin-top: 25px">
+            <b-field>
+                <b-checkbox :true-value="true" :false-value="false" size="is-small" type="is-info" v-model="isToggleAankopen" @input="toggleSeriesAankopen">Aankopen</b-checkbox>
+            </b-field>
+            <b-field>
+                <b-checkbox size="is-small" type="is-success" v-model="isToggleVerkopen" @input="toggleSeriesVerkopen">Verkopen</b-checkbox>
+            </b-field>
+            <b-field>
+                <b-checkbox size="is-small" type="is-warning" v-model="isToggleCreditnota" @input="toggleSeriesCreditnotas">Creditnotas</b-checkbox>
+            </b-field>
           </div>
-        </div>
-        <div class="level">
-          <div class="level-left">
-            <div class="level-item">
-              <div style="font-size: 14px; font-weight: 900">Aangepaste periode</div>
+          <div style="margin-top: 15px; margin-bottom: 20px; border-bottom-style: dashed; border-bottom-color: white"></div>
+          <div class="columns">
+            <div class="column">
+              <b-select @input="changeMonth" size="is-small" v-model="currentMonth" placeholder="Maand" expanded>
+                  <option
+                      v-for="option in months"
+                      :value="option.id"
+                      :key="option.id">
+                      {{ option.name }}
+                  </option>
+              </b-select>
+            </div>
+            <div class="column">
+              <b-select @input="changeYear" size="is-small" v-model="currentYear" placeholder="Jaar" expanded>
+                  <option
+                      v-for="option in years"
+                      :value="option.id"
+                      :key="option.id">
+                      {{ option.name }}
+                  </option>
+              </b-select>
             </div>
           </div>
-          <div class="level-right">
-            <div class="level-item">
-                <GenericBtn text="Kies" size="small" btnStyle="light" @clicked="choosePeriod"  />
+          <div class="level">
+            <div class="level-left">
+              <div class="level-item">
+                <div style="font-size: 14px; font-weight: 900">Aangepaste periode</div>
+              </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                  <GenericBtn text="Kies" size="small" btnStyle="light" @clicked="choosePeriod"  />
+              </div>
             </div>
           </div>
         </div>
@@ -71,15 +76,18 @@ import GenericBtn from "../buttons/GenericBtn.vue"
 import StatisticsDateBox from "../boxes/StatisticsDateBox.vue"
 import ModalFactory from '../../logic/factories/modalFactory.js';
 import StatisticsDatePickerModal from "../../modals/StasticsDatePickerModal.vue"
+import WidgetTotalBox from "../boxes/WidgetTotalBox.vue"
 
 export default {
   name: "LineChart",
   components: {
     GenericBtn,
-    StatisticsDateBox
+    WidgetTotalBox,
+    StatisticsDateBox,
   },
   data() {
     return {
+      widgetPeriod: null,
       firstLoad: true,
       options: null,
       months: [],
@@ -146,6 +154,7 @@ export default {
       this.toggleSeriesCreditnotas(this.isToggleCreditnota)
     },
     setDates(){
+      this.widgetPeriod = DateHelper.getStartAndEndOfMonth(null, null)
       this.months = DateHelper.getAllMonths()
       this.years = DateHelper.getYears()
       this.currentMonth = DateHelper.getCurrentMonth()
@@ -173,7 +182,7 @@ export default {
       }
       this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
       this.setListByMonth()
-      this.$emit("changeDate", temp)
+      this.changeWidgetPeriod(temp)
       this.reload()
     },
     changeYear(value){
@@ -184,19 +193,26 @@ export default {
       }
       this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
       this.setListByMonth()
-      this.$emit("changeDate", temp)
+      this.changeWidgetPeriod(temp)
       this.reload()
     },
     choosePeriod(){
       ModalFactory.showModal(this, StatisticsDatePickerModal, (value) => { 
         this.list = DateHelper.getAllDaysInPeriod(value)
-        this.$emit("changeCustomPeriod", value)
+        this.changeWidgetCustomPeriod(value)
         this.setCurrentDate(null, null, DateHelper.formatPeriodToRead(value), true) 
         this.reload()
       });
     },
     setListByMonth(){
       this.list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
+    },
+    changeWidgetPeriod(value){
+      this.period = DateHelper.getStartAndEndOfMonth(value.month, value.year)
+      this.$refs.widgetotalbox.refreshAll(this.period)
+    },
+    changeWidgetCustomPeriod(value){
+      this.$refs.widgetotalbox.refreshAll(value)
     },
     clearGraph() {
       this.options.series = [];

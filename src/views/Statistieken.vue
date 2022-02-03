@@ -17,10 +17,7 @@
       </div>
     </div>
     <div style="margin-bottom: 10px">
-      <LineChart @changeDate="changePeriod" @changeCustomPeriod="changeCustomPeriod" />
-    </div>
-    <div style="margin-bottom: 10px">
-      <WidgetTotalBox ref="widgetotalbox" :period="period"/>
+      <LineChart />
     </div>
   </div>
 </template>
@@ -28,8 +25,8 @@
 <script>
 import Widget from '../components/charts/Widget.vue';
 import LineChart from '../components/charts/LineChart.vue';
-import WidgetTotalBox from '../components/boxes/WidgetTotalBox.vue';
-import DateHelper from '../logic/utils/dateHelper.js';
+
+
 
 export default {
   name: "Statistieken",
@@ -37,30 +34,7 @@ export default {
     //Widget,
     Widget,
     LineChart,
-    WidgetTotalBox,
   },
-  data(){
-    return {
-      period: null,
-    }
-  },
-  created(){
-    this.period = DateHelper.getStartAndEndOfMonth(null, null)
-  },
-  mounted(){
-    
-    },
-  methods: {
-    changePeriod(value){
-      this.period = DateHelper.getStartAndEndOfMonth(value.month, value.year)
-      console.log(this.period);
-      this.$refs.widgetotalbox.refreshAll(this.period)
-    },
-    changeCustomPeriod(value){
-      console.log(value);
-      this.$refs.widgetotalbox.refreshAll(value)
-    }
-  }
 
   //mixins: [socketMixin],
 

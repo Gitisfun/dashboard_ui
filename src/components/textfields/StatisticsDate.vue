@@ -19,6 +19,7 @@ export default {
     margin: 0 auto;
     font-size: 14px;
     border: 1px solid white;
+    border-radius: 5px;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-right: 25px;
