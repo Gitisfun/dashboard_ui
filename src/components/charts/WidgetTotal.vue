@@ -84,7 +84,6 @@ export default {
             }
             else if(this.title === "Verkopen") {
                 StatisticsController.getWidgetTotalForVerkopen(this, this.period, (res) => {
-                    console.log(res);
                     this.betaald = parseInt(res[0].data[0].totaal)
                     this.totaal = res[1].data[0].totaal
                     this.betaaldBedrag = res[2].data[0].totaal

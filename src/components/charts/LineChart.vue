@@ -61,6 +61,23 @@
               </div>
             </div>
           </div>
+          <div style="margin-top: 15px; margin-bottom: 20px; border-bottom-style: dashed; border-bottom-color: white"></div>
+          <div style="font-size: 14px; font-weight: 900; margin-bottom: 15px">Per maand</div>
+          <div class="columns is-flex is-vcentered">
+            <div class="column">
+              <div style="font-size: 14px">Kies een jaar</div>
+              </div>
+          <div class="column">
+            <b-select @input="changeToMonthsForYear" size="is-small" v-model="currentYearForMonths" placeholder="Jaar" expanded>
+                <option
+                    v-for="option in years"
+                    :value="option.id"
+                    :key="option.id">
+                    {{ option.name }}
+                </option>
+            </b-select>
+          </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -68,6 +85,8 @@
 </template>
 
 <script>
+// TODO: Years functie scrhijven in datehelper die alle jaren van 2020 tot en met nu berekent
+
 import StatisticsController from '../../api/calls/statistics.js';
 import lines from "../../logic/charts/lines.js";
 import DateHelper from '../../logic/utils/dateHelper.js';
@@ -94,6 +113,7 @@ export default {
       years: [],
       currentYear: null,
       currentMonth: null,
+      currentYearForMonths: null,
       currentPeriod: {
         start_date: null,
         end_date: null
@@ -112,6 +132,13 @@ export default {
     this.fetchData()
   },
   methods: {
+    fetchDataMonthForYears(){
+      StatisticsController.getLineChartForMonthsOfYear(this, { year: this.currentYearForMonths }, (res) => {
+        this.drawLine("Aankopen", res[0].data[0])
+        this.drawLine("Verkopen", res[1].data[0])
+        this.drawLine("Creditnotas", res[2].data[0])
+      })
+    },
     fetchData() {
       StatisticsController.getLineChartForPeriod(this, this.list.days, (res) => {
         this.drawLine("Aankopen", res[0].data[0])
@@ -159,6 +186,7 @@ export default {
       this.years = DateHelper.getYears()
       this.currentMonth = DateHelper.getCurrentMonth()
       this.currentYear = DateHelper.getCurrentYear()
+      this.currentYearForMonths = DateHelper.getCurrentYear()
       this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
       this.setListByMonth()
     },
@@ -169,6 +197,10 @@ export default {
       else {
         this.currentPeriod = DateHelper.getStartAndEndOfMonthDate(month, year)
       }
+    },
+    reloadForMonths(){
+      this.clearGraph()
+      this.fetchDataMonthForYears()
     },
     reload() {
       this.clearGraph();
@@ -182,7 +214,7 @@ export default {
       }
       this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
       this.setListByMonth()
-      this.changeWidgetPeriod(temp)
+      this.changeWidgetPeriod(temp, false)
       this.reload()
     },
     changeYear(value){
@@ -193,8 +225,15 @@ export default {
       }
       this.setCurrentDate(this.currentMonth, this.currentYear, null, false)
       this.setListByMonth()
-      this.changeWidgetPeriod(temp)
+      this.changeWidgetPeriod(temp, false)
       this.reload()
+    },
+    changeToMonthsForYear(value){
+      const startAndEndDateReadOnly = DateHelper.getStartAndEndOfYearDate(value)
+      const startAndEndDateApi = DateHelper.getStartAndEndOfYearDateApi(value)
+      this.setCurrentDate(null, null, startAndEndDateReadOnly, true)
+      this.changeWidgetPeriod(startAndEndDateApi, true)
+      this.reloadForMonths()
     },
     choosePeriod(){
       ModalFactory.showModal(this, StatisticsDatePickerModal, (value) => { 
@@ -207,9 +246,15 @@ export default {
     setListByMonth(){
       this.list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
     },
-    changeWidgetPeriod(value){
-      this.period = DateHelper.getStartAndEndOfMonth(value.month, value.year)
-      this.$refs.widgetotalbox.refreshAll(this.period)
+    changeWidgetPeriod(value, isByMonth){
+      if(isByMonth){
+        this.period = value
+        this.$refs.widgetotalbox.refreshAll(this.period)
+      }
+      else {
+        this.period = DateHelper.getStartAndEndOfMonth(value.month, value.year)
+        this.$refs.widgetotalbox.refreshAll(this.period)
+      }
     },
     changeWidgetCustomPeriod(value){
       this.$refs.widgetotalbox.refreshAll(value)

@@ -36,7 +36,6 @@ export default {
         return "-"
       },
       formattedQuantity(){
-        //console.log(this.quantity);
         if(this.isRowHidden) return "-"
         if(this.quantity) return this.quantity
         return "0"

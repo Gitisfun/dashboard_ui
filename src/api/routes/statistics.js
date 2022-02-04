@@ -18,6 +18,14 @@ const aankopen_period_sum = (item) => httpClient.post(`${END_POINT}/aankopen/per
 const aankopen_period_sum_geleverd = (item) => httpClient.post(`${END_POINT}/aankopen/period/sum/geleverd`, item);
 const aankopen_period_sum_betaald = (item) => httpClient.post(`${END_POINT}/aankopen/period/sum/betaald`, item);
 
+const aankopen_months_total = (item) => httpClient.post(`${END_POINT}/aankopen/months/total`, item);
+const aankopen_months_total_geleverd = (item) => httpClient.post(`${END_POINT}/aankopen/months/total/geleverd`, item);
+const aankopen_months_total_betaald = (item) => httpClient.post(`${END_POINT}/aankopen/months/total/betaald`, item);
+const aankopen_months_sum = (item) => httpClient.post(`${END_POINT}/aankopen/months/sum`, item);
+const aankopen_months_sum_geleverd = (item) => httpClient.post(`${END_POINT}/aankopen/months/sum/geleverd`, item);
+const aankopen_months_sum_betaald = (item) => httpClient.post(`${END_POINT}/aankopen/months/sum/betaald`, item);
+
+
 const verkopen_total = (item) => httpClient.post(`${END_POINT}/verkopen/total`, item);
 const verkopen_total_betaald = (item) => httpClient.post(`${END_POINT}/verkopen/total/betaald`, item);
 const verkopen_sum = (item) => httpClient.post(`${END_POINT}/verkopen/sum`, item);
@@ -28,6 +36,12 @@ const verkopen_period_total_betaald = (item) => httpClient.post(`${END_POINT}/ve
 const verkopen_period_sum = (item) => httpClient.post(`${END_POINT}/verkopen/period/sum`, item);
 const verkopen_period_sum_betaald = (item) => httpClient.post(`${END_POINT}/verkopen/period/sum/betaald`, item);
 
+const verkopen_months_total = (item) => httpClient.post(`${END_POINT}/verkopen/months/total`, item);
+const verkopen_months_total_betaald = (item) => httpClient.post(`${END_POINT}/verkopen/months/total/betaald`, item);
+const verkopen_months_sum = (item) => httpClient.post(`${END_POINT}/verkopen/months/sum`, item);
+const verkopen_months_sum_betaald = (item) => httpClient.post(`${END_POINT}/verkopen/months/sum/betaald`, item);
+
+
 const creditnotas_total = (item) => httpClient.post(`${END_POINT}/creditnotas/total`, item);
 const creditnotas_total_betaald = (item) => httpClient.post(`${END_POINT}/creditnotas/total/betaald`, item);
 const creditnotas_sum = (item) => httpClient.post(`${END_POINT}/creditnotas/sum`, item);
@@ -37,6 +51,12 @@ const creditnotas_period_total = (item) => httpClient.post(`${END_POINT}/creditn
 const creditnotas_period_total_betaald = (item) => httpClient.post(`${END_POINT}/creditnotas/period/total/betaald`, item);
 const creditnotas_period_sum = (item) => httpClient.post(`${END_POINT}/creditnotas/period/sum`, item);
 const creditnotas_period_sum_betaald = (item) => httpClient.post(`${END_POINT}/creditnotas/period/sum/betaald`, item);
+
+const creditnotas_months_total = (item) => httpClient.post(`${END_POINT}/creditnotas/months/total`, item);
+const creditnotas_months_total_betaald = (item) => httpClient.post(`${END_POINT}/creditnotas/months/total/betaald`, item);
+const creditnotas_months_sum = (item) => httpClient.post(`${END_POINT}/creditnotas/months/sum`, item);
+const creditnotas_months_sum_betaald = (item) => httpClient.post(`${END_POINT}/creditnotas/months/sum/betaald`, item);
+
 
 
 export {
@@ -52,7 +72,13 @@ export {
     aankopen_period_sum,
     aankopen_period_sum_geleverd,
     aankopen_period_sum_betaald,
-    
+    aankopen_months_total,
+    aankopen_months_total_geleverd,
+    aankopen_months_total_betaald,
+    aankopen_months_sum,
+    aankopen_months_sum_geleverd,
+    aankopen_months_sum_betaald,
+
     verkopen_total,
     verkopen_total_betaald,
     verkopen_sum,
@@ -61,6 +87,10 @@ export {
     verkopen_period_total_betaald,
     verkopen_period_sum,
     verkopen_period_sum_betaald,
+    verkopen_months_total,
+    verkopen_months_total_betaald,
+    verkopen_months_sum,
+    verkopen_months_sum_betaald,
 
     creditnotas_total,
     creditnotas_total_betaald,
@@ -69,5 +99,9 @@ export {
     creditnotas_period_total,
     creditnotas_period_total_betaald,
     creditnotas_period_sum,
-    creditnotas_period_sum_betaald
+    creditnotas_period_sum_betaald,
+    creditnotas_months_total,
+    creditnotas_months_total_betaald,
+    creditnotas_months_sum,
+    creditnotas_months_sum_betaald
 }

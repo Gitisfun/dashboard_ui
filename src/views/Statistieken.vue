@@ -26,8 +26,6 @@
 import Widget from '../components/charts/Widget.vue';
 import LineChart from '../components/charts/LineChart.vue';
 
-
-
 export default {
   name: "Statistieken",
   components: {
@@ -35,10 +33,5 @@ export default {
     Widget,
     LineChart,
   },
-
-  //mixins: [socketMixin],
-
 };
 </script>
-
-<style></style>

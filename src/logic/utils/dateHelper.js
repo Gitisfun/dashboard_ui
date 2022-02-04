@@ -49,6 +49,10 @@ class DateHelper {
       ]
     }
 
+    static getAllMonthsInYear() {
+      return ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+    }
+
     static getAllMonths() {
       return [
         {
@@ -103,20 +107,17 @@ class DateHelper {
     }
 
     static getYears() {
-      return [
-          {
-            id: 2022,
-            name: "2022",
-          },
-          {
-              id: 2021,
-              name: "2021",
-          },
-          {
-              id: 2020,
-              name: "2020",
-          },
-      ];
+      const startYear = 2020
+      let currentYear = moment().year()
+      let temp = []
+      while(startYear <= currentYear){
+        temp.push(          {
+          id: currentYear,
+          name: `${currentYear}`,
+        })
+        currentYear--
+      }
+      return temp
     }  
 
     static genericStartOf(period){
@@ -210,6 +211,40 @@ class DateHelper {
       }
     }
 
+    static getStartAndEndOfYearDate(year){
+      let start_date = moment();
+      let end_date = moment();
+      if (year != null) {
+        start_date = moment({ year: year, month: 0, day: 1 });
+        end_date = start_date.clone().endOf("year")
+      }
+      else {
+        start_date = moment({ year: this.getCurrentYear(), month: 0, day: 1 });
+        end_date = start_date.clone().endOf("year")
+      }
+      return {
+        "start_date": start_date.format("DD-MM-YYYY"),
+        "end_date": end_date.format("DD-MM-YYYY")
+      }
+    }
+
+    static getStartAndEndOfYearDateApi(year){
+      let start_date = moment();
+      let end_date = moment();
+      if (year != null) {
+        start_date = moment({ year: year, month: 0, day: 1 });
+        end_date = start_date.clone().endOf("year")
+      }
+      else {
+        start_date = moment({ year: this.getCurrentYear(), month: 0, day: 1 });
+        end_date = start_date.clone().endOf("year")
+      }
+      return {
+        "start_date": start_date.format("YYYY-MM-DD"),
+        "end_date": end_date.format("YYYY-MM-DD")
+      }
+    }
+
     static formatPeriodToRead(period){
       return { 
         start_date: moment(period.start_date).format("DD-MM-YYYY"),
@@ -217,6 +252,13 @@ class DateHelper {
       }
     }
 
+    static isBefore(start_date, end_date){
+      const start = moment(start_date)
+      const end = moment(end_date)
+      if(start.isBefore(end, "day")) return true
+      return false
+    }
 }
+
 
 export default DateHelper
