@@ -10,6 +10,14 @@
     </div>
     <ul class="nav_list">
       <MenuRouterLink @itemClicked="itemClicked" v-for="item in menuItems" :title="item.name" :icon="item.icon" :link="item.link" :key="item.id" />
+
+      <div class="logout-out-box">
+      <li  @click="logout">
+        <router-link active-class="router-link-active" to="login">
+           <i :class="`bx bx-log-out`"></i> <span class="links_name">Uitloggen</span>
+        </router-link>
+      </li>
+      </div>
     </ul>
   </div>
 </template>
@@ -93,6 +101,9 @@ export default {
       }
       return 0;
     },
+    logout(){
+      
+    }
   },
 };
 </script>
@@ -100,5 +111,12 @@ export default {
 <style>
 #btn {
   cursor: pointer;
+}
+
+.logout-out-box {
+  position: fixed;
+  bottom: 0;
+  width: 210px;
+  margin-bottom: 5px;
 }
 </style>

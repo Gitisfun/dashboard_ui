@@ -68,6 +68,7 @@ import UtilsFactory from '../../logic/utils/utilsFactory';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
 import ErrorField from '../../components/common/ErrorField.vue'
+import DateHelper from '../../logic/utils/dateHelper';
 
 export default {
     name: "VerkopenCreateview",
@@ -124,7 +125,7 @@ export default {
     mounted(){
       VerkopenController.getPreData(this, (res) => {
           this.btws = res[0].data
-          this.verkoop.order_nr = `VK${res[1].data[0].verkopen}`
+          this.verkoop.order_nr = `${DateHelper.getCurrentYear()}-${res[1].data[0].verkopen}`
       })
       this.$refs.klantField.setModal(KlantModal);
     },

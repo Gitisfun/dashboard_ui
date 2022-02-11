@@ -17,7 +17,7 @@
 // TODO: add error message at top of factuur: aankopen, verkopen, creditnotas                 ---- OK
 // TODO: Table pagination when search text is changed set page again to 1                     ---- 
 // TODO: fix bug with sorting table in overview                                               ---- 
-// TODO: Artikel beter maken                                                                  ---- 
+// TODO: Artikel beter maken                                                                  ---- OK
 // TODO: afbeelding toevoegen in print voor aankoop, verkoop en creditnota                    ---- 
 // TODO: add before page refresh a message check when form is filled in and not submitted     ---- 
 // TODO: show user that is logged in                                                          ---- 
@@ -54,6 +54,62 @@
 --> Totaal
 --> Per klant of leverancier 
 --> Per artikel
+
+
+
+TODO: op leverdatum en op vervaldag een agenda calender en op klik met detail pagina en voor klanten nog betalingsdatum, beide apart
+TODO; per klant en per leverancier
+TODO: order "jaar en teller " 2022-1T
+TODO: logo toevoegen
+TODO: leverancier, per klant, per artikel
+
+
+// DATABASE
+
+- Bedrijven                                             ---     OK
+- Gebruikers                                            ---                     Gebruikersnamen en Wachtwoorden
+- Counters                                              ---     
+- Betalingstermijnen                                    ---     OK
+- Btw                                                   ---     OK
+- Tekst                                                 ---     OK
+- Artikelen                                             ---     OK
+- Klanten                                               ---     OK
+- Leveranciers                                          ---     OK
+- Aankopen                                              ---     OK
+- Aankopen_artikels                                     ---     OK
+- Verkopen                                              ---     OK
+- Verkopen_artikels                                     ---     OK
+- Creditnotas                                           ---     OK
+- Creditnotas_artikels                                  ---     OK
+
+ALTER TABLE aankopen AUTO_INCREMENT=1;
+truncate table aankopen;
+ALTER TABLE aanopen_artikels AUTO_INCREMENT=1;
+truncate table aanopen_artikels;
+ALTER TABLE artikelen AUTO_INCREMENT=1;
+truncate table artikelen;
+ALTER TABLE betalingstermijnen AUTO_INCREMENT=1;
+truncate table betalingstermijnen;
+ALTER TABLE btw AUTO_INCREMENT=1;
+truncate table btw;
+ALTER TABLE counters AUTO_INCREMENT=1;
+truncate table counters;
+ALTER TABLE creditnotas AUTO_INCREMENT=1;
+truncate table creditnotas;
+ALTER TABLE creditnotas_artikels AUTO_INCREMENT=1;
+truncate table creditnotas_artikels;
+ALTER TABLE gebruikers AUTO_INCREMENT=1;
+truncate table gebruikers;
+ALTER TABLE klanten AUTO_INCREMENT=1;
+truncate table klanten;
+ALTER TABLE leveranciers AUTO_INCREMENT=1;
+truncate table leveranciers;
+ALTER TABLE tekst AUTO_INCREMENT=1;
+truncate table tekst;
+ALTER TABLE verkopen AUTO_INCREMENT=1;
+truncate table verkopen;
+ALTER TABLE verkopen_artikels AUTO_INCREMENT=1;
+truncate table verkopen_artikels;
 
 */
 

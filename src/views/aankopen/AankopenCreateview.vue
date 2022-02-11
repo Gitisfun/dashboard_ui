@@ -74,6 +74,7 @@ import ValidatedSelectInput from "../../components/inputfields/ValidatedSelectIn
 import UtilsFactory from '../../logic/utils/utilsFactory';
 import OpmerkingBox from "../../components/boxes/OpmerkingBox.vue";
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
+import DateHelper from '../../logic/utils/dateHelper';
 
 export default {
     name: "AankopenCreateview",
@@ -132,8 +133,9 @@ export default {
     }),
     mounted(){
         AankopenController.getPreData(this, (res) => {
+            console.log(res);
             this.btws = res[0].data
-            this.aankoop.bestellings_nr = `BS${res[1].data[0].aankopen}`
+            this.aankoop.bestellings_nr = `${DateHelper.getCurrentYear()}-${res[1].data[0].aankopen}`
         })
         this.$refs.klantField.setModal(KlantModal);
         this.$refs.leverancierField.setModal(LeverancierModal);
