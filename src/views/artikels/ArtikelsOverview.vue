@@ -57,6 +57,9 @@
         </b-table-column>
 
         <b-table-column :width="getWidth.updated_by" :visible="updatedByIsVisible" field="updated_by" label="Door" v-slot="props"> {{ props.row.updated_by_voornaam }} {{ props.row.updated_by_achternaam }} </b-table-column>
+        <template #empty>
+          <div class="custom-table-empty">Tabel is leeg...</div>
+        </template>
       </b-table>
     </div>
     <div class="box" style="padding-top: 25px">            

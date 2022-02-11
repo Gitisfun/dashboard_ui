@@ -40,8 +40,9 @@
                 <b-checkbox disabled @input="blacklist($event, props.row.id)" true-value="1" false-value="0" size="is-small" style="vertical-align:middle" v-model="props.row.isBlacklisted " type="is-danger" />
             </div>
             </b-table-column>
-
-
+            <template #empty>
+              <div class="custom-table-empty">Tabel is leeg...</div>
+            </template>
         </b-table>
     </div>
     <p v-show="errorMessage" style="color: red">Kies een leverancier</p>

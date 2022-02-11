@@ -2,8 +2,18 @@
   <div class="factuur-content">
     <div class="columns">
       <div class="column is-5">
-        <p class="factuur-title">{{ bedrijf.naam }}</p>
-        <p class="factuur-title">{{ bedrijf.extra_naam }}</p>
+        <!--
+        <div>
+          <p class="factuur-title">{{ bedrijf.naam }}</p>
+          <p class="factuur-title">{{ bedrijf.extra_naam }}</p>
+        </div>
+        -->
+        <div v-show="bedrijf.id">
+          <img style="height: 90px" v-if="bedrijf.id === 2" src="../../assets/comagex.png" alt="logocompany">
+          <img style="height: 90px" v-if="bedrijf.id === 3" src="../../assets/comagex.png" alt="logocompany">
+          <img style="height: 100px" v-if="bedrijf.id === 4" src="../../assets/invest.png" alt="logocompany">
+          <img style="height: 90px" v-if="bedrijf.id === 5" src="../../assets/gim.png" alt="logocompany">
+        </div>
       </div>
       <div class="column is-4">
         <p class="factuur-subtitle">Order confirmation</p>
@@ -21,6 +31,10 @@
       <div class="column is-3">
         <p class="factuur-date">{{ aankoop.datum | dateFormatter }}</p>
       </div>
+    </div>
+    <div style="margin-top: -20px; margin-bottom: 10px">
+        <p class="factuur-title">{{ bedrijf.naam }}</p>
+        <p class="factuur-title">{{ bedrijf.extra_naam }}</p>
     </div>
     <div class="columns">
       <div class="column">
@@ -144,6 +158,7 @@ export default {
     data(){
       return {
         bedrijf: {
+          id: null,
           naam: null,
           bank: null, 
           btw_nr: null,
@@ -244,7 +259,7 @@ export default {
 }
 
 .factuur-title {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 700;
 }
 

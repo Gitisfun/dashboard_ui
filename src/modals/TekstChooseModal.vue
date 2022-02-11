@@ -18,6 +18,9 @@
             <b-table-column width="30%" field="type" label="Type" v-slot="props" sortable>
             {{ props.row.type }}
             </b-table-column>
+            <template #empty>
+              <div class="custom-table-empty">Tabel is leeg...</div>
+            </template>
         </b-table>
     </div>
     <p v-show="errorMessage" style="color: red">Kies een tekst</p>

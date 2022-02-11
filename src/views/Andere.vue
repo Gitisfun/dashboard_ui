@@ -26,7 +26,7 @@
           </div>
         <b-table @dblclick="update" :data="data" :columns="selectedCategory.columns">
               <template #empty>
-                <div class="has-text-centered">Geen data</div>
+                <div class="has-text-centered">Tabel is leeg...</div>
             </template>
         </b-table>
       </div>
