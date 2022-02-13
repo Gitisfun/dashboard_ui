@@ -141,7 +141,8 @@ export default {
     },
     fetchData() {
       StatisticsController.getLineChartForPeriod(this, this.list.days, (res) => {
-        this.drawLine("Aankopen", res[0].data[0])
+        console.log("hier");
+        console.log(res);
         this.drawLine("Verkopen", res[1].data[0])
         this.drawLine("Creditnotas", res[2].data[0])
         //this.checkToggleSeries()
@@ -244,7 +245,7 @@ export default {
       });
     },
     setListByMonth(){
-      this.list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
+      this.list = DateHelper.getAllDaysInMonthRangeStartAndEnd(this.currentMonth, this.currentYear)
     },
     changeWidgetPeriod(value, isByMonth){
       if(isByMonth){

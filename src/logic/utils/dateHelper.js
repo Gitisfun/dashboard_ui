@@ -159,21 +159,63 @@ class DateHelper {
       return tempObj;
     }
 
+    static getAllDaysInMonthRangeStartAndEnd(month, year) {
+      let date = moment();
+      if (month != null || year != null) {
+        date = moment({ year: year, month: month, day: 1 });
+      }
+      else {
+        date = moment({ year: this.getCurrentYear(), month: this.getCurrentMonth(), day: 1 });
+      }
+    
+      const lengthOfMonth = date.daysInMonth();
+      let dayIndex = date.startOf("month");
+      let temp = [];
+      for (let i = 0; i < lengthOfMonth; i++) {
+        let tempDate = {
+          "start_date": dayIndex.format("YYYY-MM-DD"),
+          "end_date": null
+        }
+        dayIndex = dayIndex.add(1, "days");
+        tempDate.end_date = dayIndex.format("YYYY-MM-DD")
+        temp.push(tempDate);
+      }
+      const tempObj = {
+        days: temp,
+        daysInMonth: lengthOfMonth,
+      };
+      return tempObj;
+    }
+
     static getAllDaysInPeriod(period){
       let tempDate = moment(period.start_date)
       const tempEndDate = moment(period.end_date)
       let temp = []
       
       while(tempDate.isBefore(tempEndDate, "day")){
-        temp.push(tempDate.format("YYYY-MM-DD"));
+        let tempDateObj = {
+          "start_date": tempDate.format("YYYY-MM-DD"),
+          "end_date": null
+        }
         tempDate = tempDate.add(1, "days");
+        tempDateObj.end_date = tempDate.format("YYYY-MM-DD")
+
+        temp.push(tempDateObj);
       }
-      temp.push(tempDate.format("YYYY-MM-DD"));
+      let tempDateObj = {
+        "start_date": tempDate.format("YYYY-MM-DD"),
+        "end_date": null
+      }
+      tempDate = tempDate.add(1, "days")
+      tempDateObj.end_date = tempDate.format("YYYY-MM-DD")
+
+      temp.push(tempDateObj);
+
       const tempObj = {
         days: temp,
         daysInMonth: temp.length,
       };
-    
+      console.log(tempObj);
       return tempObj;    
     }
 
