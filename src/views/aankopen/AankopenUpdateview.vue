@@ -131,6 +131,8 @@ import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
 import ErrorField from '../../components/common/ErrorField.vue'
+import ModalFactory from '../../logic/factories/modalFactory';
+import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 
 export default {
     name: "AankopenUpdateview",
@@ -244,11 +246,9 @@ export default {
         this.showError = false;
       },
       print(){
-        console.log(this.aankoop);
         Navigation.navigate(this, Navigation.AK_PRINT, this.aankoop)
       },
       onSubmit(){
-        console.log(this.aankoop);
         let isValidated = true;
 
         if(this.$refs.facAdresField.isEmpty()){
@@ -281,7 +281,6 @@ export default {
           this.aankoop.subtotaal = this.$refs.artikelbox.getSubtotaal();
           this.aankoop.totaal = this.$refs.artikelbox.getTotaal();
           AankopenController.update(this, this.aankoop, this.socket)
-          console.log(this.aankoop);
         }
       },
       cancelEdit(){
@@ -293,7 +292,11 @@ export default {
         this.$refs.artikelbox.setError(false) 
       },
       deleteItem(){
-        AankopenController.deleteById(this, this.aankoop, this.socket)
+        ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u deze factuur wilt verwijderen?", null, (isConfirmed) => {
+          if(isConfirmed){
+            AankopenController.deleteById(this, this.aankoop, this.socket)
+          }
+        })
       },
       changeKlant(item){
         this.clearAdressen()

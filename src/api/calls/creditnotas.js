@@ -2,6 +2,8 @@ import ApiCalls from "../ApiCalls";
 import { getAllCreditnotas, getCreditnota, createCreditnota, updateCreditnota, deleteCreditnota, paidCreditnota } from "../routes/creditnotas"
 import { getAllBtws } from "../routes/btw"
 import { getCounter } from "../routes/counters";
+import { getKlant } from "../routes/klanten"
+import { getBedrijf } from "../routes/bedrijven";
 import Socket from "../../logic/factories/socketFactory"
 
 class CreditnotasController {
@@ -37,6 +39,11 @@ class CreditnotasController {
 
     static deleteById(context, body, socket){
         ApiCalls.deleteById(deleteCreditnota, body.id, context, true, socket, Socket.CREDITNOTAS)
+    }
+
+    // Print
+    static getPrintPreData(context, id, klant_id, callback){
+        ApiCalls.getMultiple([getBedrijf(), getCreditnota(id), getKlant(klant_id)], callback, context)
     }
 
 }

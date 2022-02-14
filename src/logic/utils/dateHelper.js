@@ -202,7 +202,6 @@ class DateHelper {
         days: temp,
         daysInMonth: temp.length,
       };
-      console.log(tempObj);
       return tempObj;    
     }
 
@@ -234,7 +233,6 @@ class DateHelper {
         days: temp,
         daysInMonth: temp.length,
       };
-      console.log(tempObj);
       return tempObj;    
     }
 

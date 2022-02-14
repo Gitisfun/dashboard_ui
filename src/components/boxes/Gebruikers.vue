@@ -1,34 +1,39 @@
 <template>
    <div class="box">
-      <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
-        <div class="level">
-        <div class="level-left">
-            <div class="level-item">
-            <Subtitle text="Gebruikers" />
-            </div>
-        </div>
-        <div class="level-right">
-            <div class="level-item">
-                <GenericBtn text="Toevoegen" btnStyle="success" @clicked="addUser"  />
-            </div>
-        </div>
-        </div>        
-        <hr>
-        <div v-for="item in gebruikers" :key="item.id">
+     <div v-if="hasPermission">
+        <div style="padding-top: 10px; padding-right: 15px; padding-left: 15px; padding-bottom: 25px;">
           <div class="level">
-            <div class="level-right">
+          <div class="level-left">
               <div class="level-item">
-                <div class="gebruikers-box">{{ item.voornaam }} {{ item.achternaam }}</div>
+              <Subtitle text="Gebruikers" />
               </div>
-            </div>
-            <div class="level-left">
+          </div>
+          <div class="level-right">
               <div class="level-item">
-                <GenericBtn text="Aanpassen" btnStyle="underlined" @clicked="updateUser(item)"  />
+                  <GenericBtn text="Toevoegen" btnStyle="success" @clicked="addUser"  />
+              </div>
+          </div>
+          </div>        
+          <hr>
+          <div v-for="item in gebruikers" :key="item.id">
+            <div class="level">
+              <div class="level-right">
+                <div class="level-item">
+                  <div class="gebruikers-box">{{ item.voornaam }} {{ item.achternaam }}</div>
+                </div>
+              </div>
+              <div class="level-left">
+                <div class="level-item">
+                  <GenericBtn text="Aanpassen" btnStyle="underlined" @clicked="updateUser(item)"  />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+     </div>
+     <div v-else class="box" style="background: #22a6b3; color: white; font-weight: 700">
+       Je hebt niet de juiste rechten om deze feature te bekijken...
+     </div>
     </div>
 </template>
 
@@ -58,6 +63,16 @@ export default {
     mounted(){
       Socket.listen(this.socket, Socket.ANDERE, () => { this.loadUsers() })
       this.loadUsers()
+    },
+    computed: {
+      hasPermission(){
+        console.log(this.$store.getters.getUser);
+        if(this.$store.getters.getUser.rol) {
+          if(this.$store.getters.getUser.rol == 1) return true
+          return false
+        }
+        return false
+      }
     },
     methods: {
       loadUsers(){

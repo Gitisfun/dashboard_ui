@@ -39,7 +39,6 @@ export default {
         CountersController.get(this, null, (res) => {
             this.counter = res.data[0]
             this.isLoaded = true
-            console.log(this.counter);
         })
     },
     methods: {

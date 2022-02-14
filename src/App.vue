@@ -30,7 +30,7 @@ export default {
       return this.$route.name == "Login";
     },
     isPrint(){
-      return this.$route.name == "AankopenPrint"
+      return this.$route.name == "AankopenPrint" || this.$route.name == "VerkopenPrint" || this.$route.name == "CreditnotasPrint"
     }
   },
   data: () => ({

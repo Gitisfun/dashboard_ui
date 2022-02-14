@@ -100,9 +100,6 @@
 </template>
 
 <script>
-// TODO: fix facturatie en leveringsadres default click when is filled in
-
-
 import ReadHeaderWithPrint from "../../components/general/ReadHeaderWithPrint.vue";
 import UpdateHeader from "../../components/general/UpdateHeader.vue";
 import { ValidationObserver } from "vee-validate";
@@ -127,6 +124,8 @@ import Navigation from '../../logic/factories/navigation';
 import UpdatedByInfo from '../../components/common/UpdatedByInfo.vue';
 import ArtikelBox from '../../components/boxes/ArtikelBox.vue';
 import ErrorField from '../../components/common/ErrorField.vue'
+import ModalFactory from '../../logic/factories/modalFactory';
+import ConfirmationModal from "../../modals/ConfirmationModal.vue";
 
 export default {
     name: "VerkopenUpdateview",
@@ -225,11 +224,9 @@ export default {
         this.showError = false;
       },
       print(){
-        console.log(this.verkoop);
         Navigation.navigate(this, Navigation.VK_PRINT, this.verkoop)
       },
       onSubmit(){
-        console.log(this.verkoop);
         let isValidated = true;
 
         if(this.$refs.facAdresField.isEmpty()){
@@ -264,7 +261,11 @@ export default {
         this.$refs.artikelbox.setError(false)
       },
       deleteItem(){
-        VerkopenController.deleteById(this, this.verkoop, this.socket)
+        ModalFactory.showModalWithParamas(this, ConfirmationModal, "Bent u zeker dat u deze factuur wilt verwijderen?", null, (isConfirmed) => {
+          if(isConfirmed){        
+            VerkopenController.deleteById(this, this.verkoop, this.socket)
+          }
+        })            
       },
       changeKlant(item){
         this.clearAdressen()

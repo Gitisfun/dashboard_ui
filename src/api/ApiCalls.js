@@ -48,7 +48,6 @@ class ApiCalls {
       .then((res) => responseHandler(res))
       .catch((err) => {
         if (err) {
-          console.log(err);
           Notifications.errorMessage("Er ging iets fout met het ophalen van de gegevens", context);
         }
       });
@@ -59,7 +58,6 @@ class ApiCalls {
       .then((res) => responseHandler(res))
       .catch((err) => {
         if (err) {
-          console.log(err);
           Notifications.errorMessage("Er ging iets fout met het ophalen van de gegevens", context);
         }
       });
@@ -70,7 +68,6 @@ class ApiCalls {
       .then((res) => {
         if (res) {
           Notifications.successMessage("Succesvol toegevoegd", context);
-          console.log(socket);
           if (socket) {
             Socket.notify(socket, to);
           }
@@ -81,7 +78,6 @@ class ApiCalls {
       })
       .catch((err) => {
         if (err) {
-          console.log(err);
           Notifications.errorMessage("Kon niet worden toegevoegd, er ging iets fout op de server", context);
         }
       });

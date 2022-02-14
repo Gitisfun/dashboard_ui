@@ -2,6 +2,8 @@ import ApiCalls from "../ApiCalls";
 import { getAllVerkopen, getVerkoop, createVerkoop, updateVerkoop, deleteVerkoop, paidVerkoop } from "../routes/verkopen"
 import { getAllBtws } from "../routes/btw"
 import { getCounter } from "../routes/counters";
+import { getKlant } from "../routes/klanten"
+import { getBedrijf } from "../routes/bedrijven";
 import Socket from "../../logic/factories/socketFactory"
 class VerkopenController {
 
@@ -36,6 +38,11 @@ class VerkopenController {
 
     static deleteById(context, body, socket){
         ApiCalls.deleteById(deleteVerkoop, body.id, context, true, socket, Socket.VERKOPEN)
+    }
+
+    // Print
+    static getPrintPreData(context, id, klant_id, callback){
+        ApiCalls.getMultiple([getBedrijf(), getVerkoop(id), getKlant(klant_id)], callback, context)
     }
 
 }

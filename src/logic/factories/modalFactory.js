@@ -6,7 +6,7 @@ class ModalFactory {
         component: modal,
         hasModalCard: false,
         trapFocus: true,
-        canCancel: true,
+        canCancel: false,
         fullScreen: false,
         events: {
           confirmation: (value) => {
@@ -23,7 +23,7 @@ class ModalFactory {
       props: { obj: passedObj, title: title },
       hasModalCard: false,
       trapFocus: true,
-      canCancel: true,
+      canCancel: false,
       fullScreen: false,
       events: {
         confirmation: (value) => {

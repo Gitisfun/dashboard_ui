@@ -8,7 +8,7 @@
     </div>
     <div class="level-right">
       <div class="level-item">
-          <GenericBtn text="Account" @clicked="logout"  />
+          <GenericBtn :text="getFormattedUser()" @clicked="logout"  />
         <!--
         <b-dropdown :triggers="['hover']" aria-role="list">
           <template #trigger>
@@ -32,18 +32,30 @@ export default {
   name: "TitleBar",
   computed: mapGetters(["allMenuItems", "currentMenuItem"]),
   created() {
-    this.menuItems = this.allMenuItems;
-    for (let i = 0; i < this.menuItems.length; i++) {
-      if (this.$route.name == this.menuItems[i].name) {
-        this.switchMenuItem(this.menuItems[i]);
-      }
-    }
+    this.updateTitleBar()
   },
   methods: {
     ...mapActions(["switchMenuItem"]),
     logout() {
-      Navigation.logout(this)
+      if(this.$route.name !== "Instellingen"){
+        Navigation.navigate(this, "Instellingen", null)
+        this.updateTitleBar()
+      }
     },
+    getFormattedUser(){
+      if(this.$store.getters.getUser){
+        return `${this.$store.getters.getUser.voornaam} ${this.$store.getters.getUser.achternaam}`
+      }
+      return "..."
+    },
+    updateTitleBar(){
+      this.menuItems = this.allMenuItems;
+      for (let i = 0; i < this.menuItems.length; i++) {
+        if (this.$route.name == this.menuItems[i].name) {
+          this.switchMenuItem(this.menuItems[i]);
+        }
+      }
+    }
   },
 };
 </script>

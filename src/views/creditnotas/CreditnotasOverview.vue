@@ -92,7 +92,6 @@ export default {
   },
   computed: {
     getWidth() {
-      console.log("Called width");
       return TableColumns.getCreditnotaColumns(this.updatedByIsVisible)
     },
   },

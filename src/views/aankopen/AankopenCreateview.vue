@@ -133,7 +133,6 @@ export default {
     }),
     mounted(){
         AankopenController.getPreData(this, (res) => {
-            console.log(res);
             this.btws = res[0].data
             this.aankoop.bestellings_nr = `${DateHelper.getCurrentYear()}-${res[1].data[0].aankopen}`
         })

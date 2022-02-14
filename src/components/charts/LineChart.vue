@@ -85,8 +85,6 @@
 </template>
 
 <script>
-// TODO: Years functie scrhijven in datehelper die alle jaren van 2020 tot en met nu berekent
-
 import StatisticsController from '../../api/calls/statistics.js';
 import lines from "../../logic/charts/lines.js";
 import DateHelper from '../../logic/utils/dateHelper.js';
@@ -141,8 +139,6 @@ export default {
     },
     fetchData() {
       StatisticsController.getLineChartForPeriod(this, this.list.days, (res) => {
-        console.log("hier");
-        console.log(res);
         this.drawLine("Verkopen", res[1].data[0])
         this.drawLine("Creditnotas", res[2].data[0])
         //this.checkToggleSeries()
@@ -175,7 +171,6 @@ export default {
       if(value) this.$refs.linechart.showSeries(name)
       else this.$refs.linechart.hideSeries(name)
     },
-    // TODO: Dit nog checken
     checkToggleSeries(){
       this.toggleSeriesAankopen(this.isToggleAankopen)
       this.toggleSeriesVerkopen(this.isToggleVerkopen)
