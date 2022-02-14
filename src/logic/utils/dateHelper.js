@@ -193,6 +193,25 @@ class DateHelper {
       let temp = []
       
       while(tempDate.isBefore(tempEndDate, "day")){
+        temp.push(tempDate.format("YYYY-MM-DD"));
+        tempDate = tempDate.add(1, "days");
+      }
+      temp.push(tempDate.format("YYYY-MM-DD"));
+
+      const tempObj = {
+        days: temp,
+        daysInMonth: temp.length,
+      };
+      console.log(tempObj);
+      return tempObj;    
+    }
+
+    static getAllDaysInPeriodRange(period){
+      let tempDate = moment(period.start_date)
+      const tempEndDate = moment(period.end_date)
+      let temp = []
+      
+      while(tempDate.isBefore(tempEndDate, "day")){
         let tempDateObj = {
           "start_date": tempDate.format("YYYY-MM-DD"),
           "end_date": null

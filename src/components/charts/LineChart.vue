@@ -245,7 +245,7 @@ export default {
       });
     },
     setListByMonth(){
-      this.list = DateHelper.getAllDaysInMonthRangeStartAndEnd(this.currentMonth, this.currentYear)
+      this.list = DateHelper.getAllDaysInMonth(this.currentMonth, this.currentYear)
     },
     changeWidgetPeriod(value, isByMonth){
       if(isByMonth){
