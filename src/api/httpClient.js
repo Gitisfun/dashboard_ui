@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const httpClient = axios.create({
-    baseURL: "http://localhost:5000/api/", // TODO: change to real api link
-    //baseURL: "http://192.168.0.231:5000/api/",
+    baseURL: "https://comagex-api.herokuapp.com/api/",
+    //baseURL: "http://localhost:5000/api/", // TODO: change to real api link
     timeout: 10000, // indicates, 1000ms ie. 1 second
     headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ import io from "socket.io-client";
 class Socket {
 
   static getConnection() {
-    return io("http://localhost:5000/"); // TODO: Replace with env variable
+    return io("https://comagex-api.herokuapp.com/");
   }
 
   static CLICKED = "clicked"
