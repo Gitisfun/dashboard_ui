@@ -9,10 +9,30 @@
         </div>
         -->
         <div v-show="bedrijf.id">
-          <img style="height: 90px" v-if="bedrijf.id === 2" src="../../assets/comagex.png" alt="logocompany">
-          <img style="height: 90px" v-if="bedrijf.id === 3" src="../../assets/comagex.png" alt="logocompany">
-          <img style="height: 100px" v-if="bedrijf.id === 4" src="../../assets/invest.png" alt="logocompany">
-          <img style="height: 90px" v-if="bedrijf.id === 5" src="../../assets/gim.png" alt="logocompany">
+          <img
+            style="height: 90px"
+            v-if="bedrijf.id === 2"
+            src="../../assets/comagex.png"
+            alt="logocompany"
+          />
+          <img
+            style="height: 90px"
+            v-if="bedrijf.id === 4"
+            src="../../assets/comagex.png"
+            alt="logocompany"
+          />
+          <img
+            style="height: 100px"
+            v-if="bedrijf.id === 5"
+            src="../../assets/invest.png"
+            alt="logocompany"
+          />
+          <img
+            style="height: 90px"
+            v-if="bedrijf.id === 6"
+            src="../../assets/gim.png"
+            alt="logocompany"
+          />
         </div>
       </div>
       <div class="column is-4">
@@ -31,7 +51,7 @@
       <div class="column is-3">
         <p class="factuur-date">{{ creditnota.datum | dateFormatter }}</p>
       </div>
-    </div> 
+    </div>
     <div style="margin-top: -20px; margin-bottom: 10px">
       <p class="factuur-title">{{ bedrijf.naam }}</p>
       <p class="factuur-title">{{ bedrijf.extra_naam }}</p>
@@ -39,9 +59,15 @@
     <div class="columns">
       <div class="column">
         <div class="factuur-adres">
-          <p class="factuur-text">Adres en maatschappelijke zetel - Adresse et siège social</p>
-          <p class="factuur-text">{{ adres.straat }}, {{ adres.huisnummer }} {{ adres.bus }}</p>
-          <p class="factuur-text">{{ adres.postcode }} {{ adres.gemeente }} {{ adres.land }}</p>
+          <p class="factuur-text">
+            Adres en maatschappelijke zetel - Adresse et siège social
+          </p>
+          <p class="factuur-text">
+            {{ adres.straat }}, {{ adres.huisnummer }} {{ adres.bus }}
+          </p>
+          <p class="factuur-text">
+            {{ adres.postcode }} {{ adres.gemeente }} {{ adres.land }}
+          </p>
         </div>
         <div class="columns">
           <div class="column">
@@ -67,9 +93,15 @@
             <p class="factuur-text">Customer</p>
           </div>
           <div class="column">
-            <p class="factuur-text">{{ creditnota.klant_naam }} </p>
-            <p class="factuur-text">{{ factuuradres.straat }}, {{ factuuradres.huisnummer }} {{ factuuradres.bus }}</p>
-            <p class="factuur-text">{{ factuuradres.postcode }} {{ factuuradres.gemeente }} {{ factuuradres.land }}</p>
+            <p class="factuur-text">{{ creditnota.klant_naam }}</p>
+            <p class="factuur-text">
+              {{ factuuradres.straat }}, {{ factuuradres.huisnummer }}
+              {{ factuuradres.bus }}
+            </p>
+            <p class="factuur-text">
+              {{ factuuradres.postcode }} {{ factuuradres.gemeente }}
+              {{ factuuradres.land }}
+            </p>
           </div>
         </div>
       </div>
@@ -86,13 +118,14 @@
       </tr>
       <tr class="content-table-text-centered">
         <td>{{ creditnota.order_nr }}</td>
-        <td>{{ creditnota.ref_nr  }}</td>
+        <td>{{ creditnota.ref_nr }}</td>
         <td>{{ klant.klant_nr }}</td>
         <td>{{ creditnota.datum | dateFormatter }}</td>
         <td>{{ creditnota.betalingsdatum | dateFormatter }}</td>
         <td>{{ klant.btw_nr }}</td>
       </tr>
     </table>
+
     <table class="content-table-style">
       <tr class="content-table-text-centered">
         <th>Item</th>
@@ -104,7 +137,11 @@
         <th>Extra Discount</th>
         <th>Total</th>
       </tr>
-      <tr class="content-table-text-centered" v-for="item in creditnota.artikels" :key="item.id">
+      <tr
+        class="content-table-text-centered"
+        v-for="item in creditnota.artikels"
+        :key="item.id"
+      >
         <td>{{ item.artikelcode }}</td>
         <td>{{ klant.klant_nr }}</td>
         <td style="text-align: left">{{ item.naam }}</td>
@@ -115,6 +152,7 @@
         <td style="text-align: right">{{ item.totaal }} EUR</td>
       </tr>
     </table>
+
     <p class="factuur-extra-info">{{ creditnota.eindtekst }}</p>
     <table class="total-table-style">
       <tr>
@@ -137,92 +175,100 @@
 </template>
 
 <script>
-import CreditnotasController from '../../api/calls/creditnotas'
-import UtilsFactory from '../../logic/utils/utilsFactory'
+import CreditnotasController from "../../api/calls/creditnotas";
+import UtilsFactory from "../../logic/utils/utilsFactory";
 
 export default {
-    name: "CreditnotasPrint",
-    data(){
-      return {
-        bedrijf: {
-          id: null,
-          naam: null,
-          bank: null, 
-          btw_nr: null,
-          telefoon: null,
-          extra_naam: null,
-          extra_bank: null,
-          email: null,
-          adres: null
-        },
-        adres: {
-          straat: null,
-          huisnummer: null,
-          bus: null,
-          postcode: null,
-          gemeente: null,
-          land: null
-        },  
-        factuuradres: {
-          straat: null,
-          huisnummer: null,
-          bus: null,
-          postcode: null,
-          gemeente: null,
-          land: null
-        },  
-        klant: {
-          klant_nr: null
-        },  
-        creditnota: {
-          order_nr: null,
-          datum: null,
-          klant_id: null,
-          klant_naam: null,
-          ref_nr: null,
-          btw_id: null,
-          btw_naam: null,
-          btw_prijs: null,
-          betalingsdatum: null,
-          valuta: null,
-          opmerking_order: null,
-          eindtekst: null,
-          factuuradres: null,
-          subtotaal: null,
-          totaal: null,
-          isBetaald: null,
-          isActive: null,
-          updated_time: null,
-          updated_by: null,
-          bedrijfs_id: null,
-          opmerking: null,
-          tempArtikels: [],
-          artikels: []
-        },                         
+  name: "CreditnotasPrint",
+  data() {
+    return {
+      bedrijf: {
+        id: null,
+        naam: null,
+        bank: null,
+        btw_nr: null,
+        telefoon: null,
+        extra_naam: null,
+        extra_bank: null,
+        email: null,
+        adres: null,
+      },
+      adres: {
+        straat: null,
+        huisnummer: null,
+        bus: null,
+        postcode: null,
+        gemeente: null,
+        land: null,
+      },
+      factuuradres: {
+        straat: null,
+        huisnummer: null,
+        bus: null,
+        postcode: null,
+        gemeente: null,
+        land: null,
+      },
+      klant: {
+        klant_nr: null,
+      },
+      creditnota: {
+        order_nr: null,
+        datum: null,
+        klant_id: null,
+        klant_naam: null,
+        ref_nr: null,
+        btw_id: null,
+        btw_naam: null,
+        btw_prijs: null,
+        betalingsdatum: null,
+        valuta: null,
+        opmerking_order: null,
+        eindtekst: null,
+        factuuradres: null,
+        subtotaal: null,
+        totaal: null,
+        isBetaald: null,
+        isActive: null,
+        updated_time: null,
+        updated_by: null,
+        bedrijfs_id: null,
+        opmerking: null,
+        tempArtikels: [],
+        artikels: [],
+      },
+    };
+  },
+  mounted() {
+    CreditnotasController.getPrintPreData(
+      this,
+      this.$route.params.id,
+      this.$route.params.obj.klant_id,
+      (res) => {
+        this.bedrijf = res[0].data[0];
+        this.creditnota = res[1].data;
+        this.adres = JSON.parse(this.bedrijf.adres);
+        this.factuuradres = JSON.parse(this.creditnota.factuuradres);
+        this.klant = res[2].data[0];
       }
-    },
-    mounted(){
-      CreditnotasController.getPrintPreData(this, this.$route.params.id, this.$route.params.obj.klant_id, (res) => {
-        this.bedrijf = res[0].data[0]
-        this.creditnota = res[1].data
-        this.adres = JSON.parse(this.bedrijf.adres)
-        this.factuuradres = JSON.parse(this.creditnota.factuuradres)
-        this.klant = res[2].data[0]    
-      })
-    },
-    computed: {
-      calculateBtw(){
-        if(this.creditnota.btw_prijs){
-          return `${UtilsFactory.roundNumber(parseFloat(this.creditnota.btw_prijs) * parseFloat(this.creditnota.subtotaal))}`
-        }
-        return "..."
+    );
+  },
+  computed: {
+    calculateBtw() {
+      if (this.creditnota.btw_prijs) {
+        return `${UtilsFactory.roundNumber(
+          parseFloat(this.creditnota.btw_prijs) *
+            parseFloat(this.creditnota.subtotaal)
+        )}`;
       }
-    }
-}
+      return "...";
+    },
+  },
+};
 </script>
 
 <style>
-.factuur-content{
+.factuur-content {
   padding: 5px;
 }
 
@@ -256,20 +302,21 @@ export default {
 }
 
 .factuur-text {
-  font-size: 10px
+  font-size: 10px;
 }
 
 .factuur-extra-info {
   font-size: 10px;
   margin-top: 15px;
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .content-table-style {
   margin-bottom: 15px;
 }
 
-.content-table-style td, .content-table-style th {
+.content-table-style td,
+.content-table-style th {
   border: 0.5px solid grey;
   padding: 5px;
   font-size: 10px;
@@ -279,14 +326,14 @@ export default {
   text-align: center;
 }
 
-.total-table-style{
+.total-table-style {
   float: right;
 }
 
-.total-table-style td, .total-table-style th {
+.total-table-style td,
+.total-table-style th {
   border: 0.5px solid grey;
   padding: 5px;
-  font-size: 10px
+  font-size: 10px;
 }
 </style>
-

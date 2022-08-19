@@ -13,8 +13,6 @@
 // TODO: add overview for each klant, leverancier and artikel                                 ---- 
 // TODO: dagboek toevoegen voor elke dag, week, maand, jaar of aangepaste periode             ---- 
 
-// TODO: ENV Variables - check for TODO's in all files                                        ---- 
-
 /*
 // TODO: Statistieken: 
 
